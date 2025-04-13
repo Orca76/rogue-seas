@@ -715,7 +715,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054132478}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2b5a4457d754f147958e799834e373b, type: 3}
   m_Name: 
@@ -764,8 +764,9 @@ MonoBehaviour:
   mountainTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
   rockTile: {fileID: 11400000, guid: da3db513ece67614aaf552a2f9c48f46, type: 2}
   caveTile: {fileID: 11400000, guid: b379463189b28424dab515b5d16a135c, type: 2}
-  regionWidth: 100
-  regionHeight: 100
+  bedrockTile: {fileID: 11400000, guid: a34a609dfe1f1b442a3108eaf37f848e, type: 2}
+  regionWidth: 200
+  regionHeight: 200
   gridCols: 5
   gridRows: 5
   iterations: 3
@@ -775,8 +776,9 @@ MonoBehaviour:
   biomeThresholdDesert: -0.3
   biomeThresholdGrassland: 0
   biomeThresholdForest: 0.4
-  mapWidth: 100
-  mapHeight: 100
+  biomeThresholdCave: -0.15
+  mapWidth: 200
+  mapHeight: 200
   regenerateKey: 32
   toggleLayerKey: 117
 --- !u!1 &2146889023
