@@ -49,9 +49,16 @@ public class IslandTile : MonoBehaviour
     private int noiseSeed = 123;
     private bool showingUnderground = false;
 
+
+   public int[,] tileMapData;
+    private void Awake()
+    {
+        tileMapData = new int[mapWidth, mapHeight];
+    }
     void Start()
     {
         GenerateAndFillMaps();
+       
     }
 
     void Update()
@@ -105,6 +112,23 @@ public class IslandTile : MonoBehaviour
                 }
                 float biomeNoise = Mathf.PerlinNoise((x + biomeOffset.x) * biomeFrequency, (y + biomeOffset.y) * biomeFrequency) * 2f - 1f;
                 TileBase tile = ChooseBiomeTile(biomeNoise);
+
+                if (tile == forestTile)
+                {
+                    int[] options = { 10 }; // 無　木　花　草
+                    tileMapData[x, y] = options[Random.Range(0, options.Length)];
+                }
+                if (tile == grasslandTile)
+                {
+                    int[] options = { 20 }; // 無　木　花　草
+                    tileMapData[x, y] = options[Random.Range(0, options.Length)];
+                }
+                if (tile == mountainTile)
+                {
+                    int[] options = { 30}; // 岩　鉱石　鉱石　鉱石
+                    tileMapData[x, y] = options[Random.Range(0, options.Length)];
+                }
+
                 tilemapSurface.SetTile(new Vector3Int(x, y, 0), tile);
             }
         }
