@@ -42,7 +42,7 @@ public class TileObjectSpawner : MonoBehaviour
                 }
                 if (id == 30 && !spawnedObjects.ContainsKey(pos))
                 {
-                    Vector3 worldPos = new Vector3(x * 0.16f, y *0.16f, 0f);
+                    Vector3 worldPos = new Vector3(x * 0.16f+0.08f, y *0.16f+0.08f, 0f);
                     GameObject obj = Instantiate(rockPrefab, worldPos, Quaternion.identity);
                     Debug.Log("CreateBlock");
                     spawnedObjects[pos] = obj;
