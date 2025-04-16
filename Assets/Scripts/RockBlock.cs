@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class RockBlock : BlockBase
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Vector3Int mapPosition;           // 岩の座標
+    public IslandTile islandTiles;          // データ保持側の参照（tileMapData持ち）
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public override void Interact()
     {
-        // 岩に特有の何かやりたかったらここに書く
-        base.Interact();
+        // 1. 論理データを更新
+        islandTiles.tileMapData[tilePos.x, tilePos.y] = 30;//30は無なので　31が岩のコード
+                                                                   // 3. デバッグ出力
+        Debug.Log($"岩を破壊！位置: {tilePos.x}, {tilePos.y}");
+        // 2. 見た目の削除
+        Destroy(gameObject);
+
+       
     }
 }

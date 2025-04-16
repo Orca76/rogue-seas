@@ -5,21 +5,22 @@ using UnityEngine.Tilemaps;
 
 public class RockBreaker : MonoBehaviour
 {
-    public Tilemap rockTilemap; // 岩のタイルマップ
-    public TileBase destroyedTile; // 岩を壊した後の見た目（nullでも可）
+   
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // 左クリック
+        if (Input.GetMouseButtonDown(0))//岩破壊処理
         {
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int cellPos = rockTilemap.WorldToCell(mouseWorldPos);
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
 
-            if (rockTilemap.HasTile(cellPos))
+            if (hit.collider != null)
             {
-                // 壊す処理
-                rockTilemap.SetTile(cellPos, destroyedTile); // or null
-                Debug.Log("岩を破壊！");
+                BlockBase block = hit.collider.GetComponent<BlockBase>();
+                if (block != null)
+                {
+                    block.Interact();
+                }
             }
         }
     }

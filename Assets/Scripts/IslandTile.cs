@@ -125,8 +125,8 @@ public class IslandTile : MonoBehaviour
                 }
                 if (tile == mountainTile)
                 {
-                    int[] options = { 30}; // Šâ@zÎ@zÎ@zÎ
-                    tileMapData[x, y] = options[Random.Range(0, options.Length)];
+                    int[] options = { 30,31}; //–³ Šâ@zÎ@zÎ@zÎ
+                    tileMapData[x, y] =31;//‚Ü‚¸‚ÍŠm’è‚ÅŠâ‚ğ¶¬
                 }
 
                 tilemapSurface.SetTile(new Vector3Int(x, y, 0), tile);

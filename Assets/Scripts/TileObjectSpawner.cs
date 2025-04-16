@@ -26,7 +26,7 @@ public class TileObjectSpawner : MonoBehaviour
             Mathf.FloorToInt(playerPos.x / tileSize),
             Mathf.FloorToInt(playerPos.y / tileSize)
         );
-        Debug.Log(playerTile.ToString());
+      //  Debug.Log(playerTile.ToString());
         for (int x = playerTile.x - viewRange; x <= playerTile.x + viewRange; x++)
         {
             for (int y = playerTile.y - viewRange; y <= playerTile.y + viewRange; y++)
@@ -36,21 +36,19 @@ public class TileObjectSpawner : MonoBehaviour
                 Vector2Int pos = new Vector2Int(x, y);
                 int id = tileController.tileMapData[x, y];
               
-                if (id == 30)
-                {
-                    Debug.Log($"発見: {x},{y} は30！");
-                }
-                if (id == 30 && !spawnedObjects.ContainsKey(pos))
-                {
+               
+                if (id == 31 && !spawnedObjects.ContainsKey(pos))
+                {//この時のx yは整数　タイル座標（ローカル）
                     Vector3 worldPos = new Vector3(x * 0.16f+0.08f, y *0.16f+0.08f, 0f);
                     GameObject obj = Instantiate(rockPrefab, worldPos, Quaternion.identity);
-                    Debug.Log("CreateBlock");
+                   // Debug.Log("CreateBlock");
                     spawnedObjects[pos] = obj;
 
                     // rockPrefabのスクリプトに位置を教えておく
                     RockBlock rb = obj.GetComponent<RockBlock>();
-                    rb.tilePos = pos;
-                    // rb.tileController = tileController;
+                    rb.tilePos = new Vector2Int(x, y);
+                   // Debug.Log($"今回生成した座標 {x} + {y}");
+                    rb.islandTiles = tileController;
                 }
             }
         }
