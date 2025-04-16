@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RockBlock : BlockBase
 {
-    public Vector3Int mapPosition;           // 岩の座標
+   
     public IslandTile islandTiles;          // データ保持側の参照（tileMapData持ち）
 
     public override void Interact()
