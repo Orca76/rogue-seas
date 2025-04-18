@@ -51,6 +51,10 @@ public class IslandTile : MonoBehaviour
 
 
    public int[,] tileMapData;
+
+    public Transform playerTransform; // プレイヤーを参照するために追加
+    public float undergroundZ = 1f;   // 地下のZ座標
+    public float surfaceZ = 0f;       // 地上のZ座標
     private void Awake()
     {
         tileMapData = new int[mapWidth, mapHeight];
@@ -68,10 +72,15 @@ public class IslandTile : MonoBehaviour
             noiseSeed = Random.Range(0, 10000);
             GenerateAndFillMaps();
         }
-        if (Input.GetKeyDown(toggleLayerKey))
-        {
-            ToggleLayer();
-        }
+        //if (Input.GetKeyDown(toggleLayerKey))
+        //{
+        //    ToggleLayer();
+        //}
+
+        // プレイヤーのZ座標に応じてレイヤーを切り替える
+        bool playerInUnderground = Mathf.Approximately(playerTransform.position.z, undergroundZ);
+        tilemapSurface.gameObject.SetActive(!playerInUnderground);
+        tilemapUnderground.gameObject.SetActive(playerInUnderground);
     }
 
     void GenerateAndFillMaps()

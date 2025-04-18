@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1177888408469979587}
   - component: {fileID: 2699054255073658972}
   - component: {fileID: -4231861502772590349}
+  - component: {fileID: -7881390549638773392}
   m_Layer: 0
   m_Name: stone
   m_TagString: Untagged
@@ -147,3 +148,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePos: {x: 0, y: 0}
+  islandTiles: {fileID: 0}
+--- !u!114 &-7881390549638773392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6897103611816771077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36730a3ef0a30c146b311d03118e47ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 0}

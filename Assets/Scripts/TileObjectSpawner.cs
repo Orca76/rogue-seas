@@ -13,20 +13,33 @@ public class TileObjectSpawner : MonoBehaviour
                                // 1タイルが0.16ユニットの場合
     float tileSize = 0.16f;
     Dictionary<Vector2Int, GameObject> spawnedObjects = new();
-
+    private Vector3 lastPlayerPos;
     private void Start()
     {
         tileController = tileMapObj.GetComponent<IslandTile>();
-      //  Debug.Log(tileController.tileMapData);
+        lastPlayerPos = player.position;
+        //  Debug.Log(tileController.tileMapData);
     }
     void Update()
+    {
+
+        // プレイヤーの座標が変わったら処理を実行
+        if (!Mathf.Approximately((player.position - lastPlayerPos).sqrMagnitude, 0f) || Input.GetKeyDown(KeyCode.U)||Input.GetKeyDown(KeyCode.I))
+        {
+            lastPlayerPos = player.position;
+            RefreshAroundPlayer();
+        }
+       
+    }
+
+    void RefreshAroundPlayer()
     {
         Vector2 playerPos = player.position;
         Vector2Int playerTile = new Vector2Int(
             Mathf.FloorToInt(playerPos.x / tileSize),
             Mathf.FloorToInt(playerPos.y / tileSize)
         );
-      //  Debug.Log(playerTile.ToString());
+        //  Debug.Log(playerTile.ToString());
         for (int x = playerTile.x - viewRange; x <= playerTile.x + viewRange; x++)
         {
             for (int y = playerTile.y - viewRange; y <= playerTile.y + viewRange; y++)
@@ -35,20 +48,30 @@ public class TileObjectSpawner : MonoBehaviour
 
                 Vector2Int pos = new Vector2Int(x, y);
                 int id = tileController.tileMapData[x, y];
-              
-               
-                if (id == 31 && !spawnedObjects.ContainsKey(pos))
-                {//この時のx yは整数　タイル座標（ローカル）
-                    Vector3 worldPos = new Vector3(x * 0.16f+0.08f, y *0.16f+0.08f, 0f);
-                    GameObject obj = Instantiate(rockPrefab, worldPos, Quaternion.identity);
-                   // Debug.Log("CreateBlock");
-                    spawnedObjects[pos] = obj;
 
-                    // rockPrefabのスクリプトに位置を教えておく
-                    RockBlock rb = obj.GetComponent<RockBlock>();
-                    rb.tilePos = new Vector2Int(x, y);
-                   // Debug.Log($"今回生成した座標 {x} + {y}");
-                    rb.islandTiles = tileController;
+
+                if (id == 31)
+                {
+                    if (!spawnedObjects.ContainsKey(pos))
+                    {
+                        Vector3 worldPos = new Vector3(x * tileSize + tileSize / 2f, y * tileSize + tileSize / 2f, 0f);
+                        GameObject obj = Instantiate(rockPrefab, worldPos, Quaternion.identity);
+                        spawnedObjects[pos] = obj;
+
+                        RockBlock rb = obj.GetComponent<RockBlock>();
+                        rb.tilePos = new Vector2Int(x, y);
+                        rb.islandTiles = tileController;
+                    }
+                    else
+                    {
+                        float playerZ = player.position.z;
+                        float objZ = spawnedObjects[pos].transform.position.z;
+
+                        if (Mathf.Approximately(playerZ, objZ))
+                        {
+                            spawnedObjects[pos].SetActive(true);
+                        }
+                    }
                 }
             }
         }
