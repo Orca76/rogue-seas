@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     public float surfaceZ = 0f;
     public float undergroundZ = 1f;
     public KeyCode switchFloorKey = KeyCode.U;
-
+  public  bool isUnderground;
 
     void Start()
     {
@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        isUnderground = Mathf.Approximately(transform.position.z, undergroundZ);
+
         // “ü—ÍŽæ“¾
         movement.x = Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0;
         movement.y = Input.GetKey(KeyCode.W) ? 1 : Input.GetKey(KeyCode.S) ? -1 : 0;

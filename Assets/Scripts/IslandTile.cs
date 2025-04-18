@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEditor.Progress;
 
 public class IslandTile : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class IslandTile : MonoBehaviour
     [Header("Underground Tiles")]
     public TileBase rockTile;
     public TileBase caveTile; // 通常はnullにする（空洞）
+    public TileBase deepstoneTile;//深層岩
     public TileBase bedrockTile; // ←これ新規（壊れない岩盤）
 
     [Header("Island Settings")]
@@ -50,7 +52,8 @@ public class IslandTile : MonoBehaviour
     private bool showingUnderground = false;
 
 
-   public int[,] tileMapData;
+    public int[,] tileMapData;
+    public int[,] tileMapDataUnderground;
 
     public Transform playerTransform; // プレイヤーを参照するために追加
     public float undergroundZ = 1f;   // 地下のZ座標
@@ -58,11 +61,12 @@ public class IslandTile : MonoBehaviour
     private void Awake()
     {
         tileMapData = new int[mapWidth, mapHeight];
+        tileMapDataUnderground = new int[mapWidth, mapHeight];
     }
     void Start()
     {
         GenerateAndFillMaps();
-       
+
     }
 
     void Update()
@@ -134,8 +138,8 @@ public class IslandTile : MonoBehaviour
                 }
                 if (tile == mountainTile)
                 {
-                    int[] options = { 30,31}; //無 岩　鉱石　鉱石　鉱石
-                    tileMapData[x, y] =31;//まずは確定で岩を生成
+                    int[] options = { 30, 31 }; //無 岩　鉱石　鉱石　鉱石
+                    tileMapData[x, y] = 31;//まずは確定で岩を生成
                 }
 
                 tilemapSurface.SetTile(new Vector3Int(x, y, 0), tile);
@@ -167,9 +171,19 @@ public class IslandTile : MonoBehaviour
                                                       (y + biomeOffset.y) * biomeFrequency) * 2f - 1f;
 
                 if (biomeNoise < biomeThresholdCave)
-                    tilemapUnderground.SetTile(pos3, null); // 空洞
+                {
+                    tilemapUnderground.SetTile(pos3, caveTile); // 空洞
+                    int[] options = { 40 }; //無(地下洞窟)
+                    tileMapDataUnderground [x, y] = options[Random.Range(0, options.Length)];
+                }
                 else
-                    tilemapUnderground.SetTile(pos3, rockTile); // 岩
+                {
+                    tilemapUnderground.SetTile(pos3, deepstoneTile); // 岩
+                    int[] options = { 50 }; //深層岩
+                    tileMapDataUnderground[x, y] = options[Random.Range(0, options.Length)];
+                }
+                    
+
             }
         }
     }

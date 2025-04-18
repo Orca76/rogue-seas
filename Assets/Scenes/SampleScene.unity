@@ -169,8 +169,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileController: {fileID: 2054132486}
   tileMapObj: {fileID: 2054132478}
+  tileControllerUnderground: {fileID: 2054132486}
+  tileMapObjUnderground: {fileID: 2054132478}
   player: {fileID: 2146889027}
   rockPrefab: {fileID: 6897103611816771077, guid: 0dbc7932f452bf040aaf7cb13ccfdace, type: 3}
+  deepstonePrefab: {fileID: 8999445682517795370, guid: 1d7deec63d3efab4a9eb0274e5a45591, type: 3}
   viewRange: 10
 --- !u!1 &519420028
 GameObject:
@@ -858,6 +861,7 @@ MonoBehaviour:
   mountainTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
   rockTile: {fileID: 11400000, guid: da3db513ece67614aaf552a2f9c48f46, type: 2}
   caveTile: {fileID: 11400000, guid: b379463189b28424dab515b5d16a135c, type: 2}
+  deepstoneTile: {fileID: 11400000, guid: da3db513ece67614aaf552a2f9c48f46, type: 2}
   bedrockTile: {fileID: 11400000, guid: a34a609dfe1f1b442a3108eaf37f848e, type: 2}
   regionWidth: 200
   regionHeight: 200
@@ -936,6 +940,7 @@ MonoBehaviour:
   surfaceZ: 0
   undergroundZ: 1
   switchFloorKey: 117
+  isUnderground: 0
 --- !u!212 &2146889026
 SpriteRenderer:
   m_ObjectHideFlags: 0

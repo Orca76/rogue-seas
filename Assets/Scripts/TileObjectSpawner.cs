@@ -4,32 +4,40 @@ using UnityEngine;
 
 public class TileObjectSpawner : MonoBehaviour
 {
-    public IslandTile tileController; // tileMapDataを持ってるやつ
-    public GameObject tileMapObj;//タイルマップ
-    public Transform player;
-    public GameObject rockPrefab;
+    public IslandTile tileController; // のtileMapDataを持ってるやつ
+    public GameObject tileMapObj;     // タイルマップオブジェクト
 
-    public int viewRange = 10; // 例：10マス以内にあるものだけ生成
-                               // 1タイルが0.16ユニットの場合
+  //  public IslandTile tileControllerUnderground; // 地下のtileMapDataを持ってるやつ
+  //  public GameObject tileMapObjUnderground;     // 地下タイルマップオブジェクト
+
+    public Transform player;
+    Player playerSc;
+    public GameObject rockPrefab;        // 地上の岩プレハブ
+    public GameObject deepstonePrefab;   // 地下の深層岩プレハブ
+
+    public int viewRange = 10;           // プレイヤー周囲の生成範囲
     float tileSize = 0.16f;
-    Dictionary<Vector2Int, GameObject> spawnedObjects = new();
+
+    Dictionary<Vector2Int, GameObject> spawnedObjectsSurface = new();    // 地上用生成オブジェクト辞書
+    Dictionary<Vector2Int, GameObject> spawnedObjectsUnderground = new(); // 地下用生成オブジェクト辞書
+
     private Vector3 lastPlayerPos;
+
     private void Start()
     {
         tileController = tileMapObj.GetComponent<IslandTile>();
+    //    tileControllerUnderground = tileMapObjUnderground.GetComponent<IslandTile>();
         lastPlayerPos = player.position;
-        //  Debug.Log(tileController.tileMapData);
+        playerSc=player.GetComponent<Player>();
     }
+
     void Update()
     {
-
-        // プレイヤーの座標が変わったら処理を実行
-        if (!Mathf.Approximately((player.position - lastPlayerPos).sqrMagnitude, 0f) || Input.GetKeyDown(KeyCode.U)||Input.GetKeyDown(KeyCode.I))
+        if (!Mathf.Approximately((player.position - lastPlayerPos).sqrMagnitude, 0f) || Input.GetKeyDown(KeyCode.U))
         {
             lastPlayerPos = player.position;
             RefreshAroundPlayer();
         }
-       
     }
 
     void RefreshAroundPlayer()
@@ -39,46 +47,84 @@ public class TileObjectSpawner : MonoBehaviour
             Mathf.FloorToInt(playerPos.x / tileSize),
             Mathf.FloorToInt(playerPos.y / tileSize)
         );
-        //  Debug.Log(playerTile.ToString());
+
+        bool isUnderground = Mathf.Approximately(player.position.z, 1f);
+
+        // 地上と地下を明確に分離
+        if (isUnderground)
+        {
+            RefreshLayer(tileController, spawnedObjectsUnderground, deepstonePrefab, 50, 1f, playerTile);
+        }
+        else
+        {
+           // Debug.Log(1);
+            RefreshLayer(tileController, spawnedObjectsSurface, rockPrefab, 31, 0f, playerTile);
+        }
+    }
+
+    // 地層ごとの共通処理
+    void RefreshLayer(IslandTile tileCtrl, Dictionary<Vector2Int, GameObject> objDict, GameObject prefab, int targetId, float z, Vector2Int playerTile)
+    {
+       
         for (int x = playerTile.x - viewRange; x <= playerTile.x + viewRange; x++)
         {
             for (int y = playerTile.y - viewRange; y <= playerTile.y + viewRange; y++)
             {
-                if (!IsInBounds(x, y)) continue;
+
+
+
+                if (!IsInBounds(tileCtrl, x, y)) continue;
 
                 Vector2Int pos = new Vector2Int(x, y);
-                int id = tileController.tileMapData[x, y];
+                int id = (playerSc.isUnderground == false ? tileController.tileMapData : tileController.tileMapDataUnderground)[x, y];//周囲のタイルのデータを取得
+                Debug.Log(id);
 
-
-                if (id == 31)
+                switch (id)
                 {
-                    if (!spawnedObjects.ContainsKey(pos))
-                    {
-                        Vector3 worldPos = new Vector3(x * tileSize + tileSize / 2f, y * tileSize + tileSize / 2f, 0f);
-                        GameObject obj = Instantiate(rockPrefab, worldPos, Quaternion.identity);
-                        spawnedObjects[pos] = obj;
-
-                        RockBlock rb = obj.GetComponent<RockBlock>();
-                        rb.tilePos = new Vector2Int(x, y);
-                        rb.islandTiles = tileController;
-                    }
-                    else
-                    {
-                        float playerZ = player.position.z;
-                        float objZ = spawnedObjects[pos].transform.position.z;
-
-                        if (Mathf.Approximately(playerZ, objZ))
+                   case 31:
+                        //地上岩タイル
+                        if (!objDict.ContainsKey(pos) || objDict[pos] == null)
                         {
-                            spawnedObjects[pos].SetActive(true);
+                            Vector3 worldPos = new Vector3(x * tileSize + tileSize / 2f, y * tileSize + tileSize / 2f, 0);
+                            GameObject obj = Instantiate(rockPrefab, worldPos, Quaternion.identity);
+                            objDict[pos] = obj;
+
+                            RockBlock rb = obj.GetComponent<RockBlock>();
+                            rb.tilePos = pos;
+                            rb.islandTiles = tileCtrl;
                         }
-                    }
+                        else
+                        {
+                            objDict[pos].SetActive(true);
+                        }
+                        break;
+
+                    case 50:
+                        //地下深層岩タイル
+                        if (!objDict.ContainsKey(pos) || objDict[pos] == null)
+                        {
+                            Vector3 worldPos = new Vector3(x * tileSize + tileSize / 2f, y * tileSize + tileSize / 2f,1);
+                            GameObject obj = Instantiate(deepstonePrefab, worldPos, Quaternion.identity);
+                            objDict[pos] = obj;
+
+                            DeepstoneBlock rb = obj.GetComponent<DeepstoneBlock>();
+                            rb.tilePos = pos;
+                            rb.islandTiles = tileCtrl;
+                        }
+                        else
+                        {
+                            objDict[pos].SetActive(true);
+                        }
+                        break;
+
                 }
+
             }
         }
 
-        // 範囲外のオブジェクトは削除
+        // 範囲外は削除
         List<Vector2Int> toRemove = new();
-        foreach (var kvp in spawnedObjects)
+        foreach (var kvp in objDict)
         {
             if (Vector2Int.Distance(kvp.Key, playerTile) > viewRange)
             {
@@ -87,19 +133,19 @@ public class TileObjectSpawner : MonoBehaviour
             }
         }
         foreach (var key in toRemove)
-            spawnedObjects.Remove(key);
+            objDict.Remove(key);
     }
 
-    bool IsInBounds(int x, int y)
+    bool IsInBounds(IslandTile tileCtrl, int x, int y)
     {
-        if (tileController == null || tileController.tileMapData == null)
+        if (tileCtrl == null || tileCtrl.tileMapData == null)
         {
-            Debug.Log(tileController.tileMapData);
+            Debug.Log(tileCtrl.tileMapData);
             return false;
         }
 
         return x >= 0 && y >= 0 &&
-               x < tileController.tileMapData.GetLength(0) &&
-               y < tileController.tileMapData.GetLength(1);
+               x < tileCtrl.tileMapData.GetLength(0) &&
+               y < tileCtrl.tileMapData.GetLength(1);
     }
 }
