@@ -169,11 +169,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileController: {fileID: 2054132486}
   tileMapObj: {fileID: 2054132478}
-  tileControllerUnderground: {fileID: 2054132486}
-  tileMapObjUnderground: {fileID: 2054132478}
   player: {fileID: 2146889027}
   rockPrefab: {fileID: 6897103611816771077, guid: 0dbc7932f452bf040aaf7cb13ccfdace, type: 3}
   deepstonePrefab: {fileID: 8999445682517795370, guid: 1d7deec63d3efab4a9eb0274e5a45591, type: 3}
+  bedRockPrefab: {fileID: 5633161265585930819, guid: fa2da19475377594b83003b2fefeb5b4, type: 3}
   viewRange: 10
 --- !u!1 &519420028
 GameObject:

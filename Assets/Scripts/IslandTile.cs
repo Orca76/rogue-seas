@@ -163,6 +163,8 @@ public class IslandTile : MonoBehaviour
                 if (!IsPointInPolygon(pos2, islandBoundary))
                 {
                     tilemapUnderground.SetTile(pos3, bedrockTile);
+                    int[] options = { 60 }; //Šâ”Õ
+                    tileMapDataUnderground[x, y] = options[Random.Range(0, options.Length)];
                     continue;
                 }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TileObjectSpawner : MonoBehaviour
@@ -14,6 +15,7 @@ public class TileObjectSpawner : MonoBehaviour
     Player playerSc;
     public GameObject rockPrefab;        // 地上の岩プレハブ
     public GameObject deepstonePrefab;   // 地下の深層岩プレハブ
+    public GameObject bedRockPrefab;//岩盤
 
     public int viewRange = 10;           // プレイヤー周囲の生成範囲
     float tileSize = 0.16f;
@@ -53,17 +55,17 @@ public class TileObjectSpawner : MonoBehaviour
         // 地上と地下を明確に分離
         if (isUnderground)
         {
-            RefreshLayer(tileController, spawnedObjectsUnderground, deepstonePrefab, 50, 1f, playerTile);
+            RefreshLayer(spawnedObjectsUnderground, playerTile);
         }
         else
         {
            // Debug.Log(1);
-            RefreshLayer(tileController, spawnedObjectsSurface, rockPrefab, 31, 0f, playerTile);
+            RefreshLayer(spawnedObjectsSurface, playerTile);
         }
     }
 
     // 地層ごとの共通処理
-    void RefreshLayer(IslandTile tileCtrl, Dictionary<Vector2Int, GameObject> objDict, GameObject prefab, int targetId, float z, Vector2Int playerTile)
+    void RefreshLayer( Dictionary<Vector2Int, GameObject> objDict, Vector2Int playerTile)
     {
        
         for (int x = playerTile.x - viewRange; x <= playerTile.x + viewRange; x++)
@@ -73,7 +75,7 @@ public class TileObjectSpawner : MonoBehaviour
 
 
 
-                if (!IsInBounds(tileCtrl, x, y)) continue;
+                if (!IsInBounds(tileController, x, y)) continue;
 
                 Vector2Int pos = new Vector2Int(x, y);
                 int id = (playerSc.isUnderground == false ? tileController.tileMapData : tileController.tileMapDataUnderground)[x, y];//周囲のタイルのデータを取得
@@ -91,7 +93,7 @@ public class TileObjectSpawner : MonoBehaviour
 
                             RockBlock rb = obj.GetComponent<RockBlock>();
                             rb.tilePos = pos;
-                            rb.islandTiles = tileCtrl;
+                            rb.islandTiles = tileController;
                         }
                         else
                         {
@@ -109,7 +111,25 @@ public class TileObjectSpawner : MonoBehaviour
 
                             DeepstoneBlock rb = obj.GetComponent<DeepstoneBlock>();
                             rb.tilePos = pos;
-                            rb.islandTiles = tileCtrl;
+                            rb.islandTiles = tileController;
+                        }
+                        else
+                        {
+                            objDict[pos].SetActive(true);
+                        }
+                        break;
+
+                    case 60:
+                        //海底地下岩盤
+                        if (!objDict.ContainsKey(pos) || objDict[pos] == null)
+                        {
+                            Vector3 worldPos = new Vector3(x * tileSize + tileSize / 2f, y * tileSize + tileSize / 2f, 1);
+                            GameObject obj = Instantiate(bedRockPrefab, worldPos, Quaternion.identity);
+                            objDict[pos] = obj;
+
+                            BedRock rb = obj.GetComponent<BedRock>();
+                            rb.tilePos = pos;
+                            rb.islandTiles = tileController;
                         }
                         else
                         {
