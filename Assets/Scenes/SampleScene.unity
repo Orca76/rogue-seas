@@ -858,8 +858,8 @@ MonoBehaviour:
   grasslandTile: {fileID: 11400000, guid: 6239696676c29d9418aa3ff9a7075bfb, type: 2}
   forestTile: {fileID: 11400000, guid: 7e229a2e03d2de3439d8dd6817fdc601, type: 2}
   mountainTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
-  rockTile: {fileID: 11400000, guid: da3db513ece67614aaf552a2f9c48f46, type: 2}
-  caveTile: {fileID: 11400000, guid: b379463189b28424dab515b5d16a135c, type: 2}
+  rockTile: {fileID: 11400000, guid: b379463189b28424dab515b5d16a135c, type: 2}
+  caveTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
   deepstoneTile: {fileID: 11400000, guid: da3db513ece67614aaf552a2f9c48f46, type: 2}
   bedrockTile: {fileID: 11400000, guid: a34a609dfe1f1b442a3108eaf37f848e, type: 2}
   regionWidth: 200
