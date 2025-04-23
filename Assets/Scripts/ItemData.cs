@@ -2,20 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemData : MonoBehaviour
+
+
+[CreateAssetMenu(fileName = "NewItem", menuName = "Inventory/Item")]
+public class ItemData : ScriptableObject
 {
-    // Start is called before the first frame update
     public string itemName;
     public Sprite icon;
-    public GameObject itemPrefab;
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public GameObject prefab;
 }

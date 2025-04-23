@@ -52,4 +52,22 @@ public class HotbarUI : MonoBehaviour
         hotbarItems[index] = item;
         slotImages[index].sprite = item != null ? item.icon : emptySprite;
     }
+
+    public bool TryAddItem(ItemData item)
+    {
+        for (int i = 0; i < hotbarItems.Count; i++)
+        {
+            // 空スロットなら格納
+            if (hotbarItems[i] == null)
+            {
+                hotbarItems[i] = item;
+                slotImages[i].sprite = item.icon;
+                return true;
+            }
+            // 同じアイテムならスタック（拡張予定）
+        }
+
+        Debug.Log("ホットバー満杯！");
+        return false;
+    }
 }
