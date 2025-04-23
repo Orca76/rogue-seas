@@ -8,6 +8,9 @@ public class FieldItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+
+        Debug.Log(other.name);
+
         if (!other.CompareTag("Player")) return;
 
         // ホットバー取得

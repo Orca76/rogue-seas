@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d4c4bef17c05c4084faf7275b77e91, type: 3}
   m_Name: Potion
   m_EditorClassIdentifier: 
-  itemName: 
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
+  itemName: LifePotion
+  icon: {fileID: 21300000, guid: 2b2a5413ef8475946b7c3efafa43b2cb, type: 3}
+  prefab: {fileID: 8215119432329865144, guid: 345e0c9b579ed0b45a12f845010996f3, type: 3}

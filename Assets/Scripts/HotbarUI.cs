@@ -67,7 +67,7 @@ public class HotbarUI : MonoBehaviour
             // 同じアイテムならスタック（拡張予定）
         }
 
-        Debug.Log("ホットバー満杯！");
+        //Debug.Log("ホットバー満杯！");
         return false;
     }
 }
