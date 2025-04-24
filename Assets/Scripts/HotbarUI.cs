@@ -43,7 +43,12 @@ public class HotbarUI : MonoBehaviour
             if (selected != null)
             {
                 selected.Use();
-                RemoveItemAt(selectedIndex); // ポーションなど消費系なら削除
+
+                if (selected.isConsumable)
+                {
+                    RemoveItemAt(selectedIndex); // 消費タイプのみ削除
+                }
+               
             }
         }
     }
