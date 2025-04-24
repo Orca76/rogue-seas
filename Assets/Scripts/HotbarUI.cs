@@ -35,13 +35,29 @@ public class HotbarUI : MonoBehaviour
                 UpdateSelectionHighlight();
             }
         }
-    }
 
+        // 右クリックで使用
+        if (Input.GetMouseButtonDown(1)) // 右クリック
+        {
+            ItemData selected = GetSelectedItem();
+            if (selected != null)
+            {
+                selected.Use();
+                RemoveItemAt(selectedIndex); // ポーションなど消費系なら削除
+            }
+        }
+    }
+    public ItemData GetSelectedItem()
+    {
+        if (selectedIndex >= 0 && selectedIndex < hotbarItems.Count)
+            return hotbarItems[selectedIndex];
+        return null;
+    }
     void UpdateSelectionHighlight()
     {
         for (int i = 0; i < slotImages.Count; i++)
         {
-            slotImages[i].color = (i == selectedIndex) ? Color.yellow : Color.white;
+            slotImages[i].color = (i == selectedIndex) ? Color.white : Color.grey;
         }
     }
 
@@ -52,7 +68,11 @@ public class HotbarUI : MonoBehaviour
         hotbarItems[index] = item;
         slotImages[index].sprite = item != null ? item.icon : emptySprite;
     }
-
+    void RemoveItemAt(int index)
+    {
+        hotbarItems[index] = null;
+        slotImages[index].sprite = emptySprite;
+    }
     public bool TryAddItem(ItemData item)
     {
         for (int i = 0; i < hotbarItems.Count; i++)

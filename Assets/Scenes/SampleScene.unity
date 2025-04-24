@@ -1392,7 +1392,7 @@ MonoBehaviour:
   - {fileID: 820616020}
   - {fileID: 1952137371}
   - {fileID: 1921609866}
-  emptySprite: {fileID: 21300000, guid: 5bb62927c8e9aae40b2d243439c939f2, type: 3}
+  emptySprite: {fileID: 21300000, guid: 9d6ead79c3c626f44b8bc4c2b6a4b35e, type: 3}
 --- !u!114 &1921609866 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5620618575924453224, guid: 39e8fefd58ffd844aa2de0306767f39f, type: 3}
