@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +9,9 @@ public class HotbarUI : MonoBehaviour
 {
     [SerializeField] private List<Image> slotImages; // スロットUIのImage（6個）
     [SerializeField] private Sprite emptySprite;     // 何もないときの画像
+    public List<Button> slots;
 
-    private List<ItemData> hotbarItems = new();      // 実際の所持アイテム
+    public List<ItemData> hotbarItems = new();      // 実際の所持アイテム
     private int selectedIndex = 0;
 
     void Start()
@@ -94,5 +96,20 @@ public class HotbarUI : MonoBehaviour
 
         //Debug.Log("ホットバー満杯！");
         return false;
+    }
+
+    public int GetSlotIndex(Button button)
+    {
+        return slots.IndexOf(button); // ボタンのリスト中のインデックスを返す
+    }
+
+    public bool HasItemAt(int index)
+    {
+        return hotbarItems[index] != null;
+    }
+
+    public ItemData GetItemDataAt(int index)
+    {
+        return hotbarItems[index];
     }
 }
