@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,10 @@ public class DragItem : MonoBehaviour
     public Image dragImage; // マウス追従用の仮アイコン
 
     private int draggingIndex = -1; // 今ドラッグしてるアイテムのスロット番号
+    private IInventoryUI currentInventoryUI;
+
+    private IInventoryUI draggingInventoryUI; // どのインベントリから引っ張ったか
+   
     void Start()
     {
         hotbarUI = FindObjectOfType<HotbarUI>(); // まず取得
@@ -46,14 +51,18 @@ public class DragItem : MonoBehaviour
             Button clickedButton = result.gameObject.GetComponent<Button>();
             if (clickedButton != null)
             {
+                currentInventoryUI = result.gameObject.GetComponentInParent<IInventoryUI>();
+                draggingInventoryUI = currentInventoryUI;
+              
 
-                
-                int index = hotbarUI.GetSlotIndex(clickedButton);
-                Debug.Log(index);
-                if (index != -1 && hotbarUI.HasItemAt(index))
+                if (currentInventoryUI == null)
+                    return; // 対応してないUIなら無視
+                int index = currentInventoryUI.GetSlotIndex(clickedButton);
+               // Debug.Log(index);
+                if (index != -1 && currentInventoryUI.GetItemDataAt(index) != null)
                 {
                     // ドラッグ開始
-                    ItemData itemData = hotbarUI.GetItemDataAt(index);
+                    ItemData itemData = currentInventoryUI.GetItemDataAt(index);
 
                     dragImage.sprite = itemData.icon;
                     dragImage.color = Color.white;
@@ -77,16 +86,28 @@ public class DragItem : MonoBehaviour
 
         foreach (var result in raycastResults)
         {
+          
             Button dropButton = result.gameObject.GetComponent<Button>();
             if (dropButton != null)
             {
-                int dropIndex = hotbarUI.GetSlotIndex(dropButton);
-                if (dropIndex != -1 && !hotbarUI.HasItemAt(dropIndex))
+
+                currentInventoryUI = result.gameObject.GetComponentInParent<IInventoryUI>();
+
+                if (currentInventoryUI == null)
+                    return; // 対応してないUIなら無視
+                int dropIndex = currentInventoryUI.GetSlotIndex(dropButton);
+
+               
+                if (dropIndex != -1 && (currentInventoryUI.GetItemDataAt(dropIndex) == null))
                 {
                     // 空きスロットなら、アイテム配置
-                    var draggingItem = hotbarUI.GetItemDataAt(draggingIndex);
-                    hotbarUI.SetItemAt(dropIndex, draggingItem);
-                    hotbarUI.ClearItemAt(draggingIndex); // 元スロットは空にする
+
+
+                    var draggingItem = draggingInventoryUI.GetItemDataAt(draggingIndex);
+
+                    Debug.Log(draggingItem);
+                    currentInventoryUI.SetItemAt(dropIndex, draggingItem);
+                    draggingInventoryUI.ClearItemAt(draggingIndex); // 元スロットは空にする
                     break;
                 }
             }

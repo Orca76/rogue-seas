@@ -1,82 +1,81 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
 
-public class HotbarUI : MonoBehaviour,IInventoryUI
+public class ChestBase : MonoBehaviour, IInventoryUI
 {
+    // Start is called before the first frame update
+    public GameObject chestUI; // チェストのUI（開閉制御用）
+    private bool isOpen = false;
+
     [SerializeField] private List<Image> slotImages; // スロットUIのImage（6個）
     [SerializeField] private Sprite emptySprite;     // 何もないときの画像
     public List<Button> slots;
 
-    public List<ItemData> hotbarItems = new();      // 実際の所持アイテム
-    public int selectedIndex = 0;
+    public List<ItemData> chestItems = new();      // 実際の所持アイテム
+    private int selectedIndex = 0;
 
     void Start()
     {
+        if (chestUI != null)
+        {
+            chestUI.SetActive(false); // 最初は閉じとく
+        }
+
         // 初期化：全部空にする
         for (int i = 0; i < slotImages.Count; i++)
         {
             slotImages[i].sprite = emptySprite;
-            hotbarItems.Add(null);
+            chestItems.Add(null);
         }
-
-        UpdateSelectionHighlight();
     }
 
     void Update()
     {
-        // 数字キー入力（1～6）
-        for (int i = 0; i < 6; i++)
+        if (IsPlayerInRange() && Input.GetMouseButtonDown(1)) // 右クリック
         {
-            if (Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + i)))
+            if (!isOpen)
             {
-                selectedIndex = i;
-                UpdateSelectionHighlight();
+                OpenChest();
             }
-        }
-
-        // 右クリックで使用
-        if (Input.GetMouseButtonDown(1)) // 右クリック
-        {
-            ItemData selected = GetItemDataAt(selectedIndex);
-            if (selected != null)
+            else
             {
-                selected.Use();
-
-                if (selected.isConsumable)
-                {
-                    ClearItemAt(selectedIndex); // 消費タイプのみ削除
-                }
-
+                CloseChest();
             }
         }
     }
 
-    public int GetSlotCount()
+    private void OpenChest()
     {
-        return hotbarItems.Count;
+        isOpen = true;
+        chestUI.SetActive(true);
+        //   ChestUIManager.Instance.OpenChest(this); // グローバルで今開いてるチェスト管理するなら
     }
 
-    void UpdateSelectionHighlight()//選択ちゅうスロットの色を更新
+    private void CloseChest()
     {
-        for (int i = 0; i < slotImages.Count; i++)
-        {
-            slotImages[i].color = (i == selectedIndex) ? Color.white : Color.grey;
-        }
+        isOpen = false;
+        chestUI.SetActive(false);
+        //   ChestUIManager.Instance.CloseChest();
     }
 
-
+    private bool IsPlayerInRange()
+    {
+        // 仮実装：常にtrueにしといてもいい
+        // 将来、距離制限や範囲チェック入れたくなったらここ
+        return true;
+    }
+    //個々からチェストのUI処理----------------------------------------------------------------------------------------------------------
     public bool TryAddItem(ItemData item)//空いているスロットに新しいアイテムを入れる　拾った時の処理
     {
-        for (int i = 0; i < hotbarItems.Count; i++)
+        for (int i = 0; i < chestItems.Count; i++)
         {
             // 空スロットなら格納
-            if (hotbarItems[i] == null)
+            if (chestItems[i] == null)
             {
-                hotbarItems[i] = item;
+                chestItems[i] = item;
                 slotImages[i].sprite = item.icon;
                 return true;
             }
@@ -91,21 +90,24 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
     {
         return slots.IndexOf(button); // ボタンのリスト中のインデックスを返す
     }
-
+    public int GetSlotCount()
+    {
+        return chestItems.Count;
+    }
     public ItemData GetItemDataAt(int index)//指定スロットのアイテムデータを取得
     {
-        return hotbarItems[index];
+        return chestItems[index];
     }
 
     public void SetItemAt(int index, ItemData itemData)//アイテムをセット　ドラッグの時
     {
-        hotbarItems[index] = itemData;
+        chestItems[index] = itemData;
         UpdateSlotVisual(index);
     }
 
     public void ClearItemAt(int index)//スロットをリセット
     {
-        hotbarItems[index] = null;
+        chestItems[index] = null;
         slotImages[index].sprite = emptySprite;
         UpdateSlotVisual(index);
     }
@@ -114,9 +116,9 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
     {
         Image iconImage = slots[index].GetComponent<Image>();
 
-        if (hotbarItems[index] != null)
+        if (chestItems[index] != null)
         {
-            iconImage.sprite = hotbarItems[index].icon;
+            iconImage.sprite = chestItems[index].icon;
             iconImage.color = Color.white;
         }
         else
@@ -125,5 +127,4 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
             iconImage.color = new Color(1, 1, 1, 0); // 完全透明にする
         }
     }
-
 }
