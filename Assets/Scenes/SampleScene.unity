@@ -1892,7 +1892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3200402964694894ca2b769cb52800fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragImage: {fileID: 0}
+  dragImage: {fileID: 468367869}
 --- !u!1 &951069738
 GameObject:
   m_ObjectHideFlags: 0

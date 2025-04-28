@@ -112,4 +112,33 @@ public class HotbarUI : MonoBehaviour
     {
         return hotbarItems[index];
     }
+
+    public void SetItemAt(int index, ItemData itemData)
+    {
+        hotbarItems[index] = itemData;
+        UpdateSlotVisual(index);
+    }
+
+    public void ClearItemAt(int index)
+    {
+        hotbarItems[index] = null;
+        UpdateSlotVisual(index);
+    }
+
+    private void UpdateSlotVisual(int index)
+    {
+        Image iconImage = slots[index].GetComponent<Image>();
+
+        if (hotbarItems[index] != null)
+        {
+            iconImage.sprite = hotbarItems[index].icon;
+            iconImage.color = Color.white;
+        }
+        else
+        {
+            iconImage.sprite = null;
+            iconImage.color = new Color(1, 1, 1, 0); // Š®‘S“§–¾‚É‚·‚é
+        }
+    }
+
 }

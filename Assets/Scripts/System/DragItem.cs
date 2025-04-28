@@ -68,6 +68,29 @@ public class DragItem : MonoBehaviour
     }
     void EndDrag()
     {
+
+        PointerEventData pointerData = new PointerEventData(EventSystem.current);
+        pointerData.position = Input.mousePosition;
+
+        var raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, raycastResults);
+
+        foreach (var result in raycastResults)
+        {
+            Button dropButton = result.gameObject.GetComponent<Button>();
+            if (dropButton != null)
+            {
+                int dropIndex = hotbarUI.GetSlotIndex(dropButton);
+                if (dropIndex != -1 && !hotbarUI.HasItemAt(dropIndex))
+                {
+                    // 空きスロットなら、アイテム配置
+                    var draggingItem = hotbarUI.GetItemDataAt(draggingIndex);
+                    hotbarUI.SetItemAt(dropIndex, draggingItem);
+                    hotbarUI.ClearItemAt(draggingIndex); // 元スロットは空にする
+                    break;
+                }
+            }
+        }
         isDragging = false; // ドラッグフラグ解除
 
         dragImage.gameObject.SetActive(false); // マウス追従アイコンを非表示
