@@ -10,7 +10,9 @@ public class ItemData : ScriptableObject
     public string itemName;
     public Sprite icon;
     public GameObject prefab;
-    public bool isConsumable = false; // ←追加！
+    public bool isConsumable = false; // 
+    public bool isStackable = true; // スタック可能かどうか（デフォルトtrue）
+
 
     public enum ItemType
     {

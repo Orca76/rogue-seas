@@ -79,7 +79,7 @@ public class TileObjectSpawner : MonoBehaviour
 
                 Vector2Int pos = new Vector2Int(x, y);
                 int id = (playerSc.isUnderground == false ? tileController.tileMapData : tileController.tileMapDataUnderground)[x, y];//周囲のタイルのデータを取得
-                Debug.Log(id);
+              //  Debug.Log(id);
 
                 switch (id)
                 {
