@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ public class ChestBase : MonoBehaviour, IInventoryUI
     [SerializeField] private Sprite emptySprite;     // 何もないときの画像
     public List<Button> slots;
 
-    public List<ItemData> chestItems = new();      // 実際の所持アイテム
+    public List<ItemStack> chestItems = new();      // 実際の所持アイテム
     private int selectedIndex = 0;
 
     void Start()
@@ -70,16 +71,49 @@ public class ChestBase : MonoBehaviour, IInventoryUI
     //個々からチェストのUI処理----------------------------------------------------------------------------------------------------------
     public bool TryAddItem(ItemData item)//空いているスロットに新しいアイテムを入れる　拾った時の処理
     {
-        for (int i = 0; i < chestItems.Count; i++)
+       // for (int i = 0; i < chestItems.Count; i++)
         {
-            // 空スロットなら格納
-            if (chestItems[i] == null)
-            {
-                chestItems[i] = item;
-                slotImages[i].sprite = item.icon;
-                return true;
-            }
+            //// 空スロットなら格納
+            //if (chestItems[i] == null)
+            //{
+            //    chestItems[i] = item;
+            //    slotImages[i].sprite = item.icon;
+            //    return true;
+            //}
             // 同じアイテムならスタック（拡張予定）
+
+            //  合体試行はスタック可能なアイテムのみ
+            if (item.isStackable)
+            {
+                for (int i = 0; i < chestItems.Count; i++)
+                {
+                    var stack = chestItems[i];
+
+                    if (stack != null && stack.itemData != null)
+                    {
+                        if (stack.itemData == item)
+                        {
+
+                            stack.count++;
+                            UpdateSlotVisual(i);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            //  スタックできなかった or スタック不可 → 空きスロットに追加
+            for (int i = 0; i < chestItems.Count; i++)
+            {
+                Debug.Log(chestItems.Count);
+                if (chestItems[i].itemData == null)
+                {
+                    chestItems[i] = new ItemStack(item, 1);
+
+                    UpdateSlotVisual(i);
+                    return true;
+                }
+            }
         }
 
         //Debug.Log("ホットバー満杯！");
@@ -96,12 +130,14 @@ public class ChestBase : MonoBehaviour, IInventoryUI
     }
     public ItemData GetItemDataAt(int index)//指定スロットのアイテムデータを取得
     {
-        return chestItems[index];
+        if (chestItems[index] != null)
+            return chestItems[index].itemData;
+        return null;
     }
 
-    public void SetItemAt(int index, ItemData itemData)//アイテムをセット　ドラッグの時
+    public void SetItemAt(int index, ItemStack itemStack)//アイテムをセット　ドラッグの時
     {
-        chestItems[index] = itemData;
+        chestItems[index] = itemStack;
         UpdateSlotVisual(index);
     }
 
@@ -112,13 +148,20 @@ public class ChestBase : MonoBehaviour, IInventoryUI
         UpdateSlotVisual(index);
     }
 
-    private void UpdateSlotVisual(int index)
+    public ItemStack GetItemStackAt(int index)
+    {
+        if (index >= 0 && index < chestItems.Count)
+            return chestItems[index];
+        return null;
+    }
+
+    public void UpdateSlotVisual(int index)
     {
         Image iconImage = slots[index].GetComponent<Image>();
 
         if (chestItems[index] != null)
         {
-            iconImage.sprite = chestItems[index].icon;
+            iconImage.sprite = chestItems[index].itemData.icon;
             iconImage.color = Color.white;
         }
         else

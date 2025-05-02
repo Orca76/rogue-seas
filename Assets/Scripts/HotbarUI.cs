@@ -25,7 +25,7 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
         for (int i = 0; i < slotImages.Count; i++)
         {
             slotImages[i].sprite = emptySprite;
-            hotbarItems.Add(null);
+            hotbarItems.Add(new ItemStack(null, 0)); // ←これ！
         }
 
         UpdateSelectionHighlight();
@@ -143,9 +143,9 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
         return null;
     }
 
-    public void SetItemAt(int index, ItemData itemData)//アイテムをセット　ドラッグの時
+    public void SetItemAt(int index, ItemStack itemStack)//アイテムをセット　ドラッグの時
     {
-        hotbarItems[index] = new ItemStack(itemData, 1);
+        hotbarItems[index] = itemStack;
         UpdateSlotVisual(index);
     }
 
@@ -163,7 +163,7 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
         return null;
     }
 
-    private void UpdateSlotVisual(int index)
+    public void UpdateSlotVisual(int index)
     {
         var stack = hotbarItems[index];
         Image iconImage = slots[index].GetComponent<Image>();

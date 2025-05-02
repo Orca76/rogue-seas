@@ -103,11 +103,14 @@ public class DragItem : MonoBehaviour
                     // 空きスロットなら、アイテム配置
 
 
-                    var draggingItem = draggingInventoryUI.GetItemDataAt(draggingIndex);
+                    var draggingItem = draggingInventoryUI.GetItemStackAt(draggingIndex);
 
                     Debug.Log(draggingItem);
                     currentInventoryUI.SetItemAt(dropIndex, draggingItem);
                     draggingInventoryUI.ClearItemAt(draggingIndex); // 元スロットは空にする
+
+                    currentInventoryUI.UpdateSlotVisual(dropIndex);
+                    currentInventoryUI.UpdateSlotVisual(draggingIndex);
                     break;
                 }
             }
