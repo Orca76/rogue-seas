@@ -14,21 +14,13 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
     [SerializeField] private Sprite emptySprite;     // 何もないときの画像
     public List<Button> slots;
 
-   public List<ItemData> hotbarItemData = new();      // 実際の所持アイテム
-    public List<ItemStack> hotbarItems = new();
+ //  public List<ItemData> hotbarItemData = new();      // 実際の所持アイテム
+    public List<ItemStack> hotbarItems = new();//アイテムと個数が入ってる
     public int selectedIndex = 0;
 
     void Start()
     {
-        //   hotbarItems = new List<ItemStack>();
-        Debug.Log($"slotImages.Count = {slotImages.Count}");
 
-        Debug.Log($"hotbarItems.Count = {hotbarItems.Count}");
-        for (int i = 0; i < hotbarItems.Count; i++)
-        {
-            var s = hotbarItems[i];
-            Debug.Log($"slot[{i}] = {(s == null ? "null" : (s.itemData == null ? "itemData null" : s.itemData.name + " x" + s.count))}");
-        }
         // 初期化：全部空にする
         for (int i = 0; i < slotImages.Count; i++)
         {
@@ -37,29 +29,6 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
         }
 
         UpdateSelectionHighlight();
-
-        for (int i = 0; i < hotbarItems.Count; i++)
-        {
-            var stack = hotbarItems[i];
-            if (stack == null)
-            {
-                Debug.Log($"slot[{i}] = null");
-            }
-            else if (stack.itemData == null)
-            {
-                Debug.Log($"slot[{i}] = stackありだが itemDataがnull");
-            }
-            else
-            {
-                Debug.Log($"slot[{i}] = {stack.itemData.name}");
-            }
-        }
-
-        Debug.Log($"hotbarItems.Count = {hotbarItems.Count}");
-        for (int i = 0; i < hotbarItems.Count; i++)
-        {
-            Debug.Log($"slot[{i}] = {(hotbarItems[i] == null ? "null" : hotbarItems[i].itemData.name)}");
-        }
 
     }
 
@@ -78,16 +47,24 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
         // 右クリックで使用
         if (Input.GetMouseButtonDown(1)) // 右クリック
         {
-            ItemData selected = GetItemDataAt(selectedIndex);
-            if (selected != null)
+            ItemStack selectedStack = GetItemStackAt(selectedIndex); // ← ここ、ItemStackで取る！
+            if (selectedStack != null && selectedStack.itemData != null)
             {
-                selected.Use();
+                selectedStack.itemData.Use();
 
-                if (selected.isConsumable)
+                if (selectedStack.itemData.isConsumable)
                 {
-                    ClearItemAt(selectedIndex); // 消費タイプのみ削除
-                }
+                    selectedStack.count--;
 
+                    if (selectedStack.count <= 0)
+                    {
+                        ClearItemAt(selectedIndex); // スタックがゼロならスロットを空にする
+                    }
+                    else
+                    {
+                        UpdateSlotVisual(selectedIndex); // スタック数だけ減らす
+                    }
+                }
             }
         }
     }
@@ -120,10 +97,12 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
             for (int i = 0; i < hotbarItems.Count; i++)
             {
                 var stack = hotbarItems[i];
+                
                 if (stack != null && stack.itemData != null)
                 {
                     if (stack.itemData == newItem)
                     {
+                      
                         stack.count++;
                         UpdateSlotVisual(i);
                         return true;
@@ -135,9 +114,11 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
         //  スタックできなかった or スタック不可 → 空きスロットに追加
         for (int i = 0; i < hotbarItems.Count; i++)
         {
-            if (hotbarItems[i] == null)
+            Debug.Log(hotbarItems.Count);
+            if (hotbarItems[i].itemData == null)
             {
                 hotbarItems[i] = new ItemStack(newItem, 1);
+                
                 UpdateSlotVisual(i);
                 return true;
             }
@@ -175,25 +156,15 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
         UpdateSlotVisual(index);
     }
 
+    public ItemStack GetItemStackAt(int index)
+    {
+        if (index >= 0 && index < hotbarItems.Count)
+            return hotbarItems[index];
+        return null;
+    }
+
     private void UpdateSlotVisual(int index)
     {
-        //Image iconImage = slots[index].GetComponent<Image>();
-
-        //if (hotbarItems[index] != null)
-        //{
-        //    iconImage.sprite = hotbarItems[index].itemData.icon;
-
-        //    iconImage.color = Color.white;
-        //}
-        //else
-        //{
-        //    iconImage.sprite = null;
-        //    iconImage.color = new Color(1, 1, 1, 0); // 完全透明にする
-        //}
-
-
-
-
         var stack = hotbarItems[index];
         Image iconImage = slots[index].GetComponent<Image>();
         TextMeshProUGUI countText = slots[index].transform.Find("CountText")?.GetComponent<TextMeshProUGUI>();
