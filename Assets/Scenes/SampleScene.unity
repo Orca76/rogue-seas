@@ -5274,25 +5274,6 @@ MonoBehaviour:
   - {fileID: 1643175876}
   - {fileID: 2044740041}
   - {fileID: 1068526595}
-  hotbarItemData:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   hotbarItems: []
   selectedIndex: 0
 --- !u!114 &1921609866 stripped
@@ -5779,9 +5760,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemapSurface: {fileID: 1813767997}
   tilemapUnderground: {fileID: 951069739}
-  seaTile: {fileID: 11400000, guid: db566ae7080ffe04fa0007e7f35e1ef7, type: 2}
+  seaTile:
+  - {fileID: 11400000, guid: 6373164a562da0e419cd43cd92d68049, type: 2}
+  - {fileID: 11400000, guid: 5a62febfa816c9a42ac52fd00f1e89d7, type: 2}
+  - {fileID: 11400000, guid: 9fc5ac4c4a6469d4e8d45ba988b774c9, type: 2}
+  - {fileID: 11400000, guid: 0cf1892cefc21b949a374132233e9944, type: 2}
+  - {fileID: 11400000, guid: 17495954b041f014ea49855cc1fea402, type: 2}
   desertTile: {fileID: 11400000, guid: 536edc3cddc79fe489b94b6054991cfa, type: 2}
-  grasslandTile: {fileID: 11400000, guid: 6239696676c29d9418aa3ff9a7075bfb, type: 2}
+  grasslandTile:
+  - {fileID: 11400000, guid: 7391d259cfbed304a9c3276fcae101da, type: 2}
+  - {fileID: 11400000, guid: ffdb44721f3731745ae65f63d878d7e7, type: 2}
+  - {fileID: 11400000, guid: e3f44d3cbba704144bcd2ee9e3ce7880, type: 2}
+  - {fileID: 11400000, guid: 4552186d791dab9469c328f269681e5b, type: 2}
+  - {fileID: 11400000, guid: 4a912d360dbd9744e8516eb63da5468a, type: 2}
+  - {fileID: 11400000, guid: 247f4cdaa8eca2749a2f9531fafba708, type: 2}
   forestTile: {fileID: 11400000, guid: 7e229a2e03d2de3439d8dd6817fdc601, type: 2}
   mountainTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
   rockTile: {fileID: 11400000, guid: b379463189b28424dab515b5d16a135c, type: 2}

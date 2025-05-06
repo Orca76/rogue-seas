@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEditor.Progress;
+using System.Linq;
 
 public class IslandTile : MonoBehaviour
 {
@@ -10,9 +11,9 @@ public class IslandTile : MonoBehaviour
     public Tilemap tilemapUnderground;
 
     [Header("Surface Tiles")]
-    public TileBase seaTile;
+    public TileBase[] seaTile;
     public TileBase desertTile;
-    public TileBase grasslandTile;
+    public TileBase[] grasslandTile;
     public TileBase forestTile;
     public TileBase mountainTile;
 
@@ -120,7 +121,7 @@ public class IslandTile : MonoBehaviour
                 Vector2 pos = new Vector2(x + 0.5f, y + 0.5f);
                 if (!IsPointInPolygon(pos, islandBoundary))
                 {
-                    tilemapSurface.SetTile(new Vector3Int(x, y, 0), seaTile);
+                    tilemapSurface.SetTile(new Vector3Int(x, y, 0), seaTile[Random.Range(0,seaTile.Length)]);
                     continue;
                 }
                 float biomeNoise = Mathf.PerlinNoise((x + biomeOffset.x) * biomeFrequency, (y + biomeOffset.y) * biomeFrequency) * 2f - 1f;
@@ -131,7 +132,7 @@ public class IslandTile : MonoBehaviour
                     int[] options = { 10 }; // 無　木　花　草
                     tileMapData[x, y] = options[Random.Range(0, options.Length)];
                 }
-                if (tile == grasslandTile)
+                if (grasslandTile.Contains(tile))
                 {
                     int[] options = { 20 }; // 無　木　花　草
                     tileMapData[x, y] = options[Random.Range(0, options.Length)];
@@ -195,7 +196,7 @@ public class IslandTile : MonoBehaviour
         if (val < biomeThresholdDesert)
             return desertTile;
         else if (val < biomeThresholdGrassland)
-            return grasslandTile;
+            return grasslandTile[Random.Range(0,grasslandTile.Length)];
         else if (val < biomeThresholdForest)
             return forestTile;
         else
