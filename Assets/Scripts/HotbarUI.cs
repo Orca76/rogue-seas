@@ -25,7 +25,7 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
         for (int i = 0; i < slotImages.Count; i++)
         {
             slotImages[i].sprite = emptySprite;
-            hotbarItems.Add(new ItemStack(null, 0)); // ©‚±‚êI
+            hotbarItems.Add(new ItemStack(null, 0)); 
         }
 
         UpdateSelectionHighlight();
