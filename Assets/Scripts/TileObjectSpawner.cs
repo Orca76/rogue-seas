@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class TileObjectSpawner : MonoBehaviour
 {
@@ -25,8 +26,9 @@ public class TileObjectSpawner : MonoBehaviour
 
     private Vector3 lastPlayerPos;
 
+    [SerializeField] private ObjectWithScript<IslandTile> tile;
 
-    IslandTile TileScript;
+   
     private void Start()
     {
         tileController = tileMapObj.GetComponent<IslandTile>();
@@ -92,6 +94,8 @@ public class TileObjectSpawner : MonoBehaviour
                         {
                             Vector3 worldPos = new Vector3(x * tileSize + tileSize / 2f, y * tileSize + tileSize / 2f, 0);
                             GameObject obj = Instantiate(rockPrefab, worldPos, Quaternion.identity);
+                            // obj.transform.parent = tile.obj.transform;
+                            obj.transform.parent = tileController.islandRoot.transform;
                             objDict[pos] = obj;
 
                             RockBlock rb = obj.GetComponent<RockBlock>();
@@ -110,6 +114,8 @@ public class TileObjectSpawner : MonoBehaviour
                         {
                             Vector3 worldPos = new Vector3(x * tileSize + tileSize / 2f, y * tileSize + tileSize / 2f,1);
                             GameObject obj = Instantiate(deepstonePrefab, worldPos, Quaternion.identity);
+                            obj.transform.parent = tileController.islandRoot.transform;
+
                             objDict[pos] = obj;
 
                             DeepstoneBlock rb = obj.GetComponent<DeepstoneBlock>();
@@ -128,6 +134,7 @@ public class TileObjectSpawner : MonoBehaviour
                         {
                             Vector3 worldPos = new Vector3(x * tileSize + tileSize / 2f, y * tileSize + tileSize / 2f, 1);
                             GameObject obj = Instantiate(bedRockPrefab, worldPos, Quaternion.identity);
+                            obj.transform.parent = tileController.islandRoot.transform;
                             objDict[pos] = obj;
 
                             BedRock rb = obj.GetComponent<BedRock>();

@@ -60,7 +60,7 @@ public class IslandTile : MonoBehaviour
     public float undergroundZ = 1f;   // 地下のZ座標
     public float surfaceZ = 0f;       // 地上のZ座標
 
-    private GameObject islandRoot;//島
+    public GameObject islandRoot;//島
     private void Awake()
     {
         tileMapData = new int[mapWidth, mapHeight];
@@ -68,11 +68,20 @@ public class IslandTile : MonoBehaviour
     }
     void Start()
     {
-        GenerateAndFillMaps();
+        CreateIsland();
 
     }
     public void CreateIsland()
     {
+        for (int y = 0; y < mapHeight; y++)
+        {
+            for (int x = 0; x < mapWidth; x++)
+            {
+                tileMapData[x, y] = 0;
+                tileMapDataUnderground[x, y] = 0;
+            }
+        }
+
         if (islandRoot != null) // 
             Destroy(islandRoot);
         islandRoot = new GameObject("IslandRoot");

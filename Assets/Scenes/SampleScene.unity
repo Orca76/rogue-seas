@@ -1400,6 +1400,8 @@ MonoBehaviour:
   deepstonePrefab: {fileID: 8999445682517795370, guid: 1d7deec63d3efab4a9eb0274e5a45591, type: 3}
   bedRockPrefab: {fileID: 5633161265585930819, guid: fa2da19475377594b83003b2fefeb5b4, type: 3}
   viewRange: 13
+  tile:
+    obj: {fileID: 2054132478}
 --- !u!1001 &439755918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4037,37 +4039,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!1 &1466854283
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1466854284}
-  m_Layer: 0
-  m_Name: IslandRoot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1466854284
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1466854283}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.9868045, y: 5.8316374, z: -0.006761046}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 23
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1489856886
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6224,6 +6195,7 @@ MonoBehaviour:
   playerTransform: {fileID: 2146889027}
   undergroundZ: 1
   surfaceZ: 0
+  islandRoot: {fileID: 0}
 --- !u!1001 &2054682815
 PrefabInstance:
   m_ObjectHideFlags: 0
