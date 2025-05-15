@@ -25,12 +25,15 @@ public class TileObjectSpawner : MonoBehaviour
 
     private Vector3 lastPlayerPos;
 
+
+    IslandTile TileScript;
     private void Start()
     {
         tileController = tileMapObj.GetComponent<IslandTile>();
     //    tileControllerUnderground = tileMapObjUnderground.GetComponent<IslandTile>();
         lastPlayerPos = player.position;
         playerSc=player.GetComponent<Player>();
+
     }
 
     void Update()

@@ -59,6 +59,8 @@ public class IslandTile : MonoBehaviour
     public Transform playerTransform; // プレイヤーを参照するために追加
     public float undergroundZ = 1f;   // 地下のZ座標
     public float surfaceZ = 0f;       // 地上のZ座標
+
+    private GameObject islandRoot;//島
     private void Awake()
     {
         tileMapData = new int[mapWidth, mapHeight];
@@ -69,13 +71,24 @@ public class IslandTile : MonoBehaviour
         GenerateAndFillMaps();
 
     }
+    public void CreateIsland()
+    {
+        if (islandRoot != null) // 
+            Destroy(islandRoot);
+        islandRoot = new GameObject("IslandRoot");
+        noiseSeed = Random.Range(0, 10000);
+        GenerateAndFillMaps();
+    }
+
 
     void Update()
     {
+
+
+
         if (Input.GetKeyDown(regenerateKey))
         {
-            noiseSeed = Random.Range(0, 10000);
-            GenerateAndFillMaps();
+            CreateIsland();
         }
         //if (Input.GetKeyDown(toggleLayerKey))
         //{
