@@ -18,9 +18,20 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
     public List<ItemStack> hotbarItems = new();//アイテムと個数が入ってる
     public int selectedIndex = 0;
 
+    [Header("Hotbar表示設定")]
+    [SerializeField] private RectTransform uiRoot; // HotbarのRectTransform
+    [SerializeField] private KeyCode toggleKey = KeyCode.B;
+    [SerializeField] private Vector2 offscreenOffset = new Vector2(0, -2000); // 遠くに飛ばす距離
+
+    private bool isVisible = true;
+    private Vector2 originalPosition; // 初期位置
+
     void Start()
     {
 
+
+        // 表示状態の初期設定
+        originalPosition = uiRoot.anchoredPosition; // 初期位置保存
         // 初期化：全部空にする
         for (int i = 0; i < slotImages.Count; i++)
         {
@@ -31,9 +42,21 @@ public class HotbarUI : MonoBehaviour,IInventoryUI
         UpdateSelectionHighlight();
 
     }
-
+    void UpdateHotbarPosition()
+    {
+        uiRoot.anchoredPosition = isVisible ? originalPosition : originalPosition + offscreenOffset;
+    }
     void Update()
     {
+        // 表示のトグル切り替え
+        if (Input.GetKeyDown(toggleKey))
+        {
+            isVisible = !isVisible;
+            UpdateHotbarPosition();
+        }
+
+        if (!isVisible) return;
+
         // 数字キー入力（1～6）
         for (int i = 0; i < 6; i++)
         {

@@ -16,14 +16,17 @@ public class Player : MonoBehaviour
     public float undergroundZ = 1f;
     public KeyCode switchFloorKey = KeyCode.U;
   public  bool isUnderground;
-
+   
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+     
     }
 
     void Update()
     {
+      
+
         isUnderground = Mathf.Approximately(transform.position.z, undergroundZ);
 
         // “ü—ÍŽæ“¾
