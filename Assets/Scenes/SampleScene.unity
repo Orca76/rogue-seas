@@ -2615,7 +2615,7 @@ GameObject:
   - component: {fileID: 691351828}
   - component: {fileID: 691351830}
   - component: {fileID: 691351829}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TilemapAlchemyFog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2888,6 +2888,7 @@ RectTransform:
   - {fileID: 1914382418}
   - {fileID: 468367868}
   - {fileID: 551942621}
+  - {fileID: 2008184855}
   m_Father: {fileID: 2146889027}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3075,7 +3076,7 @@ GameObject:
   - component: {fileID: 817086354}
   - component: {fileID: 817086356}
   - component: {fileID: 817086355}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TilemapAlchemyCore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7222,6 +7223,90 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1906509404
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1906509407}
+  - component: {fileID: 1906509406}
+  - component: {fileID: 1906509405}
+  m_Layer: 0
+  m_Name: alchemyCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!81 &1906509405
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906509404}
+  m_Enabled: 1
+--- !u!20 &1906509406
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906509404}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 1
+  orthographic size: 16
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 64
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 8400000, guid: bf5cff196369f414ba6b2b23701d61f2, type: 2}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &1906509407
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906509404}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 16, y: 16, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 23
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1908518197
 GameObject:
   m_ObjectHideFlags: 0
@@ -7602,6 +7687,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2008184854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2008184855}
+  - component: {fileID: 2008184857}
+  - component: {fileID: 2008184856}
+  m_Layer: 0
+  m_Name: alchemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2008184855
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008184854}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 790907153}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -39, y: 54.307}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2008184856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008184854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 8400000, guid: bf5cff196369f414ba6b2b23701d61f2, type: 2}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &2008184857
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008184854}
+  m_CullTransparentMesh: 1
 --- !u!1 &2013913737
 GameObject:
   m_ObjectHideFlags: 0
@@ -7776,12 +7934,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2054132480}
-  - component: {fileID: 2054132481}
-  - component: {fileID: 2054132484}
-  - component: {fileID: 2054132482}
   - component: {fileID: 2054132483}
-  - component: {fileID: 2054132485}
   - component: {fileID: 2054132486}
+  - component: {fileID: 2054132487}
+  - component: {fileID: 2054132488}
   m_Layer: 0
   m_Name: map
   m_TagString: Untagged
@@ -7804,63 +7960,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2054132481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054132478}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84b809a59c2b138459b80022f9f0cb46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemap: {fileID: 1813767997}
-  seaTile: {fileID: 11400000, guid: db566ae7080ffe04fa0007e7f35e1ef7, type: 2}
-  desertTile: {fileID: 11400000, guid: 536edc3cddc79fe489b94b6054991cfa, type: 2}
-  grasslandTile: {fileID: 11400000, guid: 6239696676c29d9418aa3ff9a7075bfb, type: 2}
-  forestTile: {fileID: 11400000, guid: 7e229a2e03d2de3439d8dd6817fdc601, type: 2}
-  mountainTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
-  mapWidth: 129
-  mapHeight: 129
-  roughness: 1
-  decayRate: 0.5
-  boundaryThickness: 3
-  maskPow: 2
-  maskMargin: 0
-  thresholdSea: 0.2
-  thresholdDesert: -0.1
-  thresholdGrassland: 0.2
-  thresholdForest: 0.5
-  minSeedCount: 3
-  maxSeedCount: 10
-  regenerateKey: 32
---- !u!114 &2054132482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054132478}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afd3603c6f453564f92c703d27d40359, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemap: {fileID: 1813767997}
-  islandTile: {fileID: 11400000, guid: 6239696676c29d9418aa3ff9a7075bfb, type: 2}
-  waterTile: {fileID: 11400000, guid: db566ae7080ffe04fa0007e7f35e1ef7, type: 2}
-  regionWidth: 100
-  regionHeight: 100
-  gridCols: 5
-  gridRows: 5
-  iterations: 3
-  initialDisplacement: 10
-  displacementReduction: 0.5
-  mapWidth: 100
-  mapHeight: 100
-  regenerateKey: 32
 --- !u!120 &2054132483
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -7960,63 +8059,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &2054132484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054132478}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 665115661a694b24fba067840ddd17b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemap: {fileID: 1813767997}
-  seaTile: {fileID: 11400000, guid: db566ae7080ffe04fa0007e7f35e1ef7, type: 2}
-  grassTile: {fileID: 11400000, guid: 6239696676c29d9418aa3ff9a7075bfb, type: 2}
-  mountainTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
-  gridSize: 129
-  roughness: 1
-  decayRate: 0.5
-  thresholdSea: -0.4
-  thresholdMountain: 0.7
-  regenerateKey: 32
---- !u!114 &2054132485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054132478}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2b5a4457d754f147958e799834e373b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemap: {fileID: 1813767997}
-  seaTile: {fileID: 11400000, guid: db566ae7080ffe04fa0007e7f35e1ef7, type: 2}
-  desertTile: {fileID: 11400000, guid: 536edc3cddc79fe489b94b6054991cfa, type: 2}
-  grasslandTile: {fileID: 11400000, guid: 6239696676c29d9418aa3ff9a7075bfb, type: 2}
-  forestTile: {fileID: 11400000, guid: 7e229a2e03d2de3439d8dd6817fdc601, type: 2}
-  mountainTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
-  regionWidth: 200
-  regionHeight: 200
-  gridCols: 5
-  gridRows: 5
-  iterations: 3
-  initialDisplacement: 10
-  displacementReduction: 0.5
-  biomeFrequency: 0.05
-  biomeThresholdDesert: -0.63
-  biomeThresholdGrassland: -0.07
-  biomeThresholdForest: 0.55
-  riverFrequency: 0
-  riverThreshold: -0.3
-  regenerateKey: 32
-  mapHeight: 200
-  mapWidth: 200
-  noiseSeed: 123
 --- !u!114 &2054132486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8071,6 +8113,47 @@ MonoBehaviour:
   undergroundZ: 1
   surfaceZ: 0
   islandRoot: {fileID: 0}
+--- !u!114 &2054132487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054132478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e97214b0973824bbfc827e43cad06b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemapAlchemy: {fileID: 817086356}
+  commonTile: {fileID: 11400000, guid: 1a5e09eaf1f8c16409859133d16bda2d, type: 2}
+  rareTile: {fileID: 11400000, guid: 2b66b905e0efd6d4aa3e6c02dbeee877, type: 2}
+  superRareTile: {fileID: 11400000, guid: 92034a1bec2bc0246b2b926c2a638843, type: 2}
+  mapWidth: 200
+  mapHeight: 200
+  scale: 0.05
+  noiseSeed: 84576
+  reloadKey: 114
+  hideKey: 116
+--- !u!114 &2054132488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054132478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f456634a471489094306b2e2c387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemapFog: {fileID: 691351830}
+  fogTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
+  mapWidth: 200
+  mapHeight: 200
+  reloadKey: 114
+  hideKey: 116
+  expandKey: 121
 --- !u!1001 &2054682815
 PrefabInstance:
   m_ObjectHideFlags: 0
