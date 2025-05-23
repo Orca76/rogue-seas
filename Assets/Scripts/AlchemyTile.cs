@@ -19,14 +19,17 @@ public class AlchemyTile : MonoBehaviour
     public float scale = 0.05f;
     public int noiseSeed = 1234;
 
-
     [Header("Control Keys")]
     public KeyCode reloadKey = KeyCode.R;
     public KeyCode hideKey = KeyCode.T;
+
+    public int[,] tileRarityData; // 0 = common, 1 = rare, 2 = super rare
+
     private void Start()
     {
-       // GenerateAlchemyMap();
+        tileRarityData = new int[mapWidth, mapHeight];
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(reloadKey))
@@ -41,10 +44,10 @@ public class AlchemyTile : MonoBehaviour
             tilemapAlchemy.gameObject.SetActive(false);
         }
     }
+
     public void GenerateAlchemyMap()
     {
         tilemapAlchemy.ClearAllTiles();
-
         Vector2 offset = GetNoiseOffset(noiseSeed);
 
         for (int y = 0; y < mapHeight; y++)
@@ -60,24 +63,34 @@ public class AlchemyTile : MonoBehaviour
                 float dy = y - mapHeight / 2f;
                 float distFactor = Mathf.Sqrt(dx * dx + dy * dy) / maxDist;
 
-                TileBase selectedTile = GetTileByNoise(noiseVal, distFactor);
+                int tileRarity;
+                TileBase selectedTile = GetTileByNoise(noiseVal, distFactor, out tileRarity);
                 tilemapAlchemy.SetTile(new Vector3Int(x, y, 0), selectedTile);
+                tileRarityData[x, y] = tileRarity;
             }
         }
     }
 
-    private TileBase GetTileByNoise(float val, float distFactor)
+    private TileBase GetTileByNoise(float val, float distFactor, out int rarityCode)
     {
-        // 外側ほどレアが出やすくするために閾値を調整（線形補正）
         float commonThreshold = Mathf.Lerp(0.6f, 0.45f, distFactor);
         float rareThreshold = Mathf.Lerp(0.975f, 0.65f, distFactor);
 
         if (val < commonThreshold)
+        {
+            rarityCode = 0;
             return commonTile;
+        }
         else if (val < rareThreshold)
+        {
+            rarityCode = 1;
             return rareTile;
+        }
         else
+        {
+            rarityCode = 2;
             return superRareTile;
+        }
     }
 
     private Vector2 GetNoiseOffset(int seed)
@@ -85,5 +98,11 @@ public class AlchemyTile : MonoBehaviour
         float offsetX = (seed * 12345 % 1000) / 1000f * 100f;
         float offsetY = (seed * 67890 % 1000) / 1000f * 100f;
         return new Vector2(offsetX, offsetY);
+    }
+
+    public int GetRarityAt(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) return -1;
+        return tileRarityData[x, y];
     }
 }

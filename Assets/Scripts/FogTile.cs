@@ -16,12 +16,20 @@ public class FogTile : MonoBehaviour
     public KeyCode hideKey = KeyCode.T;
     public KeyCode expandKey = KeyCode.Y;
 
+    [Header("Reveal Settings")]
+    public int chunkSize = 5; // 解像度を下げて粗くする単位サイズ
+    public float maxRadius = 30f; // 最終的に到達したい最大半径
+    public int maxReveals = 10;   // 何段階でそこまで到達するか（漸近的に）
+
     private int revealLevel = 0; // 何段階目の魔法石が投入されたか（中心からの解放範囲）
     private Vector2Int center;
+
+    public bool[,] fogRevealed; // true = 見えてる, false = 覆われている
 
     private void Start()
     {
         center = new Vector2Int(mapWidth / 2, mapHeight / 2);
+        fogRevealed = new bool[mapWidth, mapHeight];
         ReloadFog();
     }
 
@@ -48,12 +56,12 @@ public class FogTile : MonoBehaviour
     {
         tilemapFog.ClearAllTiles();
         revealLevel = 0;
-
         for (int y = 0; y < mapHeight; y++)
         {
             for (int x = 0; x < mapWidth; x++)
             {
                 tilemapFog.SetTile(new Vector3Int(x, y, 0), fogTile);
+                fogRevealed[x, y] = false;
             }
         }
     }
@@ -62,23 +70,39 @@ public class FogTile : MonoBehaviour
     {
         revealLevel++;
 
-        // 毎回同じ「面積」を追加で解放したい → radius^2 が一定間隔で増加
-        float baseArea = Mathf.PI * Mathf.Pow(6, 2); // 最初の半径6で固定
-        float targetArea = baseArea * revealLevel;
-        float newRadius = Mathf.Sqrt(targetArea / Mathf.PI);
+        float normalized = Mathf.Clamp01((float)revealLevel / maxReveals);
+        float newRadius = maxRadius * Mathf.Pow(normalized, 0.5f);
 
-        for (int y = 0; y < mapHeight; y++)
+        for (int cy = 0; cy < mapHeight; cy += chunkSize)
         {
-            for (int x = 0; x < mapWidth; x++)
+            for (int cx = 0; cx < mapWidth; cx += chunkSize)
             {
-                Vector2Int pos = new Vector2Int(x, y);
-                float dist = Vector2Int.Distance(pos, center);
+                Vector2Int chunkCenter = new Vector2Int(cx + chunkSize / 2, cy + chunkSize / 2);
+                float dist = Vector2Int.Distance(chunkCenter, center);
 
                 if (dist <= newRadius)
                 {
-                    tilemapFog.SetTile(new Vector3Int(x, y, 0), null); // Fog解除
+                    for (int dy = 0; dy < chunkSize; dy++)
+                    {
+                        for (int dx = 0; dx < chunkSize; dx++)
+                        {
+                            int tx = cx + dx;
+                            int ty = cy + dy;
+                            if (tx < mapWidth && ty < mapHeight)
+                            {
+                                tilemapFog.SetTile(new Vector3Int(tx, ty, 0), null);
+                                fogRevealed[tx, ty] = true;
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+
+    public bool IsRevealed(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) return false;
+        return fogRevealed[x, y];
     }
 }

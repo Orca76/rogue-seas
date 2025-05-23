@@ -40,6 +40,7 @@ public class DragItem : MonoBehaviour
     }
     void StartDrag()
     {
+        Debug.Log("StartDrag called");  // ← ここで呼ばれてるかまず確認
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
         pointerData.position = Input.mousePosition;
 
@@ -48,9 +49,11 @@ public class DragItem : MonoBehaviour
 
         foreach (var result in raycastResults)
         {
+            Debug.Log("Raycast hit: " + result.gameObject.name); // ← 何かヒットしてるか確認
             Button clickedButton = result.gameObject.GetComponent<Button>();
             if (clickedButton != null)
             {
+                Debug.Log("Button hit: " + clickedButton.gameObject.name); // ← ボタンまで到達できてる？
                 currentInventoryUI = result.gameObject.GetComponentInParent<IInventoryUI>();
                 draggingInventoryUI = currentInventoryUI;
               
@@ -63,7 +66,7 @@ public class DragItem : MonoBehaviour
                 {
                     // ドラッグ開始
                     ItemData itemData = currentInventoryUI.GetItemDataAt(index);
-
+                    Debug.Log($"Slot Index: {index}, ItemData: {itemData?.name ?? "null"}"); // ← 追加
                     dragImage.sprite = itemData.icon;
                     dragImage.color = Color.white;
                     dragImage.gameObject.SetActive(true);
