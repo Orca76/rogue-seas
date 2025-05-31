@@ -5,7 +5,7 @@ using UnityEngine;
 public class RockBlock : BlockBase
 {
    
-    public IslandTile islandTiles;          // データ保持側の参照（tileMapData持ち）
+   // public IslandTile islandTiles;          // データ保持側の参照（tileMapData持ち）
 
     public override void Interact()
     {
@@ -18,4 +18,9 @@ public class RockBlock : BlockBase
 
        
     }
+    void OnDestroy()
+    {
+        RockDepthManager.Instance.RequestRebake(tilePos);
+    }
+
 }

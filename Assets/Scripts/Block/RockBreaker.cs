@@ -19,7 +19,7 @@ public class RockBreaker : MonoBehaviour
                 BlockBase block = hit.collider.GetComponent<BlockBase>();
                 if (block != null)
                 {
-                    block.Interact();
+                    block.Damage();     // Å© HP Ç 1 å∏ÇÁÇ∑
                 }
             }
         }

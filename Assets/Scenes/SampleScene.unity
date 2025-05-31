@@ -2273,6 +2273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 437696995}
   - component: {fileID: 437696996}
+  - component: {fileID: 437696997}
   m_Layer: 0
   m_Name: TileObjectSpawner
   m_TagString: Untagged
@@ -2316,6 +2317,24 @@ MonoBehaviour:
   viewRange: 13
   tile:
     obj: {fileID: 2054132478}
+--- !u!114 &437696997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437696994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 921ac0cfb26cec54384e0fcdee372566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockMap: {fileID: 1813767997}
+  spawner: {fileID: 437696996}
+  rockTiles:
+  - {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
+  fadeMax: 4
+  rebakeRadius: 6
 --- !u!1001 &439755918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10420,6 +10439,8 @@ GameObject:
   - component: {fileID: 2054132487}
   - component: {fileID: 2054132488}
   - component: {fileID: 2054132489}
+  - component: {fileID: 2054132491}
+  - component: {fileID: 2054132490}
   m_Layer: 0
   m_Name: map
   m_TagString: Untagged
@@ -10557,19 +10578,12 @@ MonoBehaviour:
   tilemapUnderground: {fileID: 951069739}
   seaTile:
   - {fileID: 11400000, guid: 6373164a562da0e419cd43cd92d68049, type: 2}
-  - {fileID: 11400000, guid: 5a62febfa816c9a42ac52fd00f1e89d7, type: 2}
-  - {fileID: 11400000, guid: 9fc5ac4c4a6469d4e8d45ba988b774c9, type: 2}
-  - {fileID: 11400000, guid: 0cf1892cefc21b949a374132233e9944, type: 2}
-  - {fileID: 11400000, guid: 17495954b041f014ea49855cc1fea402, type: 2}
-  desertTile: {fileID: 11400000, guid: 536edc3cddc79fe489b94b6054991cfa, type: 2}
+  shallowWaterTile: {fileID: 11400000, guid: 5d61a675072787448bf1024a914de3f6, type: 2}
+  deepWaterTile: {fileID: 11400000, guid: 2d4ea301f1805da46a7f12ea5d6cf383, type: 2}
+  desertTile: {fileID: 11400000, guid: 6e2db7008bcdea7418dcf005b4256071, type: 2}
   grasslandTile:
-  - {fileID: 11400000, guid: 7391d259cfbed304a9c3276fcae101da, type: 2}
-  - {fileID: 11400000, guid: ffdb44721f3731745ae65f63d878d7e7, type: 2}
-  - {fileID: 11400000, guid: e3f44d3cbba704144bcd2ee9e3ce7880, type: 2}
-  - {fileID: 11400000, guid: 4552186d791dab9469c328f269681e5b, type: 2}
-  - {fileID: 11400000, guid: 4a912d360dbd9744e8516eb63da5468a, type: 2}
-  - {fileID: 11400000, guid: 247f4cdaa8eca2749a2f9531fafba708, type: 2}
-  forestTile: {fileID: 11400000, guid: 7e229a2e03d2de3439d8dd6817fdc601, type: 2}
+  - {fileID: 11400000, guid: 94a9e4cdd6f8baf4193c595e4bb2d12c, type: 2}
+  forestTile: {fileID: 11400000, guid: 590ec12d25852814dac8cb3240173d2e, type: 2}
   mountainTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
   rockTile: {fileID: 11400000, guid: b379463189b28424dab515b5d16a135c, type: 2}
   caveTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
@@ -10584,8 +10598,8 @@ MonoBehaviour:
   displacementReduction: 0.5
   biomeFrequency: 0.05
   biomeThresholdDesert: -0.3
-  biomeThresholdGrassland: 0
-  biomeThresholdForest: 0.4
+  biomeThresholdGrassland: -0.1
+  biomeThresholdForest: 0.2
   biomeThresholdCave: -0.15
   mapWidth: 200
   mapHeight: 200
@@ -10595,6 +10609,10 @@ MonoBehaviour:
   undergroundZ: 1
   surfaceZ: 0
   islandRoot: {fileID: 0}
+  shallowWidth: 6
+  seaWidth: 16
+  depthBaker: {fileID: 2054132491}
+  lighting: {fileID: 2054132490}
 --- !u!114 &2054132487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10664,6 +10682,35 @@ MonoBehaviour:
   noiseSeed: 5678
   reloadKey: 114
   hideKey: 116
+--- !u!114 &2054132490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054132478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56f40bd3ab97138439f7d2180b2c97a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  torchPower: 8
+  litColor: {r: 1, g: 1, b: 1, a: 1}
+  darkColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &2054132491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054132478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d5f9cfbf52fd4a4bba6e0858a717064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeMax: 6
+  rockTile: {fileID: 11400000, guid: b46cce30298868c42955a3addc1584f8, type: 2}
 --- !u!1001 &2054682815
 PrefabInstance:
   m_ObjectHideFlags: 0

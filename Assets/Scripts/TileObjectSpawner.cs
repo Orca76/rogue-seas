@@ -98,13 +98,41 @@ public class TileObjectSpawner : MonoBehaviour
                             obj.transform.parent = tileController.islandRoot.transform;
                             objDict[pos] = obj;
 
+                            /* ★ 追加: 距離グラデから色を取得してセット */
+                            Color col = RockDepthManager.Instance.GetColor(new Vector3Int(x, y, 0));
+                            obj.GetComponent<SpriteRenderer>().color = col;
+                            /* ★ ここまで */
+
+
                             RockBlock rb = obj.GetComponent<RockBlock>();
                             rb.tilePos = pos;
                             rb.islandTiles = tileController;
+
+                          //  RockBlock rb = objDict[pos].GetComponent<RockBlock>();
+                            if (rb.islandTiles == null)
+                            {
+                                Debug.LogWarning($"[Spawner] 参照不足 {pos}");
+                                rb.islandTiles = tileController;      // 保険を兼ねてここでも上書き
+                            }
                         }
                         else
                         {
                             objDict[pos].SetActive(true);
+                            /* ★ 追加: 参照と色を再保証 ★ */
+                            RockBlock rb = objDict[pos].GetComponent<RockBlock>();
+                            if (rb.islandTiles == null) rb.islandTiles = tileController;
+                            if (rb.tilePos == Vector2Int.zero) rb.tilePos = pos;
+
+                            Color col = RockDepthManager.Instance.GetColor(new Vector3Int(x, y, 0));
+                            //rb.GetComponent<SpriteRenderer>().color = col;
+                            /* ★ ここまで */
+
+                           // RockBlock rb = objDict[pos].GetComponent<RockBlock>();
+                            if (rb.islandTiles == null)
+                            {
+                                Debug.LogWarning($"[Spawner] 参照不足 {pos}");
+                                rb.islandTiles = tileController;      // 保険を兼ねてここでも上書き
+                            }
                         }
                         break;
 
@@ -177,5 +205,22 @@ public class TileObjectSpawner : MonoBehaviour
         return x >= 0 && y >= 0 &&
                x < tileCtrl.tileMapData.GetLength(0) &&
                y < tileCtrl.tileMapData.GetLength(1);
+    }
+    // TileObjectSpawner.cs の class 内に追記してください
+    public bool TryGetSpawned(Vector3Int cell, out GameObject obj)
+    {
+        // Vector3Int → Vector2Int（辞書キーは 2D）
+        Vector2Int key = new Vector2Int(cell.x, cell.y);
+
+        // 地上辞書を先にチェック
+        if (spawnedObjectsSurface.TryGetValue(key, out obj) && obj != null)
+            return true;
+
+        // 地下辞書も見る（Underground をまだ使っていなければスキップでも OK）
+        if (spawnedObjectsUnderground.TryGetValue(key, out obj) && obj != null)
+            return true;
+
+        obj = null;
+        return false;
     }
 }
