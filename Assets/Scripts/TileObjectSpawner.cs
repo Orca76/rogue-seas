@@ -99,8 +99,8 @@ public class TileObjectSpawner : MonoBehaviour
                             objDict[pos] = obj;
 
                             /* ★ 追加: 距離グラデから色を取得してセット */
-                            Color col = RockDepthManager.Instance.GetColor(new Vector3Int(x, y, 0));
-                            obj.GetComponent<SpriteRenderer>().color = col;
+                          //  Color col = RockDepthManager.Instance.GetColor(new Vector3Int(x, y, 0));
+                         //   obj.GetComponent<SpriteRenderer>().color = col;
                             /* ★ ここまで */
 
 

@@ -100,9 +100,9 @@ public class FogTile : MonoBehaviour
         }
     }
 
-    public bool IsRevealed(int x, int y)
-    {
-        if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) return false;
-        return fogRevealed[x, y];
-    }
+    //public bool IsRevealed(int x, int y)
+    //{
+    //    if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) return false;
+    //    return fogRevealed[x, y];
+    //}
 }

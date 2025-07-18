@@ -66,10 +66,9 @@ public class AlchemyVectorManager : MonoBehaviour
         // ワールド座標 → タイル座標へ変換
         Vector3Int tilePos = alchemyTileScript.tilemapAlchemy.WorldToCell(endPos);
         // Fogに問い合わせ
-        bool isVisible = fogTileScript.IsRevealed(tilePos.x, tilePos.y);
+        //bool isVisible = fogTileScript.IsRevealed(tilePos.x, tilePos.y);
 
-        if (isVisible)
-        {
+        
             int rarityCode = alchemyTileScript.GetRarityAt(tilePos.x, tilePos.y);
             string rarityName = rarityCode switch
             {
@@ -79,11 +78,11 @@ public class AlchemyVectorManager : MonoBehaviour
                 _ => "未知"
             };
             Debug.Log($"ベクトル先端: ({tilePos.x},{tilePos.y}) - 見えてる  / 色: {rarityName}");
-        }
-        else
-        {
-            Debug.Log($"ベクトル先端: ({tilePos.x},{tilePos.y}) - 覆われてる（Fog）× ");
-        }
+        
+        //else
+        //{
+        //    Debug.Log($"ベクトル先端: ({tilePos.x},{tilePos.y}) - 覆われてる（Fog）× ");
+        //}
 
         vectorObjects.Add(vecObj);
         lr.startColor = lr.endColor = new Color(Random.value, Random.value, Random.value);

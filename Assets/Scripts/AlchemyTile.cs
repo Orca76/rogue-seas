@@ -25,6 +25,13 @@ public class AlchemyTile : MonoBehaviour
 
     public int[,] tileRarityData; // 0 = common, 1 = rare, 2 = super rare
 
+
+    [Header("Rarity Threshold Multipliers")]
+    public float commonThresholdMultiplier = 1.0f;
+    public float rareThresholdMultiplier = 1.0f;
+
+    public int crystalRarity;//0がコモン1がレア2がSR
+
     private void Start()
     {
         tileRarityData = new int[mapWidth, mapHeight];
@@ -47,6 +54,7 @@ public class AlchemyTile : MonoBehaviour
 
     public void GenerateAlchemyMap()
     {
+        SetRarityMode(crystalRarity);
         tilemapAlchemy.ClearAllTiles();
         Vector2 offset = GetNoiseOffset(noiseSeed);
 
@@ -71,10 +79,31 @@ public class AlchemyTile : MonoBehaviour
         }
     }
 
+    public void SetRarityMode(int rarityLevel)
+    {
+        switch (rarityLevel)
+        {
+            case 0: // 通常
+                commonThresholdMultiplier = 1.0f;
+                rareThresholdMultiplier = 1.0f;
+                break;
+            case 1: // レア
+                commonThresholdMultiplier = 0.9f;
+                rareThresholdMultiplier = 0.9f;
+                break;
+            case 2: // 超レア
+                commonThresholdMultiplier = 0.75f;
+                rareThresholdMultiplier = 0.75f;
+                break;
+        }
+    }
     private TileBase GetTileByNoise(float val, float distFactor, out int rarityCode)
     {
-        float commonThreshold = Mathf.Lerp(0.6f, 0.45f, distFactor);
-        float rareThreshold = Mathf.Lerp(0.975f, 0.65f, distFactor);
+        float baseCommon = Mathf.Lerp(0.6f, 0.45f, distFactor);
+        float baseRare = Mathf.Lerp(0.975f, 0.65f, distFactor);
+
+        float commonThreshold = baseCommon * commonThresholdMultiplier;
+        float rareThreshold = baseRare * rareThresholdMultiplier;
 
         if (val < commonThreshold)
         {
