@@ -127,3 +127,4 @@ MonoBehaviour:
   itemName: "\u8C9D\u6BBB"
   icon: {fileID: 0}
   isStackable: 1
+  alchemyVector: {x: -2, y: 1}

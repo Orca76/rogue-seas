@@ -36,7 +36,7 @@ public class HotbarUI : MonoBehaviour, IInventoryUI
         for (int i = 0; i < slotImages.Count; i++)
         {
             slotImages[i].sprite = emptySprite;
-            hotbarItems.Add(new ItemStack("", null, 0, false));
+            hotbarItems.Add(new ItemStack("", null, 0, false,default));
         }
 
         UpdateSelectionHighlight();
@@ -144,7 +144,8 @@ public class HotbarUI : MonoBehaviour, IInventoryUI
                     newItem.itemName,
                     newItem.icon,
                     newItem.count,
-                    newItem.isStackable
+                    newItem.isStackable,
+                    newItem.AVector
                 );
                 UpdateSlotVisual(i);
                 return true;

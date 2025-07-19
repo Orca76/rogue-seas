@@ -9,6 +9,7 @@ public class FieldItem : MonoBehaviour
     public Sprite icon;
     public bool isStackable = true;
 
+    public Vector2 alchemyVector;//˜B¬—p
     private void Start()
     {
         // SpriteRenderer‚©‚ç©“®æ“¾
@@ -27,7 +28,7 @@ public class FieldItem : MonoBehaviour
         if (hotbar != null)
         {
             // ŠO•”’è‹`‚³‚ê‚½ ItemStack ‚ğ new ‚µ‚Ä“n‚·
-            ItemStack newItem = new ItemStack(itemName, icon, 1, isStackable);
+            ItemStack newItem = new ItemStack(itemName, icon, 1, isStackable,alchemyVector);
             bool added = hotbar.TryAddItem(newItem);
 
             if (added)

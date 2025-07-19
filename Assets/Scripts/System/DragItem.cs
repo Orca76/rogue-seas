@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,16 +9,16 @@ public class DragItem : MonoBehaviour
 {
     private HotbarUI hotbarUI;
     private bool isDragging = false;
-    public Image dragImage; // ƒ}ƒEƒX’Ç]—p‚Ì‰¼ƒAƒCƒRƒ“
+    public Image dragImage; // ãƒã‚¦ã‚¹è¿½å¾“ç”¨ã®ä»®ã‚¢ã‚¤ã‚³ãƒ³
 
-    private int draggingIndex = -1; // ¡ƒhƒ‰ƒbƒO‚µ‚Ä‚éƒAƒCƒeƒ€‚ÌƒXƒƒbƒg”Ô†
+    private int draggingIndex = -1; // ä»Šãƒ‰ãƒ©ãƒƒã‚°ã—ã¦ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¹ãƒ­ãƒƒãƒˆç•ªå·
     private IInventoryUI currentInventoryUI;
 
-    private IInventoryUI draggingInventoryUI; // ‚Ç‚ÌƒCƒ“ƒxƒ“ƒgƒŠ‚©‚çˆø‚Á’£‚Á‚½‚©
-   
+    private IInventoryUI draggingInventoryUI; // ã©ã®ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã‹ã‚‰å¼•ã£å¼µã£ãŸã‹
+
     void Start()
     {
-        hotbarUI = FindObjectOfType<HotbarUI>(); // ‚Ü‚¸æ“¾
+        hotbarUI = FindObjectOfType<HotbarUI>(); // ã¾ãšå–å¾—
     }
 
     void Update()
@@ -40,7 +40,7 @@ public class DragItem : MonoBehaviour
     }
     void StartDrag()
     {
-        Debug.Log("StartDrag called");  // © ‚±‚±‚ÅŒÄ‚Î‚ê‚Ä‚é‚©‚Ü‚¸Šm”F
+        Debug.Log("StartDrag called");  // â† ã“ã“ã§å‘¼ã°ã‚Œã¦ã‚‹ã‹ã¾ãšç¢ºèª
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
         pointerData.position = Input.mousePosition;
 
@@ -49,24 +49,24 @@ public class DragItem : MonoBehaviour
 
         foreach (var result in raycastResults)
         {
-            Debug.Log("Raycast hit: " + result.gameObject.name); // © ‰½‚©ƒqƒbƒg‚µ‚Ä‚é‚©Šm”F
+            Debug.Log("Raycast hit: " + result.gameObject.name); // â† ä½•ã‹ãƒ’ãƒƒãƒˆã—ã¦ã‚‹ã‹ç¢ºèª
             Button clickedButton = result.gameObject.GetComponent<Button>();
             if (clickedButton != null)
             {
-                Debug.Log("Button hit: " + clickedButton.gameObject.name); // © ƒ{ƒ^ƒ“‚Ü‚Å“’B‚Å‚«‚Ä‚éH
+                Debug.Log("Button hit: " + clickedButton.gameObject.name); // â† ãƒœã‚¿ãƒ³ã¾ã§åˆ°é”ã§ãã¦ã‚‹ï¼Ÿ
                 currentInventoryUI = result.gameObject.GetComponentInParent<IInventoryUI>();
                 draggingInventoryUI = currentInventoryUI;
-              
+
 
                 if (currentInventoryUI == null)
-                    return; // ‘Î‰‚µ‚Ä‚È‚¢UI‚È‚ç–³‹
+                    return; // å¯¾å¿œã—ã¦ãªã„UIãªã‚‰ç„¡è¦–
                 int index = currentInventoryUI.GetSlotIndex(clickedButton);
-               // Debug.Log(index);
+                // Debug.Log(index);
                 if (index != -1 && currentInventoryUI.GetItemDataAt(index) != null)
                 {
-                    // ƒhƒ‰ƒbƒOŠJn
+                    // ãƒ‰ãƒ©ãƒƒã‚°é–‹å§‹
                     // ItemData itemData = currentInventoryUI.GetItemDataAt(index);
-                    ItemStack itemStack = currentInventoryUI.GetItemDataAt(index); // ? Œ^‚ğ‡‚í‚¹‚é
+                    ItemStack itemStack = currentInventoryUI.GetItemDataAt(index); // âœ… å‹ã‚’åˆã‚ã›ã‚‹
 
                     Debug.Log($"Slot Index: {index}, ItemData: {itemStack?.itemName ?? "null"}");
                     dragImage.sprite = itemStack.icon;
@@ -91,39 +91,74 @@ public class DragItem : MonoBehaviour
 
         foreach (var result in raycastResults)
         {
-          
+
             Button dropButton = result.gameObject.GetComponent<Button>();
             if (dropButton != null)
             {
 
-                currentInventoryUI = result.gameObject.GetComponentInParent<IInventoryUI>();
+                //ã“ã“ã‹ã‚‰éŒ¬æˆå‡¦ç†
 
-                if (currentInventoryUI == null)
-                    return; // ‘Î‰‚µ‚Ä‚È‚¢UI‚È‚ç–³‹
-                int dropIndex = currentInventoryUI.GetSlotIndex(dropButton);
-
-               
-                if (dropIndex != -1 && (currentInventoryUI.GetItemDataAt(dropIndex) == null))
+                if (dropButton.CompareTag("InputSlot"))
                 {
-                    // ‹ó‚«ƒXƒƒbƒg‚È‚çAƒAƒCƒeƒ€”z’u
-
-
                     var draggingItem = draggingInventoryUI.GetItemStackAt(draggingIndex);
+                    if (draggingItem != null && draggingItem.count > 0)
+                    {
+                        // ä¸€å€‹ã ã‘æ¸¡ã™
+                        ItemStack oneItem = new ItemStack(
+                            draggingItem.itemName,
+                            draggingItem.icon,
+                            1,
+                            draggingItem.isStackable,
+                            draggingItem.AVector
+                        );
 
-                    Debug.Log(draggingItem);
-                    currentInventoryUI.SetItemAt(dropIndex, draggingItem);
-                    draggingInventoryUI.ClearItemAt(draggingIndex); // Œ³ƒXƒƒbƒg‚Í‹ó‚É‚·‚é
+                        // ğŸ”¸ éŒ¬æˆå°ãªã©ã«é€ã‚‹å‡¦ç†ï¼ˆä»®ï¼‰
+                        AlchemyVectorManager.Instance.ReceiveItem(oneItem); // â†ã‚ã¨ã§æ›¸ã
 
-                    currentInventoryUI.UpdateSlotVisual(dropIndex);
-                    currentInventoryUI.UpdateSlotVisual(draggingIndex);
-                    break;
+                        // å…ƒã‚¹ãƒ­ãƒƒãƒˆã®å€‹æ•°ã‚’1æ¸›ã‚‰ã™
+                        draggingItem.count--;
+                        if (draggingItem.count <= 0)
+                        {
+                            draggingInventoryUI.ClearItemAt(draggingIndex);
+                        }
+
+                        draggingInventoryUI.UpdateSlotVisual(draggingIndex);
+                    }
+
+                    break; // æŠ•å…¥å£ã«è½ã¨ã—ãŸã‚‰ãƒ«ãƒ¼ãƒ—çµ‚äº†
+                }
+
+                    //----------------ã“ã“ã‹ã‚‰é€šå¸¸å‡¦ç†ã€€ã“ã“ã‹ã‚‰ä¸ŠãŒéŒ¬æˆå‡¦ç†
+
+
+                    currentInventoryUI = result.gameObject.GetComponentInParent<IInventoryUI>();
+
+                    if (currentInventoryUI == null)
+                        return; // å¯¾å¿œã—ã¦ãªã„UIãªã‚‰ç„¡è¦–
+                    int dropIndex = currentInventoryUI.GetSlotIndex(dropButton);
+
+
+                    if (dropIndex != -1 && (currentInventoryUI.GetItemDataAt(dropIndex) == null))
+                    {
+                        // ç©ºãã‚¹ãƒ­ãƒƒãƒˆãªã‚‰ã€ã‚¢ã‚¤ãƒ†ãƒ é…ç½®
+
+
+                        var draggingItem = draggingInventoryUI.GetItemStackAt(draggingIndex);
+
+                        Debug.Log(draggingItem);
+                        currentInventoryUI.SetItemAt(dropIndex, draggingItem);
+                        draggingInventoryUI.ClearItemAt(draggingIndex); // å…ƒã‚¹ãƒ­ãƒƒãƒˆã¯ç©ºã«ã™ã‚‹
+
+                        currentInventoryUI.UpdateSlotVisual(dropIndex);
+                        currentInventoryUI.UpdateSlotVisual(draggingIndex);
+                        break;
+                    }
                 }
             }
+            isDragging = false; // ãƒ‰ãƒ©ãƒƒã‚°ãƒ•ãƒ©ã‚°è§£é™¤
+
+            dragImage.gameObject.SetActive(false); // ãƒã‚¦ã‚¹è¿½å¾“ã‚¢ã‚¤ã‚³ãƒ³ã‚’éè¡¨ç¤º
+
+            draggingIndex = -1; // ä»Šãƒ‰ãƒ©ãƒƒã‚°ã—ã¦ãŸã‚¹ãƒ­ãƒƒãƒˆç•ªå·ã‚’ãƒªã‚»ãƒƒãƒˆ
         }
-        isDragging = false; // ƒhƒ‰ƒbƒOƒtƒ‰ƒO‰ğœ
-
-        dragImage.gameObject.SetActive(false); // ƒ}ƒEƒX’Ç]ƒAƒCƒRƒ“‚ğ”ñ•\¦
-
-        draggingIndex = -1; // ¡ƒhƒ‰ƒbƒO‚µ‚Ä‚½ƒXƒƒbƒg”Ô†‚ğƒŠƒZƒbƒg
     }
-}

@@ -25,6 +25,22 @@ public class AlchemyVectorManager : MonoBehaviour
 
     public TextMeshProUGUI RegionText;//現在の生成ランク
 
+
+    public static AlchemyVectorManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void ReceiveItem(ItemStack item)
+    {
+        Debug.Log($"Received: {item.itemName} x{item.count}");
+        // ここに錬成処理用の受け取りバッファ追加などを実装
+        GenerateVector(item.AVector);
+    }
+
+
     void Start()
     {
         origin = new Vector3(16, 16, 0); // 中心固定。あとで取得式にしてもOK
@@ -37,7 +53,7 @@ public class AlchemyVectorManager : MonoBehaviour
 
         if (Input.GetKeyDown(generateVectorKey))
         {
-            GenerateVector();
+          //  GenerateVector();
         }
 
         if (Input.GetKeyDown(resetKey))
@@ -46,12 +62,12 @@ public class AlchemyVectorManager : MonoBehaviour
         }
     }
 
-    void GenerateVector()
+    void GenerateVector(Vector2 newVec)
     {
-        Vector2 newVec = new Vector2(
-            Random.Range(vectorMin, vectorMax),
-            Random.Range(vectorMin, vectorMax)
-        );
+        //Vector2 newVec = new Vector2(
+        //    Random.Range(vectorMin, vectorMax),
+        //    Random.Range(vectorMin, vectorMax)
+        //);
         vectorSegments.Add(newVec);
 
         Vector3 startPos = origin;
