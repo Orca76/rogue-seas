@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public interface IInventoryUI
 {
     int GetSlotIndex(Button button);
-    ItemData GetItemDataAt(int index);
+    ItemStack GetItemDataAt(int index);
     void SetItemAt(int index, ItemStack itemData);
     void ClearItemAt(int index);
     int GetSlotCount();

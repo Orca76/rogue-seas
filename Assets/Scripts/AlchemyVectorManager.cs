@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 public class AlchemyVectorManager : MonoBehaviour
 {
@@ -20,6 +21,10 @@ public class AlchemyVectorManager : MonoBehaviour
 
     public FogTile fogTileScript;
     public AlchemyTile alchemyTileScript;
+
+
+    public TextMeshProUGUI RegionText;//現在の生成ランク
+
     void Start()
     {
         origin = new Vector3(16, 16, 0); // 中心固定。あとで取得式にしてもOK
@@ -72,9 +77,9 @@ public class AlchemyVectorManager : MonoBehaviour
             int rarityCode = alchemyTileScript.GetRarityAt(tilePos.x, tilePos.y);
             string rarityName = rarityCode switch
             {
-                0 => "青 (コモン)",
-                1 => "紫 (レア)",
-                2 => "黄 (スーパーレア)",
+                0 => "微かな魔力反応がある...",
+                1 => "強力な反応がある!",
+                2 => "尋常じゃない力を感じる...！",
                 _ => "未知"
             };
             Debug.Log($"ベクトル先端: ({tilePos.x},{tilePos.y}) - 見えてる  / 色: {rarityName}");
@@ -83,7 +88,7 @@ public class AlchemyVectorManager : MonoBehaviour
         //{
         //    Debug.Log($"ベクトル先端: ({tilePos.x},{tilePos.y}) - 覆われてる（Fog）× ");
         //}
-
+        RegionText.text=rarityName.ToString();
         vectorObjects.Add(vecObj);
         lr.startColor = lr.endColor = new Color(Random.value, Random.value, Random.value);
 

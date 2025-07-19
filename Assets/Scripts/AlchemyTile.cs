@@ -35,6 +35,11 @@ public class AlchemyTile : MonoBehaviour
     private void Start()
     {
         tileRarityData = new int[mapWidth, mapHeight];
+
+        //‹N“®Žž‚ÉƒIƒ“
+        noiseSeed = Random.Range(0, 10000);
+        tilemapAlchemy.gameObject.SetActive(true);
+        GenerateAlchemyMap();
     }
 
     private void Update()

@@ -4,12 +4,16 @@ using UnityEngine;
 [System.Serializable]
 public class ItemStack
 {
-    public ItemData itemData;
-    public int count;
+    public string itemName;
+    public Sprite icon;
+    public int count = 1;
+    public bool isStackable = true;
 
-    public ItemStack(ItemData data, int count)
+    public ItemStack(string name, Sprite icon, int count = 1, bool isStackable = true)
     {
-        this.itemData = data;
+        this.itemName = name;
+        this.icon = icon;
         this.count = count;
+        this.isStackable = isStackable;
     }
 }

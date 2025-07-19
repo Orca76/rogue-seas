@@ -65,9 +65,11 @@ public class DragItem : MonoBehaviour
                 if (index != -1 && currentInventoryUI.GetItemDataAt(index) != null)
                 {
                     // ドラッグ開始
-                    ItemData itemData = currentInventoryUI.GetItemDataAt(index);
-                    Debug.Log($"Slot Index: {index}, ItemData: {itemData?.name ?? "null"}"); // ← 追加
-                    dragImage.sprite = itemData.icon;
+                    // ItemData itemData = currentInventoryUI.GetItemDataAt(index);
+                    ItemStack itemStack = currentInventoryUI.GetItemDataAt(index); // ? 型を合わせる
+
+                    Debug.Log($"Slot Index: {index}, ItemData: {itemStack?.itemName ?? "null"}");
+                    dragImage.sprite = itemStack.icon;
                     dragImage.color = Color.white;
                     dragImage.gameObject.SetActive(true);
 
