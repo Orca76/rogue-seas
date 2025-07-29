@@ -19,11 +19,12 @@ public class AlchemyVectorManager : MonoBehaviour
     private List<Vector2> vectorSegments = new List<Vector2>();
     private Vector3 origin;
 
-    public FogTile fogTileScript;
+   // public FogTile fogTileScript;
     public AlchemyTile alchemyTileScript;
 
 
     public TextMeshProUGUI RegionText;//現在の生成ランク
+   public int rarityCode;
 
 
     public static AlchemyVectorManager Instance;
@@ -48,6 +49,8 @@ public class AlchemyVectorManager : MonoBehaviour
 
     void Update()
     {
+
+       
         // アルケミータイルが非アクティブならスキップ
         if (!alchemyTileObject.activeSelf) return;
 
@@ -64,10 +67,7 @@ public class AlchemyVectorManager : MonoBehaviour
 
     void GenerateVector(Vector2 newVec)
     {
-        //Vector2 newVec = new Vector2(
-        //    Random.Range(vectorMin, vectorMax),
-        //    Random.Range(vectorMin, vectorMax)
-        //);
+
         vectorSegments.Add(newVec);
 
         Vector3 startPos = origin;
@@ -86,11 +86,10 @@ public class AlchemyVectorManager : MonoBehaviour
 
         // ワールド座標 → タイル座標へ変換
         Vector3Int tilePos = alchemyTileScript.tilemapAlchemy.WorldToCell(endPos);
-        // Fogに問い合わせ
-        //bool isVisible = fogTileScript.IsRevealed(tilePos.x, tilePos.y);
+
 
         
-            int rarityCode = alchemyTileScript.GetRarityAt(tilePos.x, tilePos.y);
+            rarityCode = alchemyTileScript.GetRarityAt(tilePos.x, tilePos.y);
             string rarityName = rarityCode switch
             {
                 0 => "微かな魔力反応がある...",
@@ -100,17 +99,14 @@ public class AlchemyVectorManager : MonoBehaviour
             };
             Debug.Log($"ベクトル先端: ({tilePos.x},{tilePos.y}) - 見えてる  / 色: {rarityName}");
         
-        //else
-        //{
-        //    Debug.Log($"ベクトル先端: ({tilePos.x},{tilePos.y}) - 覆われてる（Fog）× ");
-        //}
+
         RegionText.text=rarityName.ToString();
         vectorObjects.Add(vecObj);
         lr.startColor = lr.endColor = new Color(Random.value, Random.value, Random.value);
 
     }
 
-    void ResetVectors()
+   public void ResetVectors()
     {
         foreach (var obj in vectorObjects)
         {

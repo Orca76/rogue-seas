@@ -42,6 +42,13 @@ public class AlchemyTile : MonoBehaviour
         GenerateAlchemyMap();
     }
 
+
+    public void CreationTile(int Seed)
+    {
+        noiseSeed = Seed;
+        tilemapAlchemy.gameObject.SetActive(true);
+        GenerateAlchemyMap();
+    }
     private void Update()
     {
         if (Input.GetKeyDown(reloadKey))

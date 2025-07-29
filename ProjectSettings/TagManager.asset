@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - EnemyAt
   - InputSlot
+  - Sentry
   layers:
   - Default
   - TransparentFX
