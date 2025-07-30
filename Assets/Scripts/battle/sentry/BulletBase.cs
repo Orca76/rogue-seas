@@ -5,9 +5,9 @@ using UnityEngine;
 public abstract class BulletBase : MonoBehaviour
 {
     [Header("Bullet Settings")]
-    public float speed = 10f;
-    public float lifetime = 3f;
-
+    public float speed;
+    public float lifetime;
+    public float Damage;
     protected virtual void Start()
     {
         Destroy(gameObject, lifetime);

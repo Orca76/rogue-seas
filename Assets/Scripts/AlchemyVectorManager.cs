@@ -15,7 +15,7 @@ public class AlchemyVectorManager : MonoBehaviour
     public float vectorMin = -3f;
     public float vectorMax = 3f;
 
-    private List<GameObject> vectorObjects = new List<GameObject>();
+    public List<GameObject> vectorObjects = new List<GameObject>();
     private List<Vector2> vectorSegments = new List<Vector2>();
     private Vector3 origin;
 

@@ -16,7 +16,10 @@ public class Player : MonoBehaviour
     public float undergroundZ = 1f;
     public KeyCode switchFloorKey = KeyCode.U;
   public  bool isUnderground;
-   
+
+
+    public int[] levels = new int[3];
+    // 0:HP, 1:UŒ‚—Í, 2:UŒ‚‘¬“x
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();

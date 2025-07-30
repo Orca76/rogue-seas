@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
@@ -9,7 +10,7 @@ public class EnemyBase : MonoBehaviour
     public float AttackSpan;//敵の攻撃速度
     public GameObject Bullet;//攻撃に使う弾丸 
     GameObject player; float attackTimer = 0f;
-
+  public  GameObject target;
     public float moveSpeed;//移動速度
 
 
@@ -21,6 +22,12 @@ public class EnemyBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (HP <= 0)
+        {
+            //死んだときの処理
+            Destroy(gameObject);
+        }
+
         attackTimer += Time.deltaTime;
         MoveTowardPlayer();  // ← プレイヤーに近づく
         if (attackTimer >= AttackSpan)
@@ -30,7 +37,8 @@ public class EnemyBase : MonoBehaviour
             if (player != null)
             {
                 // 弾の向き：プレイヤーの方向
-                Vector3 dir = (player.transform.position - transform.position).normalized;
+                target = FindNearestPlayerOrSentry(gameObject.transform.position);
+                Vector3 dir = (target.transform.position - transform.position).normalized;
 
                 // プレイヤーの方向に回転させて弾を生成
                 Quaternion rot = Quaternion.FromToRotation(Vector3.up, dir);
@@ -45,5 +53,35 @@ public class EnemyBase : MonoBehaviour
 
         Vector3 dir = (player.transform.position - transform.position).normalized;
         transform.position += dir * moveSpeed * Time.deltaTime;
+    }
+
+    //最も近いプレイヤーたち
+    public GameObject FindNearestPlayerOrSentry(Vector3 fromPosition)
+    {
+        // Sentryタグだけ取得
+        GameObject[] sentries = GameObject.FindGameObjectsWithTag("Sentry");
+
+        // リストにplayerを追加
+        GameObject[] allTargets = sentries.Concat(new GameObject[] { player }).ToArray();
+
+        // 何もなければnull返す
+        if (allTargets.Length == 0) return null;
+
+        // 最も近いものを探索
+        GameObject nearest = null;
+        float minDist = Mathf.Infinity;
+
+        foreach (GameObject target in allTargets)
+        {
+            if (target == null) continue; // 念のため
+            float dist = Vector3.Distance(fromPosition, target.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearest = target;
+            }
+        }
+
+        return nearest;
     }
 }

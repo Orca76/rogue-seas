@@ -20,24 +20,34 @@ public class SummonCrystal : MonoBehaviour
 
 
 
-
     int[] points=new int[4];//ステータス割り振り　0 hp 1power 2atspeed 3prefab
 
     public GameObject defaultSentry;//生成時に使うデフォ
 
+    GameObject Player;
+    private bool hasBeenUsed = false;
+    SentryManager sentryManagerSC;//セントリー生成時に配列に登録用
 
+    public Sprite usedSprite;//使用後のスプライト
+    GameObject map;//錬成盤リロード用　マップデータ
+    AlchemyTile tiledata;
     private void Start()
     {
         VectorSystem = GameObject.Find("VectorManager");
         alchemySystem=VectorSystem.GetComponent<AlchemyVectorManager>();
+        Player = GameObject.Find("Player");
+        sentryManagerSC=Player.GetComponent<SentryManager>();
+        map = GameObject.Find("map");
+        tiledata=map.GetComponent<AlchemyTile>();
     }
     private void Update()
     {
         // 範囲内にプレイヤーがいて、かつインタラクトキーが押されたらUIを開く
-        if (playerInRange && Input.GetKeyDown(interactKey))
+        if (playerInRange && Input.GetKeyDown(interactKey) && hasBeenUsed == false)
         {
             OpenAlchemyUI();
         }
+       
     }
 
     // UIを開く処理
@@ -52,9 +62,15 @@ public class SummonCrystal : MonoBehaviour
 
         //インベントリの位置を上に
         SetPosY(30);
+        tiledata.CreationTile(GetSeedFromCoords(gameObject.transform.position.x, gameObject.transform.position.y));
         Debug.Log("Alchemy UI opened");
     }
-
+    int GetSeedFromCoords(float x, float y)//座標から乱数生成
+    {
+        int xi = Mathf.FloorToInt(x * 1000f);  // 必要ならスケーリング
+        int yi = Mathf.FloorToInt(y * 1000f);
+        return xi * 1000000 + yi; // xの桁を広げて足すだけ
+    }
     // プレイヤーがトリガー範囲に入ったとき
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -111,6 +127,9 @@ public class SummonCrystal : MonoBehaviour
                 break;
         }
         GameObject created=Instantiate(defaultSentry,gameObject.transform.position, Quaternion.identity);
+        sentryManagerSC.sentryList.Add(created);//リストに登録
+
+        created.transform.parent=Player.transform;//プレイヤーの子オブジェクトにする
         float minScale = 0.5f;
         float maxScale = 2.0f;
 
@@ -124,6 +143,7 @@ public class SummonCrystal : MonoBehaviour
         created.GetComponent<SentryBase>().BaseHP = points[0] * Random.Range(90, 110);
         created.GetComponent<SentryBase>().BasePower = points[1] * Random.Range(9, 11);
         created.GetComponent<SentryBase>().BaseAttackSpeed = points[2] * Random.Range(0.9f,1.1f);
+        created.GetComponent<SentryBase>().HP = created.GetComponent<SentryBase>().BaseHP;
 
         int val = points[3];
 
@@ -153,6 +173,13 @@ public class SummonCrystal : MonoBehaviour
         {
             // 範囲外の処理（必要なら）
         }
+        hasBeenUsed = true;//もう使えない
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null && usedSprite != null)
+        {
+            spriteRenderer.sprite = usedSprite;
+        }//画像差し替え処理　クリスタル
+        CloseAlchemyUI();
 
     }
     public void DistributePoints(int skillPoints)
@@ -166,7 +193,14 @@ public class SummonCrystal : MonoBehaviour
         // 一旦全部0クリア
         for (int i = 0; i < 4; i++) points[i] = 0;
 
-        int remaining = skillPoints;
+        // まず最低保証: 各パラに1振る
+        for (int i = 0; i < 4; i++)
+        {
+            points[i] = 1;
+        }
+
+        // 残りポイント計算
+        int remaining = skillPoints - 4; // 4消費済み
 
         while (remaining > 0)
         {
