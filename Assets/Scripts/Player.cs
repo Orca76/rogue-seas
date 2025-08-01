@@ -19,16 +19,35 @@ public class Player : MonoBehaviour
 
 
     public int[] levels = new int[3];
+    public int Exp;//経験値
+    public int totalLevel=1;//総合レベル
     // 0:HP, 1:攻撃力, 2:攻撃速度
+
+    int nextLevel;
+    public GameObject LevelUpUI;//UI レベルアップ
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-     
+        nextLevel = 30;
     }
 
     void Update()
     {
-      
+        if (Exp > nextLevel)
+        {
+            if (!LevelUpUI.activeSelf)
+            {
+                //UI表示中ではない
+                LevelUpUI.SetActive(true);
+
+                //UIを出す
+                LevelUpUI.GetComponent<LevelUpSelectionUI>().
+                //Exp-NextLevel
+                nextLevel = 30 * totalLevel * totalLevel;
+            }
+           
+
+        }
 
         isUnderground = Mathf.Approximately(transform.position.z, undergroundZ);
 

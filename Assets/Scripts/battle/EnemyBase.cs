@@ -13,7 +13,8 @@ public class EnemyBase : MonoBehaviour
   public  GameObject target;
     public float moveSpeed;//移動速度
 
-
+    public GameObject Soul;// 所謂経験値オブジェクト
+    public int ExpValue;//倒した時の経験値量
     void Start()
     {
         player = GameObject.Find("Player");   
@@ -25,6 +26,10 @@ public class EnemyBase : MonoBehaviour
         if (HP <= 0)
         {
             //死んだときの処理
+
+            GameObject soul = Instantiate(Soul, transform.position, transform.rotation);
+            SoulBase soulBase = soul.GetComponent<SoulBase>();
+            soulBase.soulValue = ExpValue;
             Destroy(gameObject);
         }
 
