@@ -41,9 +41,14 @@ public class Player : MonoBehaviour
                 LevelUpUI.SetActive(true);
 
                 //UIを出す
-                LevelUpUI.GetComponent<LevelUpSelectionUI>().
+                // 時間を止める（ゲーム内のUpdateや物理挙動が止まる）
+                Time.timeScale = 0f;
+
+                // LevelUpUI.GetComponent<LevelUpSelectionUI>().
                 //Exp-NextLevel
+                int x = nextLevel;
                 nextLevel = 30 * totalLevel * totalLevel;
+                Exp -= x;//現在使った分の経験値を引く
             }
            
 

@@ -15641,7 +15641,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1941092514
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15740,6 +15740,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObj: {fileID: 2146889023}
+  PLevelsText: []
 --- !u!114 &1952137371 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5620618575924453224, guid: 39e8fefd58ffd844aa2de0306767f39f, type: 3}
@@ -17350,6 +17351,8 @@ MonoBehaviour:
   isUnderground: 0
   levels: 010000000100000001000000
   Exp: 0
+  totalLevel: 1
+  LevelUpUI: {fileID: 1941092513}
 --- !u!212 &2146889026
 SpriteRenderer:
   m_ObjectHideFlags: 0
