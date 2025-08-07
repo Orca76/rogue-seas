@@ -54,7 +54,7 @@ public class IslandTile : MonoBehaviour
     public KeyCode toggleLayerKey = KeyCode.U;
 
     private List<Vector2> islandBoundary;
-    private int noiseSeed = 123;
+    public int noiseSeed = 123;
     private bool showingUnderground = false;
 
 

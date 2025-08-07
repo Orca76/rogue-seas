@@ -28,9 +28,16 @@ public class ChartTile : MonoBehaviour
 
     public int[,] seaRegionData; // 0 = tropical, 1 = frigid, 2 = foggy, 3 = tempest, 4 = organic, 5 = mystic
 
+
     private void Start()
     {
         seaRegionData = new int[mapWidth, mapHeight];
+
+        //Å‰‚Éì‚é
+
+        noiseSeed = gameObject.GetComponent<IslandTile>().noiseSeed;//“‡ˆË‘¶‚Ì“¹
+        tilemapChart.gameObject.SetActive(true);
+        GenerateChartMap();
     }
 
     private void Update()

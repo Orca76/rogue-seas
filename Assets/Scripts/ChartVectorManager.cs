@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ChartVectorManager : MonoBehaviour
@@ -19,13 +20,30 @@ public class ChartVectorManager : MonoBehaviour
 
     public ChartTile chartTileScript;
 
+    public TextMeshProUGUI RegionText;//現在の目標海域
+
+    public static ChartVectorManager Instance;//やり取り用インスタンス
+
+   public int zoneType;//目的エリア情報
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void ReceiveItem(ItemStack item)
+    {
+        Debug.Log($"Received: {item.itemName} x{item.count}");
+        // ここに錬成処理用の受け取りバッファ追加などを実装
+        GenerateVector(item.AVector);
+    }
     void Update()
     {
         if (!chartTileObject.activeSelf) return;
 
         if (Input.GetKeyDown(generateVectorKey))
         {
-            GenerateVector();
+           // GenerateVector();
         }
 
         if (Input.GetKeyDown(resetKey))
@@ -34,34 +52,47 @@ public class ChartVectorManager : MonoBehaviour
         }
     }
 
-    void GenerateVector()
+    void GenerateVector(Vector2 newVec)
     {
-        float angle = gameClock.GetAngleForCurrentTime(); // 0?360度
-        float rad = angle * Mathf.Deg2Rad;
-        Vector2 direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)).normalized;
-        Vector2 segment = direction * segmentLength;
+      //  float angle = gameClock.GetAngleForCurrentTime(); // 0?360度
+       // float rad = angle * Mathf.Deg2Rad;
+      //  Vector2 direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)).normalized;
+      //  Vector2 segment = direction * segmentLength;
 
-        vectorSegments.Add(segment);
+        vectorSegments.Add(newVec);
 
-        Vector3 start = origin;
-        for (int i = 0; i < vectorSegments.Count - 1; i++)
+        //Vector3 start = origin;
+        //for (int i = 0; i < vectorSegments.Count - 1; i++)
+        //{
+        //    start += (Vector3)vectorSegments[i];
+        //}
+        //Vector3 end = start + (Vector3)segment;
+
+        //GameObject vecObj = Instantiate(vectorPrefab, Vector3.zero, Quaternion.identity, transform);
+        //LineRenderer lr = vecObj.GetComponent<LineRenderer>();
+        //lr.positionCount = 2;
+        //lr.useWorldSpace = true;
+        //lr.SetPosition(0, start);
+        //lr.SetPosition(1, end);
+        //lr.startColor = lr.endColor = new Color(Random.value, Random.value, Random.value);
+
+        //vectorObjects.Add(vecObj);
+        Vector3 startPos = origin;
+        foreach (var vec in vectorSegments.GetRange(0, vectorSegments.Count - 1))
         {
-            start += (Vector3)vectorSegments[i];
+            startPos += new Vector3(vec.x, vec.y, 0f);
         }
-        Vector3 end = start + (Vector3)segment;
+        Vector3 endPos = startPos + new Vector3(newVec.x, newVec.y, 0f);
 
         GameObject vecObj = Instantiate(vectorPrefab, Vector3.zero, Quaternion.identity, transform);
         LineRenderer lr = vecObj.GetComponent<LineRenderer>();
         lr.positionCount = 2;
         lr.useWorldSpace = true;
-        lr.SetPosition(0, start);
-        lr.SetPosition(1, end);
-        lr.startColor = lr.endColor = new Color(Random.value, Random.value, Random.value);
+        lr.SetPosition(0, startPos);
+        lr.SetPosition(1, endPos);
 
-        vectorObjects.Add(vecObj);
-
-        Vector3Int tilePos = chartTileScript.tilemapChart.WorldToCell(end); // タイル座標へ変換
-        int zoneType = chartTileScript.GetZoneTypeAt(tilePos.x, tilePos.y);
+        Vector3Int tilePos = chartTileScript.tilemapChart.WorldToCell(endPos); // タイル座標へ変換
+         zoneType = chartTileScript.GetZoneTypeAt(tilePos.x, tilePos.y);
         string zoneName = zoneType switch
         {
             0 => "温暖海域",
@@ -74,9 +105,12 @@ public class ChartVectorManager : MonoBehaviour
         };
 
         Debug.Log($"出航ベクトル先端: ({tilePos.x}, {tilePos.y}) - 海域: {zoneName}");
+        RegionText.text = zoneName.ToString();
+        vectorObjects.Add(vecObj);
+        lr.startColor = lr.endColor = new Color(Random.value, Random.value, Random.value);
     }
 
-    void ResetVectors()
+  public void ResetVectors()
     {
         foreach (var obj in vectorObjects)
         {

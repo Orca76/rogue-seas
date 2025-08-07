@@ -15,7 +15,7 @@ public class EnemyCreator : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.Find("Player"); // プレイヤーを取得
+        player = GameObject.FindWithTag("Player"); // プレイヤーを取得
         lastSpawnTime = Time.time;
     }
 

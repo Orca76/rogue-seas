@@ -35,7 +35,7 @@ public class SummonCrystal : MonoBehaviour
     {
         VectorSystem = GameObject.Find("VectorManager");
         alchemySystem=VectorSystem.GetComponent<AlchemyVectorManager>();
-        Player = GameObject.Find("Player");
+        Player = GameObject.FindWithTag("Player");
         sentryManagerSC=Player.GetComponent<SentryManager>();
         map = GameObject.Find("map");
         tiledata=map.GetComponent<AlchemyTile>();
@@ -116,10 +116,11 @@ public class SummonCrystal : MonoBehaviour
                 break;
 
             case 1://レア sp20
-
+                DistributePoints(20);
                 break;
             case 2://スーパーレア sp30
 
+                DistributePoints(30);
                 break;
 
             default:

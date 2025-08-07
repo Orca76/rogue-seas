@@ -16,6 +16,8 @@ public class DragItem : MonoBehaviour
 
     private IInventoryUI draggingInventoryUI; // どのインベントリから引っ張ったか
 
+
+    public GameObject ChartUI;
     void Start()
     {
         hotbarUI = FindObjectOfType<HotbarUI>(); // まず取得
@@ -112,8 +114,19 @@ public class DragItem : MonoBehaviour
                             draggingItem.AVector
                         );
 
+
+
                         // 🔸 錬成台などに送る処理（仮）
-                        AlchemyVectorManager.Instance.ReceiveItem(oneItem); // ←あとで書く
+
+                        if (ChartUI.activeSelf)//プレイヤー下の海図が表示されている→錬成盤は表示されていない
+                        {
+                            ChartVectorManager.Instance.ReceiveItem(oneItem);//海図の方にデータを渡す
+                        }
+                        else
+                        {
+                            AlchemyVectorManager.Instance.ReceiveItem(oneItem); // 錬成盤
+                        }
+                          
 
                         // 元スロットの個数を1減らす
                         draggingItem.count--;
@@ -127,6 +140,7 @@ public class DragItem : MonoBehaviour
 
                     break; // 投入口に落としたらループ終了
                 }
+
 
                     //----------------ここから通常処理　ここから上が錬成処理
 
