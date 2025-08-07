@@ -8970,7 +8970,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6373164a562da0e419cd43cd92d68049, type: 2}
   shallowWaterTile: {fileID: 11400000, guid: 5d61a675072787448bf1024a914de3f6, type: 2}
   deepWaterTile: {fileID: 11400000, guid: 2d4ea301f1805da46a7f12ea5d6cf383, type: 2}
-  desertTile: {fileID: 11400000, guid: 6e2db7008bcdea7418dcf005b4256071, type: 2}
+  desertTile: {fileID: 11400000, guid: aec909ae1ae0a2e4ba4f1136504d53b4, type: 2}
   grasslandTile:
   - {fileID: 11400000, guid: 94a9e4cdd6f8baf4193c595e4bb2d12c, type: 2}
   forestTile: {fileID: 11400000, guid: 590ec12d25852814dac8cb3240173d2e, type: 2}

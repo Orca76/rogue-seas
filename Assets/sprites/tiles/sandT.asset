@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
-  m_Name: grassV3
+  m_Name: sandT
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: 43fc5c93954017d4296eb14a59fdda5e, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: 73ac69c6f4bfc4e40b9dfcd830aeef80, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
