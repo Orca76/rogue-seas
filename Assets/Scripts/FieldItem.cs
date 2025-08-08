@@ -31,6 +31,12 @@ public class FieldItem : MonoBehaviour
             ItemStack newItem = new ItemStack(itemName, icon, 1, isStackable,alchemyVector);
             bool added = hotbar.TryAddItem(newItem);
 
+            //ƒQƒbƒgUI‚Ìî•ñ‚ğæ“¾
+            GameObject GetUI = GameObject.Find("ItemGetUI");
+            GetUI.GetComponent<ItemGetUIManager>().CreateUI(icon, itemName);
+
+          
+            
             if (added)
             {
                 Destroy(gameObject); // E‚í‚ê‚½‚Ì‚ÅÁ–Å

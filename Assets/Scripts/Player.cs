@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -23,17 +25,32 @@ public class Player : MonoBehaviour
     public int totalLevel=1;//総合レベル
     // 0:HP, 1:攻撃力, 2:攻撃速度
 
+
+    public TextMeshProUGUI[] LevelTexts;//レベルのUI
+
     int nextLevel;
     public GameObject LevelUpUI;//UI レベルアップ
+
+    public Slider ExpSlider;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         nextLevel = 30;
+        ExpSlider.interactable = false;
     }
 
     void Update()
     {
-        if (Exp > nextLevel)
+
+        for (int i = 0; i < LevelTexts.Length && i < levels.Length; i++)
+        {
+            LevelTexts[i].text = "Lv"+levels[i].ToString();
+        }
+        ExpSlider.value = (float)Exp / nextLevel;
+        Debug.Log($"Exp={Exp}, nextLevel={nextLevel}, Exp/nextLevel={(float)Exp / nextLevel}, SliderValue={ExpSlider.value}");
+
+
+        if (Exp >= nextLevel)
         {
             if (!LevelUpUI.activeSelf)
             {
