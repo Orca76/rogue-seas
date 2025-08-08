@@ -91,7 +91,7 @@ public class IslandTile : MonoBehaviour
     [SerializeField] RockDepthBaker depthBaker;
     [SerializeField] TileLighting lighting;
 
-
+    public GameObject itemSpawnerObj;//アイテム生成
 
 
 
@@ -99,7 +99,7 @@ public class IslandTile : MonoBehaviour
     void Start()
     {
         CreateIsland();
-
+        itemSpawnerObj.GetComponent<ItemSpawner>().SpawnAll();//ここでアイテム生成
     }
     public void CreateIsland()
     {

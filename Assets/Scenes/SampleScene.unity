@@ -4002,6 +4002,7 @@ Transform:
   - {fileID: 989977724}
   - {fileID: 1468121264}
   - {fileID: 1217402672}
+  - {fileID: 1656224179}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7816,6 +7817,133 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650042090}
   m_CullTransparentMesh: 1
+--- !u!1 &1656224178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1656224179}
+  - component: {fileID: 1656224180}
+  m_Layer: 0
+  m_Name: ItemSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1656224179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656224178}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 921223910}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1656224180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656224178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 406c45996e965e64d9e0a7755d4d3665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  island: {fileID: 2054132486}
+  terrainMap: {fileID: 1813767997}
+  spawnParent: {fileID: 1656224179}
+  islandCode: 0
+  seed: 0
+  cellJitter: 0
+  lootByIslandCode:
+  - desert:
+      prefabs:
+      - {fileID: 8099014338014886677, guid: 60671700b0c1d5b4f8ab71a38d1b0853, type: 3}
+      chance: 0.019
+    forest:
+      prefabs:
+      - {fileID: 2284384313600132799, guid: 7c57066ddc2314d4589fd679713de058, type: 3}
+      chance: 0.017
+    grass:
+      prefabs:
+      - {fileID: 1011367713582735785, guid: 88e6c2fa9e9bdd245bbc9ae3671a1169, type: 3}
+      chance: 0.024
+    mountain:
+      prefabs:
+      - {fileID: 450944702128661990, guid: bc2dfd2640a3f7342889d5b48115df03, type: 3}
+      chance: 0.022
+  - desert:
+      prefabs: []
+      chance: 0.2
+    forest:
+      prefabs: []
+      chance: 0.2
+    grass:
+      prefabs: []
+      chance: 0.2
+    mountain:
+      prefabs: []
+      chance: 0.2
+  - desert:
+      prefabs: []
+      chance: 0.2
+    forest:
+      prefabs: []
+      chance: 0.2
+    grass:
+      prefabs: []
+      chance: 0.2
+    mountain:
+      prefabs: []
+      chance: 0.2
+  - desert:
+      prefabs: []
+      chance: 0.2
+    forest:
+      prefabs: []
+      chance: 0.2
+    grass:
+      prefabs: []
+      chance: 0.2
+    mountain:
+      prefabs: []
+      chance: 0.2
+  - desert:
+      prefabs: []
+      chance: 0.2
+    forest:
+      prefabs: []
+      chance: 0.2
+    grass:
+      prefabs: []
+      chance: 0.2
+    mountain:
+      prefabs: []
+      chance: 0.2
+  - desert:
+      prefabs: []
+      chance: 0.2
+    forest:
+      prefabs: []
+      chance: 0.2
+    grass:
+      prefabs: []
+      chance: 0.2
+    mountain:
+      prefabs: []
+      chance: 0.2
 --- !u!1 &1704876870
 GameObject:
   m_ObjectHideFlags: 0
@@ -10084,6 +10212,7 @@ MonoBehaviour:
   seaWidth: 16
   depthBaker: {fileID: 2054132491}
   lighting: {fileID: 2054132490}
+  itemSpawnerObj: {fileID: 1656224178}
 --- !u!114 &2054132487
 MonoBehaviour:
   m_ObjectHideFlags: 0
