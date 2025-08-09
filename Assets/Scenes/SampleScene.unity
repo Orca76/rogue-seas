@@ -1197,6 +1197,7 @@ MonoBehaviour:
   BaseAttackSpeed: 0
   AttackSpeed: 0
   BulletPrefab: {fileID: 0}
+  Rarity: 0
   moveSpeed: 3
   approachDistance: 2
   Player: {fileID: 0}
@@ -9556,6 +9557,74 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1769665850, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1769665850, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[0].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[0].b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[0].g
+      value: 0.30938816
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[0].r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[1].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[1].b
+      value: 0.9815197
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[1].g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[1].r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[2].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[2].b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[2].g
+      value: 0.96324
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778104888, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: rarityColors.Array.data[2].r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984872160, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984872160, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 706325397884779904, guid: 591a7737827b7cb429112438aab7269a, type: 3}
       propertyPath: chartSystem
       value: 
@@ -9606,6 +9675,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 706325398727032945, guid: 591a7737827b7cb429112438aab7269a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 706325399657227146, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 706325399657227146, guid: 591a7737827b7cb429112438aab7269a, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

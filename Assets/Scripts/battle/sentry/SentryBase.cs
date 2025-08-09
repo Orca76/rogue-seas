@@ -14,6 +14,7 @@ public class SentryBase : MonoBehaviour
     public float AttackSpeed;
     public GameObject BulletPrefab;
 
+    public int Rarity;//0 1 2 norma rare Srare
     // 移動速度（調整用）
     public float moveSpeed = 3f;
 

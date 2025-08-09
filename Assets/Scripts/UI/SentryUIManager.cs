@@ -13,6 +13,9 @@ public class SentryUIManager : MonoBehaviour
     [SerializeField] float rowHeight = 28f;      // 行の高さ（プレハブに合わせて調整）
     [SerializeField] float rowSpacing = 6f;      // 行間
 
+
+    [SerializeField] Color[] rarityColors;
+
     private SentryManager sentryMgr;
 
     private class Row { public SentryBase sb; public SentryUI ui; public SpriteRenderer sr; }
@@ -75,6 +78,8 @@ public class SentryUIManager : MonoBehaviour
             if (!sb) continue;
 
             var ui = Instantiate(entryPrefab, listParent);
+            ui.GetComponent<Image>().color = rarityColors[sb.Rarity];
+
             // アンカー/ピボットを左上に固定（ズレ防止）
             var rt = ui.GetComponent<RectTransform>();
             rt.anchorMin = rt.anchorMax = new Vector2(0f, 1f);

@@ -106,28 +106,33 @@ public class SummonCrystal : MonoBehaviour
     }
     public void CreateSentry()//生成ボタンを押した時
     {
-        switch(alchemySystem.rarityCode)
+      
+        GameObject created=Instantiate(defaultSentry,gameObject.transform.position, Quaternion.identity);
+
+        switch (alchemySystem.rarityCode)
         {
             case 0://コモン sp10
 
                 //セントリーのステータス決定
                 DistributePoints(10);
+                created.GetComponent<SentryBase>().Rarity = 0;
 
                 break;
 
             case 1://レア sp20
                 DistributePoints(20);
+                created.GetComponent<SentryBase>().Rarity = 1;
                 break;
             case 2://スーパーレア sp30
 
                 DistributePoints(30);
+                created.GetComponent<SentryBase>().Rarity = 2;
                 break;
 
             default:
 
                 break;
         }
-        GameObject created=Instantiate(defaultSentry,gameObject.transform.position, Quaternion.identity);
         sentryManagerSC.sentryList.Add(created);//リストに登録
 
         created.transform.parent=Player.transform;//プレイヤーの子オブジェクトにする
