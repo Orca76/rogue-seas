@@ -15,8 +15,8 @@ public class IslandTile : MonoBehaviour
 
     [Header("Surface Tiles")]
     public TileBase[] seaTile;
-    public TileBase shallowWaterTile;
-    public TileBase deepWaterTile;
+    public TileBase[] shallowWaterTiles;
+    public TileBase[] deepWaterTiles;
     public TileBase desertTile;
     public TileBase[] grasslandTile;
     public TileBase forestTile;
@@ -151,8 +151,8 @@ public class IslandTile : MonoBehaviour
         FillUndergroundMap();
 
         // ここで呼び出し
-       // depthBaker.BakeDepthNaive(tilemapSurface);   // 地表の岩だけ暗淡
-       // lighting.Init(tilemapSurface,true);          // 光量マップ初期化
+        // depthBaker.BakeDepthNaive(tilemapSurface);   // 地表の岩だけ暗淡
+        // lighting.Init(tilemapSurface,true);          // 光量マップ初期化
 
 
         RockDepthManager.Instance.RebuildAndBake();
@@ -180,7 +180,7 @@ public class IslandTile : MonoBehaviour
         //-p--------------------------
 
         // ---------- 砂浜生成 (一度だけ) ----------
-       isShore = new bool[mapWidth, mapHeight];
+        isShore = new bool[mapWidth, mapHeight];
         int[,] distMap = new int[mapWidth, mapHeight];
         Queue<Vector2Int> q = new Queue<Vector2Int>();
 
@@ -463,7 +463,15 @@ public class IslandTile : MonoBehaviour
     // 補助: 水判定（あなたの seaTile 配列に合わせて）
     bool IsWater(TileBase t)
     {
-        if (t == shallowWaterTile || t == deepWaterTile) return true;
+        // if (t == shallowWaterTile || t == deepWaterTile) return true;
+        // 深海配列チェック
+        if (deepWaterTiles != null)
+            foreach (var deep in deepWaterTiles)
+                if (t == deep) return true;
+        // 浅瀬配列
+        if (shallowWaterTiles != null)
+            foreach (var s in shallowWaterTiles)
+                if (t == s) return true;
         foreach (var sea in seaTile)
             if (t == sea) return true;
         return false;
@@ -514,10 +522,33 @@ public class IslandTile : MonoBehaviour
                 int d = dist[x, y];
                 if (d == -1) continue;                     // 陸 or 砂浜
 
-                TileBase newTile =
-                      (d <= shallowWidth) ? shallowWaterTile
-                    : (d <= seaWidth) ? seaTile[Random.Range(0, seaTile.Length)]
-                                                : deepWaterTile;
+                //TileBase newTile =
+                //      (d <= shallowWidth) ? shallowWaterTile
+                //    : (d <= seaWidth) ? seaTile[Random.Range(0, seaTile.Length)]
+                //                                : deepWaterTile;
+                TileBase newTile;
+
+                if (d <= shallowWidth) // 浅瀬
+                {
+                    if (shallowWaterTiles != null && shallowWaterTiles.Length > 0)
+                        newTile = shallowWaterTiles[Random.Range(0, shallowWaterTiles.Length)];
+                    else
+                        newTile = null; // 後でフォールバック
+                }
+                else if (d <= seaWidth) // 通常海
+                {
+                    if (seaTile != null && seaTile.Length > 0)
+                        newTile = seaTile[Random.Range(0, seaTile.Length)];
+                    else
+                        newTile = null;
+                }
+                else // 深海
+                {
+                    if (deepWaterTiles != null && deepWaterTiles.Length > 0)
+                        newTile = deepWaterTiles[Random.Range(0, deepWaterTiles.Length)];
+                    else
+                        newTile = null;
+                }
 
                 tilemapSurface.SetTile(new Vector3Int(x, y, 0), newTile);
             }

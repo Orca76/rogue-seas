@@ -9095,9 +9095,26 @@ MonoBehaviour:
   tilemapSurface: {fileID: 1813767997}
   tilemapUnderground: {fileID: 951069739}
   seaTile:
+  - {fileID: 11400000, guid: 0ae221ea4555451458d8daaa872d5058, type: 2}
+  - {fileID: 11400000, guid: 0ae221ea4555451458d8daaa872d5058, type: 2}
+  - {fileID: 11400000, guid: 0ae221ea4555451458d8daaa872d5058, type: 2}
+  - {fileID: 11400000, guid: 0ae221ea4555451458d8daaa872d5058, type: 2}
+  - {fileID: 11400000, guid: 1149dc71822f9884f9d0edc185fb2966, type: 2}
   - {fileID: 11400000, guid: 6373164a562da0e419cd43cd92d68049, type: 2}
-  shallowWaterTile: {fileID: 11400000, guid: 5d61a675072787448bf1024a914de3f6, type: 2}
-  deepWaterTile: {fileID: 11400000, guid: 2d4ea301f1805da46a7f12ea5d6cf383, type: 2}
+  shallowWaterTiles:
+  - {fileID: 11400000, guid: 605f451a443339146ac2e5a6c376878d, type: 2}
+  - {fileID: 11400000, guid: 605f451a443339146ac2e5a6c376878d, type: 2}
+  - {fileID: 11400000, guid: 605f451a443339146ac2e5a6c376878d, type: 2}
+  - {fileID: 11400000, guid: 605f451a443339146ac2e5a6c376878d, type: 2}
+  - {fileID: 11400000, guid: 2efdb25dc423b1c4882a1690e5d21059, type: 2}
+  - {fileID: 11400000, guid: ba0a142d4aa9a644fb4cbc67c3f7f249, type: 2}
+  deepWaterTiles:
+  - {fileID: 11400000, guid: ded2161bb2b798f43b431665db79c03d, type: 2}
+  - {fileID: 11400000, guid: ded2161bb2b798f43b431665db79c03d, type: 2}
+  - {fileID: 11400000, guid: ded2161bb2b798f43b431665db79c03d, type: 2}
+  - {fileID: 11400000, guid: ded2161bb2b798f43b431665db79c03d, type: 2}
+  - {fileID: 11400000, guid: 13417d3bd335616498dc0dd655fe04b8, type: 2}
+  - {fileID: 11400000, guid: 53a9ac98be78b6c49ba004eb5bd4bced, type: 2}
   desertTile: {fileID: 11400000, guid: aec909ae1ae0a2e4ba4f1136504d53b4, type: 2}
   grasslandTile:
   - {fileID: 11400000, guid: 94a9e4cdd6f8baf4193c595e4bb2d12c, type: 2}
@@ -9539,22 +9556,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1769665850, guid: 591a7737827b7cb429112438aab7269a, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1769665850, guid: 591a7737827b7cb429112438aab7269a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1984872160, guid: 591a7737827b7cb429112438aab7269a, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1984872160, guid: 591a7737827b7cb429112438aab7269a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 706325397884779904, guid: 591a7737827b7cb429112438aab7269a, type: 3}
       propertyPath: chartSystem
       value: 
@@ -9605,14 +9606,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 706325398727032945, guid: 591a7737827b7cb429112438aab7269a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 706325399657227146, guid: 591a7737827b7cb429112438aab7269a, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 706325399657227146, guid: 591a7737827b7cb429112438aab7269a, type: 3}
-      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
