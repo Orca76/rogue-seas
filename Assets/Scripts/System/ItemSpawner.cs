@@ -48,6 +48,11 @@ public class ItemSpawner : MonoBehaviour
     // 内部キャッシュ
     Dictionary<TileBase, int> tileTypeQuick = new(); // 0=desert,1=forest,2=grass,3=mountain
 
+    [Header("Crystal (海以外のタイルで確率湧き)")]
+    [SerializeField] GameObject crystalPrefab;
+    [Range(0f, 1f)] public float crystalChance = 0.05f;
+
+
     // --------- 公開API：島生成完了後にこれを呼ぶ ---------
     [ContextMenu("Spawn Items Now")]
     public void SpawnAll()
@@ -96,12 +101,41 @@ public class ItemSpawner : MonoBehaviour
 
                 Instantiate(prefab, world, Quaternion.identity, parent);
                 placed++;
+
+
+
+                // ===== ここでクリスタル呼び出し =====
+                SpawnCrystal(cell, parent);
+
             }
 
         Debug.Log($"[ItemSpawner] Spawned {placed} items for islandCode={islandCode}");
     }
 
     // --------- 補助 ---------
+
+    // クリスタル生成（海タイルは除外）
+    void SpawnCrystal(Vector3Int cell, Transform parent)
+    {
+        if (!crystalPrefab) return;
+        if (UnityEngine.Random.value > crystalChance) return;
+
+        // 念のため：海は除外
+        var t = terrainMap.GetTile(cell);
+        if (ClassifyTile(t) == -1) return;
+
+        Instantiate(crystalPrefab, JitteredWorld(cell), Quaternion.identity, parent);
+    }
+
+    // 既存のセル中心＋ジッターを共通化（未定義なら追加）
+    Vector3 JitteredWorld(Vector3Int cell)
+    {
+        Vector3 world = terrainMap.GetCellCenterWorld(cell);
+        var cs = terrainMap.cellSize;
+        world.x += UnityEngine.Random.Range(-cellJitter, cellJitter) * cs.x;
+        world.y += UnityEngine.Random.Range(-cellJitter, cellJitter) * cs.y;
+        return world;
+    }
 
     bool ValidateRefs()
     {

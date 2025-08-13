@@ -20,4 +20,6 @@ public class EnemyBullet : MonoBehaviour
     {
         transform.Translate(Vector3.up * BulletSpeed * Time.deltaTime);
     }
+
+
 }

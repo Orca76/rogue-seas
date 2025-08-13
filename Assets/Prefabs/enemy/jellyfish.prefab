@@ -106,6 +106,7 @@ MonoBehaviour:
   moveSpeed: 0.1
   Soul: {fileID: 2958066547802969458, guid: 273f716068ea3bc44b12a337a5ed2f51, type: 3}
   ExpValue: 10
+  LimitDistance: 4
 --- !u!61 &5337327355047857788
 BoxCollider2D:
   m_ObjectHideFlags: 0

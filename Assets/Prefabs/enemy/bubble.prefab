@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 260506944976649709}
   - component: {fileID: 3290415149610695647}
   - component: {fileID: -3577843778727108375}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bubble
   m_TagString: EnemyAt
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 09df19830c0e9dc4bba3c2f32a4d2d55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletSpeed: 1
-  Damage: 1
+  Damage: 10
   LifeTime: 10
 --- !u!61 &3290415149610695647
 BoxCollider2D:

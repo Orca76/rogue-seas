@@ -28,6 +28,8 @@ public class SentryBase : MonoBehaviour
     SentryManager managerSc;//現在の指示
     float recharge;//撃つ時用のリチャージ時間
 
+
+    public DamagePopup popupPrefab;
     void Start()
     {
         // 初期化があればここに
@@ -37,11 +39,25 @@ public class SentryBase : MonoBehaviour
       //  HP = MaxHP;
     }
 
+
+
+    void DestroySentry()
+    {
+        //死んだときの処理あれこれ
+        managerSc.sentryList.Remove(gameObject);
+
+        Destroy(gameObject);
+    }
     void Update()
     {
         
         UpdateStats();
 
+
+        if (HP <= 0)
+        {
+            DestroySentry();
+        }
         targetEnemy = UpdateTargetEnemy();
         if ((managerSc.currentState == SentryManager.SentryState.Disperse))
         {
@@ -119,6 +135,19 @@ public class SentryBase : MonoBehaviour
         else
         {
             // 一定距離内なので停止（攻撃処理はここに入れる予定）
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "EnemyAt")
+        {
+            HP -= collision.GetComponent<EnemyBullet>().Damage;
+            // 表示位置（自キャラの少し上）
+            var pos = transform.position;
+            DamagePopup.Spawn(popupPrefab, pos, Mathf.RoundToInt(collision.GetComponent<EnemyBullet>().Damage));
+
+            Destroy(collision.gameObject);
         }
     }
 }

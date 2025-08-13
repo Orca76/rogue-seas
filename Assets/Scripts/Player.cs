@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 public class Player : MonoBehaviour
 {
@@ -32,6 +33,13 @@ public class Player : MonoBehaviour
     public GameObject LevelUpUI;//UI レベルアップ
 
     public Slider ExpSlider;
+    public Image HPbar;//HPバー
+
+
+    public float HP;
+    public float MaxHP;
+
+    public DamagePopup popupPrefab;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -39,8 +47,16 @@ public class Player : MonoBehaviour
         ExpSlider.interactable = false;
     }
 
+   void HandleHPBar()
+    {
+        HPbar.fillAmount = HP / MaxHP;
+    }
+
     void Update()
     {
+
+        HandleHPBar();
+
 
         for (int i = 0; i < LevelTexts.Length && i < levels.Length; i++)
         {
@@ -91,5 +107,16 @@ public class Player : MonoBehaviour
     {
         // 移動
         rb.velocity = movement * moveSpeed;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "EnemyAt")
+        {
+            HP -= collision.GetComponent<EnemyBullet>().Damage;
+            var pos = transform.position;
+            DamagePopup.Spawn(popupPrefab, pos, Mathf.RoundToInt(collision.GetComponent<EnemyBullet>().Damage));
+            Destroy(collision.gameObject);
+        }
     }
 }

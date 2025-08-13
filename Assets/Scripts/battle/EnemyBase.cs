@@ -15,18 +15,23 @@ public class EnemyBase : MonoBehaviour
 
     public GameObject Soul;// 所謂経験値オブジェクト
     public int ExpValue;//倒した時の経験値量
+
+    public float LimitDistance;//これ以上離れたら消える
     void Start()
     {
-        player = GameObject.Find("Player");   
+        player = GameObject.Find("Player");
+        Debug.Log($"[ELG] Start {name}, playing={Application.isPlaying}");
     }
 
     // Update is called once per frame
+
+  
     void Update()
     {
         if (HP <= 0)
         {
             //死んだときの処理
-
+            GameObject.Find("enemyCreator").GetComponent<EnemyCreator>().KilledEnemyNum++;
             GameObject soul = Instantiate(Soul, transform.position, transform.rotation);
             SoulBase soulBase = soul.GetComponent<SoulBase>();
             soulBase.soulValue = ExpValue;
@@ -37,7 +42,7 @@ public class EnemyBase : MonoBehaviour
         MoveTowardPlayer();  // ← プレイヤーに近づく
         if (attackTimer >= AttackSpan)
         {
-           
+
 
             if (player != null)
             {
@@ -51,6 +56,11 @@ public class EnemyBase : MonoBehaviour
             }
             attackTimer = 0f;
         }
+        if (Vector2.Distance(player.transform.position, gameObject.transform.position) > LimitDistance)
+        {
+            Destroy(gameObject);
+        }
+
     }
     void MoveTowardPlayer()
     {

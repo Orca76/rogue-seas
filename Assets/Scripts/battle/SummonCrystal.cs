@@ -45,6 +45,8 @@ public class SummonCrystal : MonoBehaviour
         // 範囲内にプレイヤーがいて、かつインタラクトキーが押されたらUIを開く
         if (playerInRange && Input.GetKeyDown(interactKey) && hasBeenUsed == false)
         {
+            // 時間を完全に停止
+            Time.timeScale = 0f;
             OpenAlchemyUI();
         }
        
@@ -93,6 +95,10 @@ public class SummonCrystal : MonoBehaviour
         //インベントリの位置を下に
         SetPosY(-100);
         alchemySystem.ResetVectors();//閉じたらベクトルリセット
+
+
+        // 再開
+        Time.timeScale = 1f;
         alchemyUI.SetActive(false);
         Debug.Log("Alchemy UI closed");
     }
