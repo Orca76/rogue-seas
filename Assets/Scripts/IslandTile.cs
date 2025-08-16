@@ -17,16 +17,16 @@ public class IslandTile : MonoBehaviour
     public TileBase[] seaTile;
     public TileBase[] shallowWaterTiles;
     public TileBase[] deepWaterTiles;
-    public TileBase desertTile;
-    public TileBase[] grasslandTile;
-    public TileBase forestTile;
-    public TileBase mountainTile;
+    //public TileBase desertTile;
+    //public TileBase[] grasslandTile;
+    //public TileBase forestTile;
+    //public TileBase mountainTile;
 
-    [Header("Underground Tiles")]
-    public TileBase rockTile;
-    public TileBase caveTile; // 通常はnullにする（空洞）
-    public TileBase deepstoneTile;//深層岩
-    public TileBase bedrockTile; // ←これ新規（壊れない岩盤）
+    //[Header("Underground Tiles")]
+    //public TileBase rockTile;
+    //public TileBase caveTile; // 通常はnullにする（空洞）
+    //public TileBase deepstoneTile;//深層岩
+    //public TileBase bedrockTile; // ←これ新規（壊れない岩盤）
 
     [Header("Island Settings")]
     public float regionWidth = 100f;
@@ -94,12 +94,55 @@ public class IslandTile : MonoBehaviour
     public GameObject itemSpawnerObj;//アイテム生成
 
 
+    public GameObject playerObj;
+    Player playerData;
+
+    //こっから新規のタイルセットシステム
+
+    public enum IslandType { Tropical = 0, Frigid = 1, Foggy = 2, Tempest = 3, Organic = 4, Mystic = 5 } // 0..5
+
+    [System.Serializable]
+    public class TileSetByIslandType
+    {
+        // islandType ごとのバリエーション配列（例：6個）
+        public TileBase[] variants;
+    }
+
+    // 島種ごと × バリエーション6
+    [Header("Sand / Forest / Grass / Mountain")]
+    public TileSetByIslandType[] sandTiles;     // 長さ = 島種数（6を推奨）
+    public TileSetByIslandType[] forestTiles;   // 各要素に variants[0..5]
+    public TileSetByIslandType[] grassTiles;
+    public TileSetByIslandType[] mountainTiles;
+
+    // 例：共通タイル（必要なら）
+    public TileBase[] seaTiles;       // 6
+    public TileBase[] shallowTiles;   // 6
+    public TileBase[] DeepWaterTiles; // 6
 
 
+
+
+    // ヘルパー：このタイルが「その島種のカテゴリ配列」に含まれるか？
+    bool IsInCategory(TileBase tile, TileSetByIslandType[] table, int islandType)
+    {
+        if (table == null || table.Length == 0) return false;
+        islandType = Mathf.Clamp(islandType, 0, table.Length - 1);
+        var arr = table[islandType].variants;
+        if (arr == null) return false;
+        for (int i = 0; i < arr.Length; i++)
+            if (arr[i] == tile) return true;
+        return false;
+    }
     void Start()
     {
+        playerObj = GameObject.FindWithTag("Player");
+        playerData=playerObj.GetComponent<Player>();
+
         CreateIsland();
         itemSpawnerObj.GetComponent<ItemSpawner>().SpawnAll();//ここでアイテム生成
+
+
     }
     public void CreateIsland()
     {
@@ -148,7 +191,7 @@ public class IslandTile : MonoBehaviour
     {
         islandBoundary = GenerateIslandPolygon();
         FillSurfaceMap();
-        FillUndergroundMap();
+      //  FillUndergroundMap();
 
         // ここで呼び出し
         // depthBaker.BakeDepthNaive(tilemapSurface);   // 地表の岩だけ暗淡
@@ -270,28 +313,40 @@ public class IslandTile : MonoBehaviour
 
 
 
-                TileBase tile = ChooseBiomeTile(biomeNoise); // デフォは海
-                if (tile == desertTile)
-                {
-                    int[] options = { 40 }; //無
-                    tileMapData[x, y] = options[Random.Range(0, options.Length)];
-                }
 
-                if (tile == forestTile)
-                {
-                    int[] options = { 10 }; // 無　木　花　草
-                    tileMapData[x, y] = options[Random.Range(0, options.Length)];
-                }
-                if (grasslandTile.Contains(tile))
-                {
-                    int[] options = { 20 }; // 無　木　花　草
-                    tileMapData[x, y] = options[Random.Range(0, options.Length)];
-                }
-                if (tile == mountainTile)
-                {
-                    int[] options = { 30, 31 }; //無 岩　鉱石　鉱石　鉱石
-                    tileMapData[x, y] = 31;//まずは確定で岩を生成
-                }
+                //kokokara
+              
+
+                TileBase tile = ChooseBiomeTile(biomeNoise); // デフォは海
+
+                int islandType = Mathf.Clamp(playerData.NextDest, 0, 5);
+
+                if (IsInCategory(tile, sandTiles, islandType)) tileMapData[x, y] = 40; // 砂
+                else if (IsInCategory(tile, forestTiles, islandType)) tileMapData[x, y] = 10; // 森
+                else if (IsInCategory(tile, grassTiles, islandType)) tileMapData[x, y] = 20; // 草
+                else if (IsInCategory(tile, mountainTiles, islandType)) tileMapData[x, y] = 31; // 山（岩確定）
+
+                //if (tile == desertTile)
+                //{
+                //    int[] options = { 40 }; //無
+                //    tileMapData[x, y] = options[Random.Range(0, options.Length)];
+                //}
+
+                //if (tile == forestTile)
+                //{
+                //    int[] options = { 10 }; // 無　木　花　草
+                //    tileMapData[x, y] = options[Random.Range(0, options.Length)];
+                //}
+                //if (grasslandTile.Contains(tile))
+                //{
+                //    int[] options = { 20 }; // 無　木　花　草
+                //    tileMapData[x, y] = options[Random.Range(0, options.Length)];
+                //}
+                //if (tile == mountainTile)
+                //{
+                //    int[] options = { 30, 31 }; //無 岩　鉱石　鉱石　鉱石
+                //    tileMapData[x, y] = 31;//まずは確定で岩を生成
+                //}
 
                 // === 水域：ここに浅瀬判定を差し込む ===============================
 
@@ -303,60 +358,124 @@ public class IslandTile : MonoBehaviour
         PaintWaterBands();
     }
 
-    void FillUndergroundMap()
+    //void FillUndergroundMap()
+    //{
+    //    tilemapUnderground.ClearAllTiles();
+    //    Vector2 biomeOffset = GetNoiseOffset(noiseSeed + 999);
+
+    //    for (int y = 0; y < mapHeight; y++)
+    //    {
+    //        for (int x = 0; x < mapWidth; x++)
+    //        {
+    //            Vector3Int pos3 = new Vector3Int(x, y, 0);
+    //            Vector2 pos2 = new Vector2(x + 0.5f, y + 0.5f);
+
+    //            // 地上が海のロジック → 地下は bedrock
+    //            if (!IsPointInPolygon(pos2, islandBoundary))
+    //            {
+    //                tilemapUnderground.SetTile(pos3, bedrockTile);
+    //                int[] options = { 60 }; //岩盤
+    //                tileMapDataUnderground[x, y] = options[Random.Range(0, options.Length)];
+    //                continue;
+    //            }
+
+    //            // 地下ノイズによる空洞 or 岩タイルの配置
+    //            float biomeNoise = Mathf.PerlinNoise((x + biomeOffset.x) * biomeFrequency,
+    //                                                  (y + biomeOffset.y) * biomeFrequency) * 2f - 1f;
+
+    //            if (biomeNoise < biomeThresholdCave)
+    //            {
+    //                tilemapUnderground.SetTile(pos3, caveTile); // 空洞
+    //                int[] options = { 40 }; //無(地下洞窟)
+    //                tileMapDataUnderground[x, y] = options[Random.Range(0, options.Length)];
+    //            }
+    //            else
+    //            {
+    //                tilemapUnderground.SetTile(pos3, deepstoneTile); // 岩
+    //                int[] options = { 50 }; //深層岩
+    //                tileMapDataUnderground[x, y] = options[Random.Range(0, options.Length)];
+    //            }
+
+
+    //        }
+    //    }
+    //}
+
+    // まずヘルパーをクラス内に追加（IslandTile のどこか上の方でOK）
+    TileBase PickVariant(TileSetByIslandType[] table, int islandType, int salt = 0)
     {
-        tilemapUnderground.ClearAllTiles();
-        Vector2 biomeOffset = GetNoiseOffset(noiseSeed + 999);
+        if (table == null || table.Length == 0) return null;
+        islandType = Mathf.Clamp(islandType, 0, table.Length - 1);
 
-        for (int y = 0; y < mapHeight; y++)
+        var arr = table[islandType]?.variants;
+        if (arr == null || arr.Length == 0) return null;
+
+        // 再現性が欲しければ deterministic、ランダムで良ければ Random.Range に変えてOK
+        unchecked
         {
-            for (int x = 0; x < mapWidth; x++)
-            {
-                Vector3Int pos3 = new Vector3Int(x, y, 0);
-                Vector2 pos2 = new Vector2(x + 0.5f, y + 0.5f);
-
-                // 地上が海のロジック → 地下は bedrock
-                if (!IsPointInPolygon(pos2, islandBoundary))
-                {
-                    tilemapUnderground.SetTile(pos3, bedrockTile);
-                    int[] options = { 60 }; //岩盤
-                    tileMapDataUnderground[x, y] = options[Random.Range(0, options.Length)];
-                    continue;
-                }
-
-                // 地下ノイズによる空洞 or 岩タイルの配置
-                float biomeNoise = Mathf.PerlinNoise((x + biomeOffset.x) * biomeFrequency,
-                                                      (y + biomeOffset.y) * biomeFrequency) * 2f - 1f;
-
-                if (biomeNoise < biomeThresholdCave)
-                {
-                    tilemapUnderground.SetTile(pos3, caveTile); // 空洞
-                    int[] options = { 40 }; //無(地下洞窟)
-                    tileMapDataUnderground[x, y] = options[Random.Range(0, options.Length)];
-                }
-                else
-                {
-                    tilemapUnderground.SetTile(pos3, deepstoneTile); // 岩
-                    int[] options = { 50 }; //深層岩
-                    tileMapDataUnderground[x, y] = options[Random.Range(0, options.Length)];
-                }
-
-
-            }
+            int h = noiseSeed * 73856093 ^ islandType * 19349663 ^ salt * 83492791;
+            if (h == int.MinValue) h = 0;
+            int i = Mathf.Abs(h) % arr.Length;
+            return arr[i];
         }
     }
 
+    // 最終フォールバック（どこかから1枚でも返す）
+    TileBase AnyFallback()
+    {
+        // 好きな優先順で。ここでは草→砂→森→山
+        TileBase t;
+        t = PickVariant(grassTiles, 0); if (t) return t;
+        t = PickVariant(sandTiles, 0); if (t) return t;
+        t = PickVariant(forestTiles, 0); if (t) return t;
+        t = PickVariant(mountainTiles, 0); if (t) return t;
+        return null;
+    }
+
+
+
     TileBase ChooseBiomeTile(float val)
     {
+        // 島種 0..5（未設定なら 0）
+        int islandType = 0;
+        if (playerData != null) islandType = Mathf.Clamp(playerData.NextDest, 0, 5);
+
+        // しきい値はそのまま使用：val をカテゴリに振り分ける
         if (val < biomeThresholdDesert)
-            return desertTile;
+        {
+            // 砂（温暖なら砂、寒冷なら氷原など、インスペクタで入れたもの）
+            return PickVariant(sandTiles, islandType, salt: 1) ?? AnyFallback();
+        }
         else if (val < biomeThresholdGrassland)
-            return grasslandTile[Random.Range(0, grasslandTile.Length)];
+        {
+            // 草原（雪原など）
+            return PickVariant(grassTiles, islandType, salt: 2) ?? AnyFallback();
+        }
         else if (val < biomeThresholdForest)
-            return forestTile;
+        {
+            // 森（タイガなど）
+            return PickVariant(forestTiles, islandType, salt: 3) ?? AnyFallback();
+        }
         else
-            return mountainTile;
+        {
+            // 山（霊峰など）
+            return PickVariant(mountainTiles, islandType, salt: 4) ?? AnyFallback();
+        }
     }
+
+    //TileBase ChooseBiomeTile(float val)
+    //{
+    //    if (val < biomeThresholdDesert)
+    //        return desertTile;
+    //    else if (val < biomeThresholdGrassland)
+    //        return grasslandTile[Random.Range(0, grasslandTile.Length)];
+    //    else if (val < biomeThresholdForest)
+    //        return forestTile;
+    //    else
+    //        return mountainTile;
+    //}
+
+
 
     List<Vector2> GenerateIslandPolygon()
     {
@@ -442,8 +561,16 @@ public class IslandTile : MonoBehaviour
     {
         isShore[x, y] = true;
         distMap[x, y] = dist;
-        tilemapSurface.SetTile(new Vector3Int(x, y, 0), desertTile);
-        tileMapData[x, y] = 40;
+
+        // 島種（0..5）は playerData.NextDist から
+        int islandType = 0;
+        if (playerData != null) islandType = Mathf.Clamp(playerData.NextDest, 0, 5);
+
+        // 砂カテゴリからビーチ用タイルを1枚選ぶ（未設定ならフォールバック）
+        TileBase beach = PickVariant(sandTiles, islandType, salt: 100 + dist) ?? AnyFallback();
+        tilemapSurface.SetTile(new Vector3Int(x, y, 0), beach);
+
+        tileMapData[x, y] = 40; // 既存ロジック踏襲（ビーチ=40）
         q.Enqueue(new Vector2Int(x, y));
     }
 
@@ -461,19 +588,25 @@ public class IslandTile : MonoBehaviour
         return false;
     }
     // 補助: 水判定（あなたの seaTile 配列に合わせて）
-    bool IsWater(TileBase t)
+    public bool IsWater(TileBase t)
     {
-        // if (t == shallowWaterTile || t == deepWaterTile) return true;
-        // 深海配列チェック
+        if (t == null) return false;
+
+        // 深海チェック
         if (deepWaterTiles != null)
             foreach (var deep in deepWaterTiles)
                 if (t == deep) return true;
-        // 浅瀬配列
+
+        // 浅瀬チェック
         if (shallowWaterTiles != null)
             foreach (var s in shallowWaterTiles)
                 if (t == s) return true;
-        foreach (var sea in seaTile)
-            if (t == sea) return true;
+
+        // 海タイルチェック
+        if (seaTile != null)
+            foreach (var sea in seaTile)
+                if (t == sea) return true;
+
         return false;
     }
 

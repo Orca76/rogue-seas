@@ -33,7 +33,7 @@ public class SentryBase : MonoBehaviour
     void Start()
     {
         // ‰Šú‰»‚ª‚ ‚ê‚Î‚±‚±‚É
-        Player = GameObject.Find("Player");
+        Player = GameObject.FindWithTag("Player");
         managerSc=Player.GetComponent<SentryManager>();
         PlayerData = Player.GetComponent<Player>();
       //  HP = MaxHP;

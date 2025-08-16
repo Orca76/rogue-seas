@@ -19,7 +19,7 @@ public class EnemyBase : MonoBehaviour
     public float LimitDistance;//Ç±ÇÍà»è„ó£ÇÍÇΩÇÁè¡Ç¶ÇÈ
     void Start()
     {
-        player = GameObject.Find("Player");
+        player = GameObject.FindWithTag("Player");
         Debug.Log($"[ELG] Start {name}, playing={Application.isPlaying}");
     }
 
@@ -28,6 +28,11 @@ public class EnemyBase : MonoBehaviour
   
     void Update()
     {
+
+        if ( player == null )
+        {
+            player = GameObject.FindWithTag("Player");
+        }
         if (HP <= 0)
         {
             //éÄÇÒÇæÇ∆Ç´ÇÃèàóù

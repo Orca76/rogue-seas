@@ -21,6 +21,7 @@ public class DragItem : MonoBehaviour
     void Start()
     {
         hotbarUI = FindObjectOfType<HotbarUI>(); // まず取得
+        ChartUI = GameObject.FindWithTag("Player").GetComponent<Player>().ChartUI.transform.GetChild(0).gameObject;
     }
 
     void Update()
@@ -43,10 +44,18 @@ public class DragItem : MonoBehaviour
     void StartDrag()
     {
         Debug.Log("StartDrag called");  // ← ここで呼ばれてるかまず確認
+
+        if (dragImage == null)
+        {
+            var go = GameObject.FindWithTag("Player");
+            dragImage =go.GetComponent<Player>().DragImage.GetComponent<Image>();
+        }
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
         pointerData.position = Input.mousePosition;
 
         var raycastResults = new List<RaycastResult>();
+
+       
         EventSystem.current.RaycastAll(pointerData, raycastResults);
 
         foreach (var result in raycastResults)
@@ -120,10 +129,13 @@ public class DragItem : MonoBehaviour
 
                         if (ChartUI.activeSelf)//プレイヤー下の海図が表示されている→錬成盤は表示されていない
                         {
+
+                            Debug.Log("aaaa");
                             ChartVectorManager.Instance.ReceiveItem(oneItem);//海図の方にデータを渡す
                         }
                         else
                         {
+                            Debug.Log("iiii");
                             AlchemyVectorManager.Instance.ReceiveItem(oneItem); // 錬成盤
                         }
                           

@@ -57,31 +57,52 @@ public class ItemSpawner : MonoBehaviour
     [ContextMenu("Spawn Items Now")]
     public void SpawnAll()
     {
+
+        Debug.Log("Spawn All Called!");
         if (!ValidateRefs()) return;
 
         if (seed != 0) UnityEngine.Random.InitState(seed);
 
         // IslandTile のタイル群をクイック判定用にキャッシュ
         BuildTileTypeCache();
-
+        Debug.Log("Spawn All Called2!");
         var bounds = terrainMap.cellBounds;
 
         // 生成まとめRoot（任意）
         Transform parent = spawnParent ? spawnParent : transform;
-
+        int biomeIdx = GetCurrentBiomeIndex();                 // ★ここ！
+        var set = lootByIslandCode[biomeIdx];                  // ★ここ！
         int placed = 0;
 
         for (int x = bounds.xMin; x < bounds.xMax; x++)
             for (int y = bounds.yMin; y < bounds.yMax; y++)
             {
                 var cell = new Vector3Int(x, y, 0);
-                if (!terrainMap.HasTile(cell)) continue;
+
+                if (!terrainMap.HasTile(cell))
+                {
+                    Debug.Log($"No Tile at {cell}");
+                    continue;
+                }
+
+                // ===== ここでクリスタル呼び出し =====
+                SpawnCrystal(cell, parent);
+
 
                 var t = terrainMap.GetTile(cell);
-                int tType = ClassifyTile(t);
-                if (tType == -1) continue; // 対象外（海など）
+                //int tType = ClassifyTile(t);
+                //if (tType == -1) continue; // 対象外（海など）
+                if (t == null) continue;
 
-                var set = lootByIslandCode[Mathf.Clamp(islandCode, 0, lootByIslandCode.Length - 1)];
+                // 水ならスキップ（← これだけでOK）
+                if (island.IsWater(t)) continue;
+
+                // 分類（失敗したら草=2にフォールバック）
+
+                int tType = ClassifyByCode(cell);
+                //   if (tType == -1) tType = 2; // ← 未登録の陸は草として扱う等、好みで
+
+                //  var set = lootByIslandCode[Mathf.Clamp(islandCode, 0, lootByIslandCode.Length - 1)];
                 LootGroup group = GetGroupForType(set, tType);
                 if (group == null || group.prefabs == null || group.prefabs.Length == 0) continue;
 
@@ -104,14 +125,29 @@ public class ItemSpawner : MonoBehaviour
 
 
 
-                // ===== ここでクリスタル呼び出し =====
-                SpawnCrystal(cell, parent);
+                
 
             }
+
 
         Debug.Log($"[ItemSpawner] Spawned {placed} items for islandCode={islandCode}");
     }
 
+
+    //今の島のバイオームを取る
+    int GetCurrentBiomeIndex()
+    {
+        // IslandTile から Player を引っ張る（なければ Tag から）
+        var player = island && island.playerObj
+            ? island.playerObj.GetComponent<Player>()
+            : GameObject.FindWithTag("Player")?.GetComponent<Player>();
+
+        if (player != null)
+            return Mathf.Clamp(player.NextDest, 0, lootByIslandCode.Length - 1);
+
+        // フォールバック：Inspectorの islandCode
+        return Mathf.Clamp(islandCode, 0, lootByIslandCode.Length - 1);
+    }
     // --------- 補助 ---------
 
     // クリスタル生成（海タイルは除外）
@@ -120,12 +156,15 @@ public class ItemSpawner : MonoBehaviour
         if (!crystalPrefab) return;
         if (UnityEngine.Random.value > crystalChance) return;
 
-        // 念のため：海は除外
         var t = terrainMap.GetTile(cell);
-        if (ClassifyTile(t) == -1) return;
+        if (t == null) return;
+
+        // ←これだけでシンプルに海判定できる
+        if (island.IsWater(t)) return;
 
         Instantiate(crystalPrefab, JitteredWorld(cell), Quaternion.identity, parent);
     }
+
 
     // 既存のセル中心＋ジッターを共通化（未定義なら追加）
     Vector3 JitteredWorld(Vector3Int cell)
@@ -165,31 +204,62 @@ public class ItemSpawner : MonoBehaviour
     {
         tileTypeQuick.Clear();
 
-        // desert
-        if (island.desertTile) tileTypeQuick[island.desertTile] = 0;
-
-        // forest
-        if (island.forestTile) tileTypeQuick[island.forestTile] = 1;
-
-        // grassland (複数)
-        if (island.grasslandTile != null)
+        if (!island)
         {
-            foreach (var g in island.grasslandTile)
-                if (g) tileTypeQuick[g] = 2;
+            Debug.LogWarning("[ItemSpawner] island 未設定");
+            return;
         }
 
-        // mountain
-        if (island.mountainTile) tileTypeQuick[island.mountainTile] = 3;
+        // この spawner が想定する島種（0..5）
+        int type = Mathf.Clamp(islandCode, 0, 5);
+
+        // 安全ヘルパー：table[type].variants を辞書に登録
+        void AddCategory(UnityEngine.Tilemaps.TileBase[] arr, int code)
+        {
+            if (arr == null) return;
+            foreach (var t in arr) if (t) tileTypeQuick[t] = code;
+        }
+        void AddFromTable(IslandTile.TileSetByIslandType[] table, int code)
+        {
+            if (table == null || table.Length == 0) return;
+            int idx = Mathf.Clamp(type, 0, table.Length - 1);
+            var row = table[idx];
+            if (row == null) return;
+            AddCategory(row.variants, code);
+        }
+
+        // 新方式：島種ごとのバリエーションから登録
+        AddFromTable(island.sandTiles, 0); // 砂（砂浜/氷原など）
+        AddFromTable(island.forestTiles, 1); // 森（タイガなど）
+        AddFromTable(island.grassTiles, 2); // 草（雪原など）
+        AddFromTable(island.mountainTiles, 3); // 山（霊峰など）
+
+        // 互換：万一、旧フィールドが生きていたらそれも拾う（任意）
+#pragma warning disable 0162, 0219
+        try
+        {
+            // 旧：単体タイル/配列が残ってる場合の救済（存在しなければ無視される）
+            var desertField = island.GetType().GetField("desertTile");
+            var forestField = island.GetType().GetField("forestTile");
+            var grasslandField = island.GetType().GetField("grasslandTile");
+            var mountainField = island.GetType().GetField("mountainTile");
+
+            if (desertField != null) { var t = (TileBase)desertField.GetValue(island); if (t) tileTypeQuick[t] = 0; }
+            if (forestField != null) { var t = (TileBase)forestField.GetValue(island); if (t) tileTypeQuick[t] = 1; }
+            if (grasslandField != null) { var a = (TileBase[])grasslandField.GetValue(island); AddCategory(a, 2); }
+            if (mountainField != null) { var t = (TileBase)mountainField.GetValue(island); if (t) tileTypeQuick[t] = 3; }
+        }
+        catch { /* 無視 */ }
+#pragma warning restore 0162, 0219
     }
 
+    // ItemSpawner 内に置く（privateでOK）
     int ClassifyTile(TileBase t)
     {
         if (t == null) return -1;
-        if (tileTypeQuick.TryGetValue(t, out int type)) return type;
-
-        // ここに来るのは海など。対象外として -1
-        return -1;
+        return tileTypeQuick.TryGetValue(t, out int type) ? type : -1; // 0=砂,1=森,2=草,3=山, -1=対象外
     }
+
 
     LootGroup GetGroupForType(IslandLootSet set, int type)
     {
@@ -202,4 +272,19 @@ public class ItemSpawner : MonoBehaviour
             _ => null
         };
     }
+    int ClassifyByCode(Vector3Int cell)
+    {
+        int x = cell.x, y = cell.y;
+        if (x < 0 || y < 0 || x >= island.mapWidth || y >= island.mapHeight) return -1;
+
+        int code = island.tileMapData[x, y];
+        // 40台=砂, 10台=森, 20台=草, 30台=山(31含む)
+        if (code >= 40 && code < 50) return 0; // desert/氷原
+        if (code >= 10 && code < 20) return 1; // forest/タイガ
+        if (code >= 20 && code < 30) return 2; // grass/雪原
+        if (code >= 30 && code < 40) return 3; // mountain/霊峰
+        return -1;
+    }
+
+
 }

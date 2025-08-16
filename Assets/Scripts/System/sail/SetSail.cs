@@ -33,12 +33,23 @@ public class SetSail : MonoBehaviour
     AlchemyTile tiledata;
     private void Start()
     {
-        VectorSystem = GameObject.Find("VectorManager");
-        chartSystem = VectorSystem.GetComponent<ChartVectorManager>();
-        player = GameObject.Find("Player");
+        RebindIfNeeded();  // 初回
+    }
 
-        map = GameObject.Find("map");
-        tiledata = map.GetComponent<AlchemyTile>();
+    // SetSail 内に追加：必要な参照だけ再取得するミニ関数
+    void RebindIfNeeded()
+    {
+        if (!VectorSystem) VectorSystem = GameObject.Find("VectorManager");
+        if (!chartSystem && VectorSystem) chartSystem = VectorSystem.GetComponent<ChartVectorManager>();
+
+        if (!player) player = GameObject.FindWithTag("Player");
+
+        if (!map) map = GameObject.Find("map");
+        if (!tiledata && map) tiledata = map.GetComponent<AlchemyTile>();
+
+        if (!InventoryUIObj) InventoryUIObj = GameObject.Find("HotbarPanel");
+        // FieldText も名前決まってるなら同様に:
+        // if (!FieldText) FieldText = GameObject.Find("FieldText");
     }
     private void Update()
     {
@@ -48,12 +59,18 @@ public class SetSail : MonoBehaviour
             OpenChartUI();
         }
 
+
+
+
     }
 
     // UIを開く処理
     private void OpenChartUI()
     {
+        RebindIfNeeded();
         ChartUI.SetActive(true);
+        Time.timeScale = 0f;   // ゲーム全体を停止
+
         chartSystem.RegionText = FieldText.GetComponent<TextMeshProUGUI>(); ;//テキストを今出てるクリスタルのものに指定
         if (InventoryUIObj == null)
         {
@@ -71,28 +88,14 @@ public class SetSail : MonoBehaviour
         int yi = Mathf.FloorToInt(y * 1000f);
         return xi * 1000000 + yi; // xの桁を広げて足すだけ
     }
-    //// プレイヤーがトリガー範囲に入ったとき
-    //private void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        playerInRange = true;
-    //    }
-    //}
 
-    //// プレイヤーが範囲から出たとき
-    //private void OnTriggerExit2D(Collider2D other)
-    //{
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        playerInRange = false;
-    //    }
-    //}
     public void CloseChartUI()//戻るボタン　UIを閉じる
     {
         //インベントリの位置を下に
         SetPosY(-100);
         chartSystem.ResetVectors();//閉じたらベクトルリセット
+        Time.timeScale = 1f;   // 元に戻す
+
         ChartUI.SetActive(false);
         Debug.Log("Chart UI closed");
     }
@@ -121,6 +124,9 @@ public class SetSail : MonoBehaviour
         }
 
         DontDestroyOnLoad(player);//プレイヤーは保持
+        Player pobj=player.GetComponent<Player>();
+        pobj.NextDest = NextDestination;
+        pobj.VisitedIslandCount++;
         CloseChartUI();//UIは閉じる
 
 
@@ -129,37 +135,6 @@ public class SetSail : MonoBehaviour
        
 
     }
-    //public void DistributePoints(int skillPoints)
-    //{
-    //    if (points == null || points.Length != 4)
-    //    {
-    //        Debug.LogError("points配列は4要素で初期化してください");
-    //        return;
-    //    }
 
-    //    // 一旦全部0クリア
-    //    for (int i = 0; i < 4; i++) points[i] = 0;
-
-    //    // まず最低保証: 各パラに1振る
-    //    for (int i = 0; i < 4; i++)
-    //    {
-    //        points[i] = 1;
-    //    }
-
-    //    // 残りポイント計算
-    //    int remaining = skillPoints - 4; // 4消費済み
-
-    //    while (remaining > 0)
-    //    {
-    //        // 0~3のどれか選ぶ
-    //        int idx = Random.Range(0, 4);
-
-    //        if (points[idx] < 10)
-    //        {
-    //            points[idx]++;
-    //            remaining--;
-    //        }
-    //        // 10超えはスキップして別インデックス選び直し
-    //    }
 }
 

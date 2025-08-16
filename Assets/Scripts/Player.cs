@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     // 0:HP, 1:攻撃力, 2:攻撃速度
 
 
+
+
     public TextMeshProUGUI[] LevelTexts;//レベルのUI
 
     int nextLevel;
@@ -40,6 +42,14 @@ public class Player : MonoBehaviour
     public float MaxHP;
 
     public DamagePopup popupPrefab;
+
+    public int VisitedIslandCount;//訪れた島の数
+    public int NextDest;//次のバイオーム
+
+
+
+    public GameObject ChartUI;//リロード後に参照を見失わないため
+    public GameObject DragImage;//参照残し
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();

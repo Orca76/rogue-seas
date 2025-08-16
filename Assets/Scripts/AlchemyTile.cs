@@ -46,6 +46,13 @@ public class AlchemyTile : MonoBehaviour
     public void CreationTile(int Seed)
     {
         noiseSeed = Seed;
+
+        if (!tilemapAlchemy)
+        {
+            var go = GameObject.Find("Tilemap_Alchemy"); // Å©ÉVÅ[Éìè„ÇÃTilemap GameObjectÇÃñºëO
+            if (go) tilemapAlchemy = go.GetComponent<Tilemap>();
+        }
+
         tilemapAlchemy.gameObject.SetActive(true);
         GenerateAlchemyMap();
     }
