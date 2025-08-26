@@ -82,16 +82,17 @@ public class SentryBase : MonoBehaviour
             GameObject bullet = Instantiate(BulletPrefab, transform.position, Quaternion.Euler(0f, 0f, angle - 90f));
 
             // ダメージ設定
-            bullet.GetComponent<PlayerBullet>().Damage = Power;
+            bullet.GetComponent<BulletBase>().Damage = Power;
 
             recharge = 0;
         }
     }
     private void UpdateStats()//ステータス更新
     {
-        MaxHP = BaseHP * PlayerData.levels[0];
-        Power=BasePower * PlayerData.levels[1];
-        AttackSpeed=1/(BaseAttackSpeed * PlayerData.levels[2]);
+        MaxHP = BaseHP * (1 + 0.05f * PlayerData.levels[0]);  // +5%/Lv
+        Power = BasePower * (1 + 0.05f * PlayerData.levels[1]); // +5%/Lv
+        AttackSpeed = 1 / (BaseAttackSpeed * Mathf.Pow(1.1f, PlayerData.levels[2]));
+
     }
 
 

@@ -18,5 +18,14 @@ public abstract class BulletBase : MonoBehaviour
         transform.position += transform.up * speed * Time.deltaTime;
     }
 
-    protected abstract void OnTriggerEnter2D(Collider2D collision);
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            var enemy = collision.GetComponent<EnemyBase>();
+            if (enemy != null) enemy.HP -= Damage;
+
+            Destroy(gameObject);
+        }
+    }
 }

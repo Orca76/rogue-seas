@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6772689212005388380}
   - component: {fileID: 2533983574970340070}
   - component: {fileID: 8242814678304424743}
-  - component: {fileID: 7408027933158533946}
-  m_Layer: 0
+  - component: {fileID: 4095512408025574884}
+  m_Layer: 8
   m_Name: bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 8480790419313322780}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.419, y: 6.096, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 09df19830c0e9dc4bba3c2f32a4d2d55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -76,8 +76,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 1f2f8d1bc3a2c904d80e4fc4be484754, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 1501777784, guid: 2af00cc297f4d614ebe8628168ecd852, type: 3}
+  m_Color: {r: 0, g: 0.9821429, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -124,7 +124,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.08
---- !u!114 &7408027933158533946
+--- !u!114 &4095512408025574884
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,8 +133,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8480790419313322780}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6ad44166b0c31c48af767020811bef4, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a5a1cae67c34ff45aba52676d9262d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
   lifetime: 3
+  Damage: 0

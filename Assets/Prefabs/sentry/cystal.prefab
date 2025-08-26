@@ -105,6 +105,26 @@ MonoBehaviour:
   FieldText: {fileID: 551610857086185643}
   defaultSentry: {fileID: 8054855909729467351, guid: 5116343b0b0f56d4b997b19c9036806b, type: 3}
   usedSprite: {fileID: 21300000, guid: d859a475ad585d04c966ab0b790a9ed9, type: 3}
+  normalList:
+  - {fileID: 21300000, guid: 757f06e0e3e82b34f9d86eb67fbd2a94, type: 3}
+  - {fileID: 21300000, guid: b339bcee17b36df4b8b330aa7c83580c, type: 3}
+  - {fileID: 21300000, guid: d1be4002121e3e94d9499c575a92e274, type: 3}
+  - {fileID: 21300000, guid: e8e02c2ba4978f74ea914ebaddc3cdba, type: 3}
+  - {fileID: 21300000, guid: 5254d33979a9eb5479ab4dfe9c8322f4, type: 3}
+  RareList:
+  - {fileID: 21300000, guid: 85d7bdcf0ef168b49b99ba0857da30c2, type: 3}
+  - {fileID: 21300000, guid: 6b81a7f7da2eb514eafc42bb5415dd3a, type: 3}
+  - {fileID: 21300000, guid: 93a15feb24bdea84183342ef4c80348c, type: 3}
+  - {fileID: 21300000, guid: de08618c96262b44aaa193c061a1abcf, type: 3}
+  - {fileID: 21300000, guid: a9dbaddc9b2b5b74ea7e270b83e9c227, type: 3}
+  - {fileID: 21300000, guid: 724e4857a44744949bb13bd0b84c0159, type: 3}
+  - {fileID: 21300000, guid: 2ebc2a626f8b95042bb5549a062ce0a2, type: 3}
+  SuperRareList:
+  - {fileID: 21300000, guid: a7294b85691661e4c84d3357790acf91, type: 3}
+  - {fileID: 21300000, guid: 9b9dd0dd000ea6b4cbd7193159642e21, type: 3}
+  - {fileID: 21300000, guid: 9d1e8e652bd348e458b8e08dffaaf4f3, type: 3}
+  - {fileID: 21300000, guid: 2ebc2a626f8b95042bb5549a062ce0a2, type: 3}
+  - {fileID: 21300000, guid: 2d90f4f5f9e67cf4382635697b6cbff1, type: 3}
 --- !u!61 &551610855383626051
 BoxCollider2D:
   m_ObjectHideFlags: 0

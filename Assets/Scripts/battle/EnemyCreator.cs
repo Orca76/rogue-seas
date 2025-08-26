@@ -10,7 +10,7 @@ public class EnemyCreator : MonoBehaviour
     public int KilledEnemyNum = 0;    // 撃破数（外部から増える想定）
     public float Radiusmin;           // 最小スポーン距離
     public float RadiusMax;           // 最大スポーン距離
-    public GameObject[] Enemies;      // 通常敵プレハブ
+   // public GameObject[] Enemies;      // 通常敵プレハブ
     public float CreateSpan;          // 敵生成間隔
 
     GameObject player;
@@ -30,12 +30,39 @@ public class EnemyCreator : MonoBehaviour
     List<int> _eliteIndices = new List<int>(); // 1..enemyCreateLimit の中から重複なしで EliteNum 個
     bool _elitesInitialized = false;
 
+
+
+
+    //敵まとめる
+    // ネストクラス（内部クラス）
+    [System.Serializable]
+    public class IslandEnemySet
+    {
+        public GameObject[] enemies = new GameObject[4];   // 島ごとに4体
+    }
+
+    // 島ごとにまとめた敵リスト（5島分）
+    public IslandEnemySet[] islandEnemySets = new IslandEnemySet[5];
+
+    // 敵取得用メソッド
+    public GameObject GetEnemy(int islandIndex, int enemyIndex)
+    {
+        return islandEnemySets[islandIndex].enemies[enemyIndex];
+    }
+    //今いる島コード　敵コード　位置
+    public void SpawnEnemy(int islandIndex, int enemyIndex, Vector3 pos)
+    {
+        GameObject enemyPrefab = GetEnemy(islandIndex, enemyIndex);
+        Instantiate(enemyPrefab, pos, Quaternion.identity);
+    }
+
+    int islandeCode;//どの島？
     void Start()
     {
         player = GameObject.FindWithTag("Player"); // プレイヤーを取得
         lastSpawnTime = Time.time;
-
-        // [ADD] 精鋭の抽選とアイコン配置
+        islandeCode = player.GetComponent<Player>().NextDest;//0なら温暖海域、、、
+        //精鋭の抽選とアイコン配置
         InitEliteIndices();
         PlaceEliteIcons();
         UpdateProgressBar(); // 初期表示
@@ -43,7 +70,7 @@ public class EnemyCreator : MonoBehaviour
 
     void Update()
     {
-        // [ADD] プログレスバー更新（KilledEnemyNum は外部で増える前提）
+        //プログレスバー更新（KilledEnemyNum は外部で増える前提）
         UpdateProgressBar();
 
         // 総スポーンが上限に達したら以降はスポーンしない
@@ -59,13 +86,13 @@ public class EnemyCreator : MonoBehaviour
 
     void SpawnEnemy()
     {
-        // [ADD] 次にスポーンする通し番号（1始まり）
+        //次にスポーンする通し番号（1始まり）
         int nextIndex = _totalSpawned + 1;
 
-        // [ADD] 上限超え防止（保険）
+        //上限超え防止（保険）
         if (nextIndex > enemyCreateLimit) return;
 
-        // [ADD] 精鋭かどうか
+        //精鋭かどうか
         bool isElite = IsEliteIndex(nextIndex);
 
         Vector2 spawnPos = setCreatePosition();
@@ -73,16 +100,18 @@ public class EnemyCreator : MonoBehaviour
         GameObject prefab;
         if (isElite && EliteEnemies != null && EliteEnemies.Length > 0)
         {
-            prefab = EliteEnemies[Random.Range(0, EliteEnemies.Length)];
+            prefab = EliteEnemies[islandeCode];
         }
         else
         {
-            prefab = Enemies[Random.Range(0, Enemies.Length)];
+            // その島に登録されてる敵リストの長さを参照
+            int enemyIndex = Random.Range(0, islandEnemySets[islandeCode].enemies.Length);
+            prefab = GetEnemy(islandeCode, enemyIndex);
         }
         Debug.Log(prefab);
         Instantiate(prefab, spawnPos, Quaternion.identity);
 
-        // [ADD] 総スポーン数カウントアップ
+        // 総スポーン数カウントアップ
         _totalSpawned = nextIndex;
     }
 

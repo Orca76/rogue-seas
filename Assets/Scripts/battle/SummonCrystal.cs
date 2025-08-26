@@ -20,7 +20,7 @@ public class SummonCrystal : MonoBehaviour
 
 
 
-    int[] points=new int[4];//ステータス割り振り　0 hp 1power 2atspeed 3prefab
+    int[] points=new int[3];//ステータス割り振り　0 hp 1power 2atspeed 3prefab
 
     public GameObject defaultSentry;//生成時に使うデフォ
 
@@ -31,6 +31,11 @@ public class SummonCrystal : MonoBehaviour
     public Sprite usedSprite;//使用後のスプライト
     GameObject map;//錬成盤リロード用　マップデータ
     AlchemyTile tiledata;
+
+
+    public Sprite[] normalList;
+    public Sprite[] RareList;
+    public Sprite[] SuperRareList;
     private void Start()
     {
         VectorSystem = GameObject.Find("VectorManager");
@@ -120,19 +125,22 @@ public class SummonCrystal : MonoBehaviour
             case 0://コモン sp10
 
                 //セントリーのステータス決定
-                DistributePoints(10);
+                DistributePoints(7);
                 created.GetComponent<SentryBase>().Rarity = 0;
+                created.GetComponent<SpriteRenderer>().sprite = normalList[Random.Range(0,normalList.Length)];
 
                 break;
 
             case 1://レア sp20
-                DistributePoints(20);
+                DistributePoints(14);
                 created.GetComponent<SentryBase>().Rarity = 1;
+                created.GetComponent<SpriteRenderer>().sprite = RareList[Random.Range(0, RareList.Length)];
                 break;
             case 2://スーパーレア sp30
 
-                DistributePoints(30);
+                DistributePoints(21);
                 created.GetComponent<SentryBase>().Rarity = 2;
+                created.GetComponent<SpriteRenderer>().sprite = SuperRareList[Random.Range(0, SuperRareList.Length)];
                 break;
 
             default:
@@ -152,39 +160,33 @@ public class SummonCrystal : MonoBehaviour
         // スプライトのTransformのスケールを変更
         created.transform.localScale = new Vector3(scale, scale, 1f);
         //その他のステータス登録
-        created.GetComponent<SentryBase>().BaseHP = points[0] * Random.Range(90, 110);
-        created.GetComponent<SentryBase>().BasePower = points[1] * Random.Range(9, 11);
-        created.GetComponent<SentryBase>().BaseAttackSpeed = points[2] * Random.Range(0.9f,1.1f);
+        created.GetComponent<SentryBase>().BaseHP = points[0] * Random.Range(40, 60);
+        created.GetComponent<SentryBase>().BasePower = points[1] * Random.Range(4, 6);
+        created.GetComponent<SentryBase>().BaseAttackSpeed = points[2] * Random.Range(0.12f,0.16f);
         created.GetComponent<SentryBase>().HP = created.GetComponent<SentryBase>().BaseHP;
 
-        int val = points[3];
-
-        if (val >= 0 && val <= 3)//ここで弾丸をセット
-        {
-            // 0〜3の処理
-            Debug.Log(
-    $"created: {(created != null ? "OK" : "missing")}, " +
-    $"SentryBase: {(created?.GetComponent<SentryBase>() != null ? "OK" : "missing")}, " +
-    $"SentryDatabase.instance: {(SentryDatabase.instance != null ? "OK" : "missing")}, " +
-    $"bulletTier3: {(SentryDatabase.instance?.bulletTier3 != null ? "OK" : "missing")}, " +
-    $"bulletTier3.Length: {(SentryDatabase.instance?.bulletTier3 != null ? SentryDatabase.instance.bulletTier3.Length.ToString() : "N/A")}"
-);
-            created.GetComponent<SentryBase>().BulletPrefab = SentryDatabase.instance.bulletTier3[Random.Range(0, SentryDatabase.instance.bulletTier3.Length)];
-        }
-        else if (val >= 4 && val <= 7)
-        {
-            // 4〜7の処理
-            created.GetComponent<SentryBase>().BulletPrefab = SentryDatabase.instance.bulletTier2[Random.Range(0, SentryDatabase.instance.bulletTier2.Length)];
-        }
-        else if (val >= 8 && val <= 10)
-        {
-            // 8〜10の処理
-            created.GetComponent<SentryBase>().BulletPrefab = SentryDatabase.instance.bulletTier1[Random.Range(0, SentryDatabase.instance.bulletTier1.Length)];
-        }
-        else
-        {
-            // 範囲外の処理（必要なら）
-        }
+        //int val = points[3];
+        created.GetComponent<SentryBase>().BulletPrefab = SentryDatabase.instance.bulletTier1[Random.Range(0, SentryDatabase.instance.bulletTier1.Length)];
+        //if (val >= 0 && val <= 3)//ここで弾丸をセット
+        //{
+        //    // 0〜3の処理
+          
+           
+        //}
+        //else if (val >= 4 && val <= 7)
+        //{
+        //    // 4〜7の処理
+        //    created.GetComponent<SentryBase>().BulletPrefab = SentryDatabase.instance.bulletTier2[Random.Range(0, SentryDatabase.instance.bulletTier2.Length)];
+        //}
+        //else if (val >= 8 && val <= 10)
+        //{
+        //    // 8〜10の処理
+        //    created.GetComponent<SentryBase>().BulletPrefab = SentryDatabase.instance.bulletTier1[Random.Range(0, SentryDatabase.instance.bulletTier1.Length)];
+        //}
+        //else
+        //{
+        //    // 範囲外の処理（必要なら）
+        //}
         hasBeenUsed = true;//もう使えない
         var spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null && usedSprite != null)
@@ -196,28 +198,28 @@ public class SummonCrystal : MonoBehaviour
     }
     public void DistributePoints(int skillPoints)
     {
-        if (points == null || points.Length != 4)
+        if (points == null || points.Length != 3)
         {
-            Debug.LogError("points配列は4要素で初期化してください");
+            Debug.LogError("points配列は3要素で初期化してください");
             return;
         }
 
         // 一旦全部0クリア
-        for (int i = 0; i < 4; i++) points[i] = 0;
+        for (int i = 0; i < 3; i++) points[i] = 0;
 
         // まず最低保証: 各パラに1振る
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 3; i++)
         {
             points[i] = 1;
         }
 
         // 残りポイント計算
-        int remaining = skillPoints - 4; // 4消費済み
+        int remaining = skillPoints - 3; // 3消費済み
 
         while (remaining > 0)
         {
             // 0~3のどれか選ぶ
-            int idx = Random.Range(0, 4);
+            int idx = Random.Range(0, 3);
 
             if (points[idx] < 10)
             {

@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField]
     private float moveSpeed = 5f; // インスペクタから調整できる速度
+    public float accel = 10f;//移動加速度
 
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -104,6 +105,22 @@ public class Player : MonoBehaviour
         movement.y = Input.GetKey(KeyCode.W) ? 1 : Input.GetKey(KeyCode.S) ? -1 : 0;
         movement = movement.normalized;
 
+        // 入力有無
+        bool hasInput = movement.sqrMagnitude > 0.01f;
+
+        // 目標速度
+        Vector2 targetVelocity = movement * moveSpeed;
+
+        // 移動（ぬるっと加速／即停止）
+        if (hasInput)
+        {
+            rb.velocity = Vector2.Lerp(rb.velocity, targetVelocity, accel * Time.deltaTime);
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+        }
+
         // 地上/地下の切り替え
         if (Input.GetKeyDown(switchFloorKey))
         {
@@ -115,8 +132,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 移動
-        rb.velocity = movement * moveSpeed;
+      
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
