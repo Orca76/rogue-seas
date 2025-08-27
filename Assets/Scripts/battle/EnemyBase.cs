@@ -17,6 +17,8 @@ public class EnemyBase : MonoBehaviour
     public int ExpValue;//ì|ÇµÇΩéûÇÃåoå±íló 
 
     public float LimitDistance;//Ç±ÇÍà»è„ó£ÇÍÇΩÇÁè¡Ç¶ÇÈ
+
+    public DamagePopup popup;
     void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -103,5 +105,21 @@ public class EnemyBase : MonoBehaviour
         }
 
         return nearest;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "PlayerAt")
+        {
+            HP -= collision.GetComponent<BulletBase>().Damage;
+            var pos = transform.position;
+            DamagePopup.Spawn(popup, pos, Mathf.RoundToInt(collision.GetComponent<BulletBase>().Damage));
+
+            if (!collision.GetComponent<BulletBase>().ispenetrate)
+            {
+                Destroy(collision.gameObject);
+            }
+           
+        }
     }
 }

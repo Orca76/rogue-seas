@@ -69,3 +69,5 @@ MonoBehaviour:
   speed: 0
   lifetime: 5
   Damage: 0
+  popupPrefab: {fileID: 7614694284720247481, guid: 637d639865822fd41a415c711971fa65, type: 3}
+  ispenetrate: 1

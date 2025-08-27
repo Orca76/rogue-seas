@@ -52,7 +52,7 @@ MonoBehaviour:
   - {fileID: 5730886934143344257, guid: a7567a72f54ce5a498842afecea4e833, type: 3}
   BaseBulletID: 3
   spreadAngle: 15
-  radius: 0.8
+  radius: 0.4
   pattern: 3
 --- !u!114 &3834623702851813579
 MonoBehaviour:
@@ -69,3 +69,4 @@ MonoBehaviour:
   speed: 0
   lifetime: 5
   Damage: 0
+  ispenetrate: 1

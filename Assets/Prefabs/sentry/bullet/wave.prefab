@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 150133135952662160}
   m_Layer: 8
   m_Name: wave
-  m_TagString: Untagged
+  m_TagString: PlayerAt
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,6 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a33c094a7bfe8814e9971dfd1e1ae8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 2
   lifetime: 5
   Damage: 0
+  popupPrefab: {fileID: 7614694284720247481, guid: 637d639865822fd41a415c711971fa65, type: 3}
+  ispenetrate: 1

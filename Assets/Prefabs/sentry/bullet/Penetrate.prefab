@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5676022521289959651}
   m_Layer: 8
   m_Name: Penetrate
-  m_TagString: Untagged
+  m_TagString: PlayerAt
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4284218045447428929}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.685, y: 5.727, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -136,6 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f30fc0e25a116ce4c846e456d17ebf0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 3
   lifetime: 5
   Damage: 0
+  popupPrefab: {fileID: 7614694284720247481, guid: 637d639865822fd41a415c711971fa65, type: 3}
+  ispenetrate: 1

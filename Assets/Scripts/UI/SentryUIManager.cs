@@ -49,6 +49,9 @@ public class SentryUIManager : MonoBehaviour
             float max = Mathf.Max(1, row.sb.MaxHP);
             if (row.ui.SentryHPSlider) row.ui.SentryHPSlider.value = cur / max;
             if (row.ui.SentryHPText) row.ui.SentryHPText.text = $"{(int)cur}/{(int)max}";
+            if(row.ui.SentryAttackBar) row.ui.SentryAttackBar.fillAmount= row.sb.recharge / row.sb.AttackSpeed;
+            if (row.ui.Power) row.ui.Power.text = Mathf.RoundToInt(row.sb.Power).ToString();
+
 
             // 初回だけアイコン適用（変わらない想定）
             if (row.ui.Sentryicon && row.sr && row.ui.Sentryicon.sprite == null)

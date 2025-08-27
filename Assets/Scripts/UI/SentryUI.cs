@@ -10,6 +10,8 @@ public class SentryUI : MonoBehaviour
     public Image Sentryicon;
     public TextMeshProUGUI SentryHPText;
     public Slider SentryHPSlider;
+    public Image SentryAttackBar;
+    public TextMeshProUGUI Power;
     void Start()
     {
         

@@ -108,9 +108,10 @@ MonoBehaviour:
   AttackSpeed: 0
   BulletPrefab: {fileID: 0}
   Rarity: 0
-  moveSpeed: 3
+  moveSpeed: 0.5
   approachDistance: 0.3
   Player: {fileID: 0}
+  recharge: 0
   popupPrefab: {fileID: 4457334383864657388, guid: 637d639865822fd41a415c711971fa65, type: 3}
 --- !u!50 &8054855909729467435
 Rigidbody2D:

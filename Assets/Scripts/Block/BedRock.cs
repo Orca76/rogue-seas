@@ -5,7 +5,7 @@ using UnityEngine;
 public class BedRock : BlockBase
 {
     // Start is called before the first frame update
-    public IslandTile islandTiles;          // データ保持側の参照（tileMapData持ち）
+ //   public IslandTile islandTiles;          // データ保持側の参照（tileMapData持ち）
 
     public override void Interact()
     {

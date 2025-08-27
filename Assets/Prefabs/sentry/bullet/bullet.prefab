@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4095512408025574884}
   m_Layer: 8
   m_Name: bullet
-  m_TagString: Untagged
+  m_TagString: PlayerAt
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -139,3 +139,4 @@ MonoBehaviour:
   speed: 1
   lifetime: 3
   Damage: 0
+  ispenetrate: 0

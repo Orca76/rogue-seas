@@ -16,7 +16,7 @@ public class SentryBase : MonoBehaviour
 
     public int Rarity;//0 1 2 norma rare Srare
     // 移動速度（調整用）
-    public float moveSpeed = 3f;
+    public float moveSpeed = 0.5f;
 
     // 敵に近づく距離
     public float approachDistance;
@@ -26,7 +26,7 @@ public class SentryBase : MonoBehaviour
     public GameObject Player;
     Player PlayerData;//ステータスとか
     SentryManager managerSc;//現在の指示
-    float recharge;//撃つ時用のリチャージ時間
+    public float recharge;//撃つ時用のリチャージ時間
 
 
     public DamagePopup popupPrefab;
@@ -34,9 +34,10 @@ public class SentryBase : MonoBehaviour
     {
         // 初期化があればここに
         Player = GameObject.FindWithTag("Player");
-        managerSc=Player.GetComponent<SentryManager>();
+        managerSc = Player.GetComponent<SentryManager>();
         PlayerData = Player.GetComponent<Player>();
-      //  HP = MaxHP;
+        //  HP = MaxHP;
+        moveSpeed = Random.Range(0.3f,0.7f);
     }
 
 
@@ -50,7 +51,7 @@ public class SentryBase : MonoBehaviour
     }
     void Update()
     {
-        
+
         UpdateStats();
 
 
@@ -61,13 +62,13 @@ public class SentryBase : MonoBehaviour
         targetEnemy = UpdateTargetEnemy();
         if ((managerSc.currentState == SentryManager.SentryState.Disperse))
         {
-            
+
             MoveTowardsEnemy();
         }
         recharge += Time.deltaTime;
 
         Shoot();
-       
+
     }
 
     private void Shoot()//一定間隔で打つ

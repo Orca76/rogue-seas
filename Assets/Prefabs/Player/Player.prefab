@@ -2466,6 +2466,7 @@ GameObject:
   - component: {fileID: 3487400987094645679}
   - component: {fileID: 3487400987094645674}
   - component: {fileID: 3487400987094645673}
+  - component: {fileID: -2942799627776004193}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2558,6 +2559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+  accel: 10
   surfaceZ: 0
   undergroundZ: 1
   switchFloorKey: 117
@@ -2638,6 +2640,23 @@ MonoBehaviour:
   minSpeed: 2
   maxSpeed: 10
   maxFollowDistance: 5
+--- !u!114 &-2942799627776004193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3487400987094645712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deee41cbf7582574f8696083e0e1543c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targets: []
+  lineMaterial: {fileID: 2100000, guid: 09df19830c0e9dc4bba3c2f32a4d2d55, type: 2}
+  width: 0.02
+  segments: 12
+  arcHeight: 0.15
 --- !u!1 &3487400987125364373
 GameObject:
   m_ObjectHideFlags: 0

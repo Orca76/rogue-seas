@@ -107,6 +107,7 @@ MonoBehaviour:
   Soul: {fileID: 2958066547802969458, guid: 273f716068ea3bc44b12a337a5ed2f51, type: 3}
   ExpValue: 10
   LimitDistance: 4
+  popup: {fileID: 4457334383864657388, guid: 637d639865822fd41a415c711971fa65, type: 3}
 --- !u!61 &2616064651865445446
 BoxCollider2D:
   m_ObjectHideFlags: 0

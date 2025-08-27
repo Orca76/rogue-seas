@@ -5,7 +5,7 @@ using UnityEngine;
 public class DeepstoneBlock : BlockBase
 {
 
-    public IslandTile islandTiles;          // データ保持側の参照（tileMapData持ち）
+   // public IslandTile islandTiles;          // データ保持側の参照（tileMapData持ち）
 
     public override void Interact()
     {

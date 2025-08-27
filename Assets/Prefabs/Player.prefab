@@ -1039,6 +1039,7 @@ MonoBehaviour:
   entryPrefab: {fileID: 577354757894522506, guid: 8117c945cd6fb1948b5c37e234f8c171, type: 3}
   rowHeight: 28
   rowSpacing: 6
+  rarityColors: []
 --- !u!1 &1814613917
 GameObject:
   m_ObjectHideFlags: 0
@@ -3602,6 +3603,7 @@ GameObject:
   - component: {fileID: 706325398727032946}
   - component: {fileID: 706325398727032951}
   - component: {fileID: 706325398727032948}
+  - component: {fileID: 1660852401400942465}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3693,6 +3695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+  accel: 10
   surfaceZ: 0
   undergroundZ: 1
   switchFloorKey: 117
@@ -3706,6 +3709,14 @@ MonoBehaviour:
   - {fileID: 1382651564}
   LevelUpUI: {fileID: 706325398789707155}
   ExpSlider: {fileID: 678263454}
+  HPbar: {fileID: 0}
+  HP: 0
+  MaxHP: 0
+  popupPrefab: {fileID: 0}
+  VisitedIslandCount: 0
+  NextDest: 0
+  ChartUI: {fileID: 0}
+  DragImage: {fileID: 0}
 --- !u!50 &706325398727032946
 Rigidbody2D:
   serializedVersion: 4
@@ -3765,6 +3776,23 @@ MonoBehaviour:
   minSpeed: 2
   maxSpeed: 10
   maxFollowDistance: 5
+--- !u!114 &1660852401400942465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706325398727032845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deee41cbf7582574f8696083e0e1543c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targets: []
+  lineMaterial: {fileID: 2100000, guid: 09df19830c0e9dc4bba3c2f32a4d2d55, type: 2}
+  width: 0.05
+  segments: 12
+  arcHeight: 0.15
 --- !u!1 &706325398757130247
 GameObject:
   m_ObjectHideFlags: 0

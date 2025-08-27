@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5363425891563571166}
   - component: {fileID: 3834623702851813579}
   m_Layer: 0
-  m_Name: homingrand
+  m_Name: penetRand 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,9 +50,9 @@ MonoBehaviour:
   - {fileID: 3375384234167948776, guid: 131eaa291677cc14082992735fafd924, type: 3}
   - {fileID: 4284218045447428929, guid: ecf5731e13ef17a46b69e47b1a528b7f, type: 3}
   - {fileID: 5730886934143344257, guid: a7567a72f54ce5a498842afecea4e833, type: 3}
-  BaseBulletID: 1
+  BaseBulletID: 2
   spreadAngle: 15
-  radius: 0.4
+  radius: 0.8
   pattern: 3
 --- !u!114 &3834623702851813579
 MonoBehaviour:
@@ -69,4 +69,5 @@ MonoBehaviour:
   speed: 0
   lifetime: 5
   Damage: 0
+  popupPrefab: {fileID: 7614694284720247481, guid: 637d639865822fd41a415c711971fa65, type: 3}
   ispenetrate: 1
