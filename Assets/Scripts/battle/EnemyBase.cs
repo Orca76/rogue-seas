@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyBase : MonoBehaviour
 {
     // Start is called before the first frame update
     public float HP;//ìGÇÃëÃóÕ
+    public float MaxHP;
     public float AttackSpan;//ìGÇÃçUåÇë¨ìx
     public GameObject Bullet;//çUåÇÇ…égÇ§íeä€ 
     GameObject player; float attackTimer = 0f;
@@ -23,13 +25,16 @@ public class EnemyBase : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         Debug.Log($"[ELG] Start {name}, playing={Application.isPlaying}");
+        MaxHP = HP;
     }
 
+    public Image HPBar;
     // Update is called once per frame
 
   
     void Update()
     {
+        if(HPBar != null) HPBar.fillAmount = HP / MaxHP;
 
         if ( player == null )
         {

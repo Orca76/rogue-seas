@@ -8,6 +8,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 733199159475322722, guid: a67d58ec9713e7d4ca79fb945069d2ad, type: 3}
+      propertyPath: HPBar
+      value: 
+      objectReference: {fileID: 5617865586704248939}
+    - target: {fileID: 733199159475322722, guid: a67d58ec9713e7d4ca79fb945069d2ad, type: 3}
       propertyPath: popup
       value: 
       objectReference: {fileID: 4457334383864657388, guid: 637d639865822fd41a415c711971fa65, type: 3}
@@ -73,3 +77,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a67d58ec9713e7d4ca79fb945069d2ad, type: 3}
+--- !u!114 &5617865586704248939 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4664554261464075331, guid: a67d58ec9713e7d4ca79fb945069d2ad, type: 3}
+  m_PrefabInstance: {fileID: 958556021880273960}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
