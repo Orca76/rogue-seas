@@ -51,6 +51,9 @@ public class Player : MonoBehaviour
 
     public GameObject ChartUI;//リロード後に参照を見失わないため
     public GameObject DragImage;//参照残し
+
+    public TextMeshProUGUI HPText;
+    public TextMeshProUGUI ExpText;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -61,6 +64,7 @@ public class Player : MonoBehaviour
    void HandleHPBar()
     {
         HPbar.fillAmount = HP / MaxHP;
+        HPText.text=HP.ToString()+"/"+MaxHP.ToString();
     }
 
     void Update()
@@ -74,6 +78,7 @@ public class Player : MonoBehaviour
             LevelTexts[i].text = "Lv"+levels[i].ToString();
         }
         ExpSlider.value = (float)Exp / nextLevel;
+        ExpText.text=Exp.ToString()+"/"+nextLevel.ToString();
         Debug.Log($"Exp={Exp}, nextLevel={nextLevel}, Exp/nextLevel={(float)Exp / nextLevel}, SliderValue={ExpSlider.value}");
 
 
