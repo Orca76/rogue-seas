@@ -31,9 +31,22 @@ public class SetSail : MonoBehaviour
 
     GameObject map;//錬成盤リロード用　マップデータ
     AlchemyTile tiledata;
+
+    [SerializeField] CanvasGroup fadeCg;
+
     private void Start()
     {
         RebindIfNeeded();  // 初回
+        if (!fadeCg)
+            if (!fadeCg)
+            {
+                var obj = GameObject.Find("FadeInCanvas");
+                if (obj != null)
+                    fadeCg = obj.GetComponent<CanvasGroup>();
+                else
+                    Debug.LogWarning("FadeInCanvas not found in scene!");
+            }
+
     }
 
     // SetSail 内に追加：必要な参照だけ再取得するミニ関数
@@ -60,7 +73,11 @@ public class SetSail : MonoBehaviour
         }
 
 
-
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log("シーン移動強制");
+            SceneManager.LoadScene("SampleScene");
+        }
 
     }
 
@@ -109,34 +126,64 @@ public class SetSail : MonoBehaviour
     }
     public void GoNextIsland()//出航ボタンを押した時
     {
-        NextDestination = chartSystem.zoneType;//次の島に行く時に必要
-
-
-        List<GameObject> S = player.GetComponent<SentryManager>().sentryList;
-
-        foreach (GameObject sentry in S)//セントリーを全部子オブジェクトに（次の島に連れていく）
-        {
-            // nullチェックも一応
-            if (sentry != null)
+        if (!fadeCg)
+            if (!fadeCg)
             {
-                sentry.transform.SetParent(player.transform);
+                var obj = GameObject.Find("FadeInCanvas");
+                if (obj != null)
+                    fadeCg = obj.GetComponent<CanvasGroup>();
+                else
+                    Debug.LogWarning("FadeInCanvas not found in scene!");
             }
+        // ▼ フェードだけ先に走らせる（UIはこの時点では消さない）
+        StartCoroutine(FadeThenProcess());
+
+        System.Collections.IEnumerator FadeThenProcess()
+        {
+           // if (fadeCg == null) { UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene"); yield break; }
+
+            // フェード中の誤操作防止（必要なければfalseでもOK）
+            fadeCg.blocksRaycasts = true;
+
+            // ① UIそのまま → 黒フェード
+            float t = 0f, dur = 0.35f, start = fadeCg.alpha;
+            while (t < dur)
+            {
+                t += Time.unscaledDeltaTime;
+                fadeCg.alpha = Mathf.Lerp(start, 1f, t / dur);
+                yield return null;
+            }
+            fadeCg.alpha = 1f;
+
+            // 黒が確実に1フレーム表示されるまで待つ
+            Canvas.ForceUpdateCanvases();
+            yield return null;
+            yield return new WaitForEndOfFrame();
+
+            // ② ここから黒の下で重い処理（見えない）
+            NextDestination = chartSystem.zoneType;
+
+            List<GameObject> S = player.GetComponent<SentryManager>().sentryList;
+            foreach (GameObject sentry in S)
+                if (sentry != null) sentry.transform.SetParent(player.transform);
+
+            DontDestroyOnLoad(player);
+            Player pobj = player.GetComponent<Player>();
+            pobj.NextDest = NextDestination;
+            pobj.VisitedIslandCount++;
+
+            CloseChartUI(); // ← このタイミングなら見えない
+
+            // ③ 非同期ロード（黒のまま裏で0.9まで）
+            var op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("SampleScene");
+            op.allowSceneActivation = false;
+            while (op.progress < 0.9f) yield return null;
+
+           //  ④ アクティベート（この瞬間のヒッチも黒の下）
+            op.allowSceneActivation = true;
         }
 
-        DontDestroyOnLoad(player);//プレイヤーは保持
-        Player pobj=player.GetComponent<Player>();
-        pobj.NextDest = NextDestination;
-        pobj.VisitedIslandCount++;
-        CloseChartUI();//UIは閉じる
-
-
-        //ここでフェード処理始めて
-
-        //終わったら
-        SceneManager.LoadScene("SampleScene");//新しい島へ
-     
-       
-
+   
     }
 
 }

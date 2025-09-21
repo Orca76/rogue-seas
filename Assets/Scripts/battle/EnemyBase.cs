@@ -24,7 +24,7 @@ public class EnemyBase : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-        Debug.Log($"[ELG] Start {name}, playing={Application.isPlaying}");
+      //  Debug.Log($"[ELG] Start {name}, playing={Application.isPlaying}");
         MaxHP = HP;
     }
 

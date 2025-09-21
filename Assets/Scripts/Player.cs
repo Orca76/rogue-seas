@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
         }
         ExpSlider.value = (float)Exp / nextLevel;
         ExpText.text=Exp.ToString()+"/"+nextLevel.ToString();
-        Debug.Log($"Exp={Exp}, nextLevel={nextLevel}, Exp/nextLevel={(float)Exp / nextLevel}, SliderValue={ExpSlider.value}");
+     //   Debug.Log($"Exp={Exp}, nextLevel={nextLevel}, Exp/nextLevel={(float)Exp / nextLevel}, SliderValue={ExpSlider.value}");
 
 
         if (Exp >= nextLevel)

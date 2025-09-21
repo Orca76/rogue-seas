@@ -58,7 +58,7 @@ public class ItemSpawner : MonoBehaviour
     public void SpawnAll()
     {
 
-        Debug.Log("Spawn All Called!");
+       // Debug.Log("Spawn All Called!");
         if (!ValidateRefs()) return;
 
         if (seed != 0) UnityEngine.Random.InitState(seed);
