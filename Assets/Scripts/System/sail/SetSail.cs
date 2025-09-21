@@ -130,6 +130,9 @@ public class SetSail : MonoBehaviour
         CloseChartUI();//UIは閉じる
 
 
+        //ここでフェード処理始めて
+
+        //終わったら
         SceneManager.LoadScene("SampleScene");//新しい島へ
      
        

@@ -126,13 +126,13 @@ public class Player : MonoBehaviour
             rb.velocity = Vector2.zero;
         }
 
-        // 地上/地下の切り替え
-        if (Input.GetKeyDown(switchFloorKey))
-        {
-            float currentZ = transform.position.z;
-            float newZ = Mathf.Approximately(currentZ, surfaceZ) ? undergroundZ : surfaceZ;
-            transform.position = new Vector3(transform.position.x, transform.position.y, newZ);
-        }
+        //// 地上/地下の切り替え
+        //if (Input.GetKeyDown(switchFloorKey))
+        //{
+        //    float currentZ = transform.position.z;
+        //    float newZ = Mathf.Approximately(currentZ, surfaceZ) ? undergroundZ : surfaceZ;
+        //    transform.position = new Vector3(transform.position.x, transform.position.y, newZ);
+        //}
     }
 
     void FixedUpdate()
