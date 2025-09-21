@@ -36,6 +36,8 @@ public class SummonCrystal : MonoBehaviour
     public Sprite[] normalList;
     public Sprite[] RareList;
     public Sprite[] SuperRareList;
+
+    public GameObject[] Particles;
     private void Start()
     {
         VectorSystem = GameObject.Find("VectorManager");
@@ -129,18 +131,22 @@ public class SummonCrystal : MonoBehaviour
                 created.GetComponent<SentryBase>().Rarity = 0;
                 created.GetComponent<SpriteRenderer>().sprite = normalList[Random.Range(0,normalList.Length)];
 
+               
+
                 break;
 
             case 1://レア sp20
                 DistributePoints(14);
                 created.GetComponent<SentryBase>().Rarity = 1;
                 created.GetComponent<SpriteRenderer>().sprite = RareList[Random.Range(0, RareList.Length)];
+               
                 break;
             case 2://スーパーレア sp30
 
                 DistributePoints(21);
                 created.GetComponent<SentryBase>().Rarity = 2;
                 created.GetComponent<SpriteRenderer>().sprite = SuperRareList[Random.Range(0, SuperRareList.Length)];
+               
                 break;
 
             default:
@@ -193,6 +199,10 @@ public class SummonCrystal : MonoBehaviour
         {
             spriteRenderer.sprite = usedSprite;
         }//画像差し替え処理　クリスタル
+
+        var particleobj=Instantiate(Particles[alchemySystem.rarityCode], created.transform.position, Quaternion.identity);
+        particleobj.transform.parent = created.transform;
+
         CloseAlchemyUI();
 
     }
