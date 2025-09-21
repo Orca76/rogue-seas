@@ -108,7 +108,7 @@ public class EnemyCreator : MonoBehaviour
             int enemyIndex = Random.Range(0, islandEnemySets[islandeCode].enemies.Length);
             prefab = GetEnemy(islandeCode, enemyIndex);
         }
-        Debug.Log(prefab);
+       // Debug.Log(prefab);
         Instantiate(prefab, spawnPos, Quaternion.identity);
 
         // 総スポーン数カウントアップ
