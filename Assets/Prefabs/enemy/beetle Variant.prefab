@@ -102,10 +102,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 400
   MaxHP: 0
-  AttackSpan: 1
+  AttackSpan: 0.3
   Bullet: {fileID: 2700969929456834414, guid: 7412528c194b3e741890b7d6359c19ec, type: 3}
   target: {fileID: 0}
-  moveSpeed: 0.1
+  moveSpeed: 0.3
   Soul: {fileID: 2958066547802969458, guid: 273f716068ea3bc44b12a337a5ed2f51, type: 3}
   ExpValue: 10
   LimitDistance: 4

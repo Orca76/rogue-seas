@@ -134,54 +134,70 @@ public class SetSail : MonoBehaviour
                     fadeCg = obj.GetComponent<CanvasGroup>();
                 else
                     Debug.LogWarning("FadeInCanvas not found in scene!");
+
+
+
             }
         // ▼ フェードだけ先に走らせる（UIはこの時点では消さない）
-        StartCoroutine(FadeThenProcess());
 
-        System.Collections.IEnumerator FadeThenProcess()
+        if (fadeCg)
         {
-           // if (fadeCg == null) { UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene"); yield break; }
-
-            // フェード中の誤操作防止（必要なければfalseでもOK）
-            fadeCg.blocksRaycasts = true;
-
-            // ① UIそのまま → 黒フェード
-            float t = 0f, dur = 0.35f, start = fadeCg.alpha;
-            while (t < dur)
-            {
-                t += Time.unscaledDeltaTime;
-                fadeCg.alpha = Mathf.Lerp(start, 1f, t / dur);
-                yield return null;
-            }
-            fadeCg.alpha = 1f;
-
-            // 黒が確実に1フレーム表示されるまで待つ
-            Canvas.ForceUpdateCanvases();
-            yield return null;
-            yield return new WaitForEndOfFrame();
-
-            // ② ここから黒の下で重い処理（見えない）
-            NextDestination = chartSystem.zoneType;
-
-            List<GameObject> S = player.GetComponent<SentryManager>().sentryList;
-            foreach (GameObject sentry in S)
-                if (sentry != null) sentry.transform.SetParent(player.transform);
-
-            DontDestroyOnLoad(player);
-            Player pobj = player.GetComponent<Player>();
-            pobj.NextDest = NextDestination;
-            pobj.VisitedIslandCount++;
-
-            CloseChartUI(); // ← このタイミングなら見えない
-
-            // ③ 非同期ロード（黒のまま裏で0.9まで）
-            var op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("SampleScene");
-            op.allowSceneActivation = false;
-            while (op.progress < 0.9f) yield return null;
-
-           //  ④ アクティベート（この瞬間のヒッチも黒の下）
-            op.allowSceneActivation = true;
+            StartCoroutine(FadeThenProcess());
         }
+        else
+        {
+            //DontDestroyOnLoad(player);
+            //Player pobj = player.GetComponent<Player>();
+            //pobj.NextDest = NextDestination;
+            //pobj.VisitedIslandCount++;
+
+            //CloseChartUI(); 
+            //SceneManager.LoadSceneAsync("SampleScene");
+        }
+            System.Collections.IEnumerator FadeThenProcess()
+            {
+                // if (fadeCg == null) { UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene"); yield break; }
+
+                // フェード中の誤操作防止（必要なければfalseでもOK）
+                fadeCg.blocksRaycasts = true;
+
+                // ① UIそのまま → 黒フェード
+                float t = 0f, dur = 0.35f, start = fadeCg.alpha;
+                while (t < dur)
+                {
+                    t += Time.unscaledDeltaTime;
+                    fadeCg.alpha = Mathf.Lerp(start, 1f, t / dur);
+                    yield return null;
+                }
+                fadeCg.alpha = 1f;
+
+                // 黒が確実に1フレーム表示されるまで待つ
+                Canvas.ForceUpdateCanvases();
+                yield return null;
+                yield return new WaitForEndOfFrame();
+
+                // ② ここから黒の下で重い処理（見えない）
+                NextDestination = chartSystem.zoneType;
+
+                List<GameObject> S = player.GetComponent<SentryManager>().sentryList;
+                foreach (GameObject sentry in S)
+                    if (sentry != null) sentry.transform.SetParent(player.transform);
+
+                DontDestroyOnLoad(player);
+                Player pobj = player.GetComponent<Player>();
+                pobj.NextDest = NextDestination;
+                pobj.VisitedIslandCount++;
+
+                CloseChartUI(); // ← このタイミングなら見えない
+
+                // ③ 非同期ロード（黒のまま裏で0.9まで）
+                var op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("SampleScene");
+                op.allowSceneActivation = false;
+                while (op.progress < 0.9f) yield return null;
+
+                //  ④ アクティベート（この瞬間のヒッチも黒の下）
+                op.allowSceneActivation = true;
+            }
 
    
     }
